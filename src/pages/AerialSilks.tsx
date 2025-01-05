@@ -54,7 +54,7 @@ export function AerialSilks() {
               Through years of dedicated training, I've developed a teaching style that emphasizes both technical precision and creative freedom. Every student's journey is unique, and I take pride in helping each person discover their own strength and grace in the air.
             </p>
             <p>
-              Whether you're a complete beginner or an experienced aerialist, our studio provides a supportive environment where you can explore, challenge yourself, and grow. We focus on safe progression, proper technique, and the joy of movement.
+              Whether you're a complete beginner or an experienced aerialist, our studio provides a supportive environment where you can explore, challenge yourself, and grow. We focus on safe progression, proper technique, the joy of movement and self-expression.
             </p>
           </div>
         </motion.div>
