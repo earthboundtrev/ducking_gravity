@@ -25,7 +25,7 @@ export function Footer() {
               </p>
               <p className="flex items-center gap-2">
                 <MapPin className="h-5 w-5" />
-                Portland, Oregon
+                Culpeper, Virginia
               </p>
             </div>
           </div>
