@@ -24,7 +24,7 @@ export function Home() {
             </div>
             <div className="md:w-1/2">
               <p className="text-gray-600 text-lg leading-relaxed mb-6">
-                Welcome to Ducking Gravity! I'm Sarah (placeholder name), your aerial arts coach and sustainable farming enthusiast. With over a decade of experience in aerial silks and a passion for connecting mind, body, and nature, I've created this unique space where art meets earth.
+                Welcome to Ducking Gravity! I'm Christina, your aerial arts coach and sustainable farming enthusiast. With over a decade of experience in aerial silks and a passion for connecting mind, body, and nature, I've created this unique space where art meets earth.
               </p>
               <p className="text-gray-600 text-lg leading-relaxed">
                 My journey began in the world of dance and gymnastics, eventually leading me to discover the transformative power of aerial arts. Today, I share this passion with students while also maintaining a small, sustainable farm where we produce fresh, organic eggs.
