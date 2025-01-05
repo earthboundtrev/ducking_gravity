@@ -36,9 +36,7 @@ export function Eggs() {
               </p>
               <ul className="space-y-2 mb-4">
                 <li>Free-range access to fresh pasture</li>
-                <li>Organic, non-GMO feed supplementation</li>
                 <li>Natural pest control through rotation</li>
-                <li>Clean, spacious coops with plenty of nesting boxes</li>
               </ul>
               <p>
                 Happy hens lay the most nutritious eggs, and our careful attention to their well-being shows in every golden yolk.
