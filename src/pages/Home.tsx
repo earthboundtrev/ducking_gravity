@@ -19,7 +19,7 @@ export function Home() {
               <img
                 src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/441558738_1435909737050000_8855003634105954121_n.jpg"
                 alt="Aerial performer"
-                className="rounded-lg shadow-lg w-full h-[400px] object-cover"
+                className="rounded-lg shadow-lg w-full aspect-[4/3] object-cover"
               />
             </div>
             <div className="md:w-1/2">
