@@ -24,10 +24,13 @@ export function Home() {
             </div>
             <div className="md:w-1/2">
               <p className="text-gray-600 text-lg leading-relaxed mb-6">
-                Welcome to Ducking Gravity! I'm Christina, your aerial arts coach and sustainable farming enthusiast. With over a decade of experience in aerial silks and a passion for connecting mind, body, and nature, I've created this unique space where art meets earth.
+                Welcome to Ducking Gravity! I'm Christina, your aerial arts coach and sustainable farming enthusiast. I believe in the power of connecting mind, body, and nature, which is why I've created this unique space where art meets earth.
+              </p>
+              <p className="text-gray-600 text-lg leading-relaxed mb-6">
+                My aerial journey began just four years ago, and it's shown me that anyone can discover the joy of aerial arts, regardless of their background. I've had the privilege of guiding dozens of students from their very first climb to performing in showcases, proving that with dedication and the right support, amazing things are possible.
               </p>
               <p className="text-gray-600 text-lg leading-relaxed">
-                My journey began in the world of dance and gymnastics, eventually leading me to discover the transformative power of aerial arts. Today, I share this passion with students while also maintaining a small, sustainable farm where we produce fresh, organic eggs.
+                As part of my holistic approach to wellness, I maintain a small, sustainable farm where we produce fresh, organic eggs. I believe that knowing where your food comes from is just as important as how you move your body. Our locally produced eggs aren't just fresher and more nutritious – they come from hens that are cared for with attention and respect, resulting in eggs that simply taste better. This farm-to-table connection helps complete the circle of mindful living that I strive to share with my community.
               </p>
             </div>
           </div>

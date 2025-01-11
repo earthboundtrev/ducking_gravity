@@ -48,13 +48,13 @@ export function AerialSilks() {
           <h2 className="text-3xl font-bold text-gray-800 mb-6">My Journey with Aerial Silks</h2>
           <div className="prose prose-lg max-w-none text-gray-600">
             <p className="mb-4">
-              My aerial journey began over a decade ago when I first laid eyes on a mesmerizing silk performance. That moment ignited a passion that would transform not just my physical abilities, but my entire approach to movement and artistic expression.
+              Welcome to our aerial arts community! I'm Christina, and I'm passionate about sharing the transformative power of aerial silks. What started as a spark of inspiration when I first discovered aerial arts has grown into a deep love for both performing and teaching this beautiful art form.
             </p>
             <p className="mb-4">
-              Through years of dedicated training, I've developed a teaching style that emphasizes both technical precision and creative freedom. Every student's journey is unique, and I take pride in helping each person discover their own strength and grace in the air.
+              As an instructor, I've had the incredible privilege of guiding students from their very first climb to performing in showcases. My teaching philosophy centers around creating a supportive environment where everyone can thrive, regardless of their background or experience level. I've seen firsthand how aerial arts can build not just physical strength, but also confidence, creativity, and a sense of community.
             </p>
             <p>
-              Whether you're a complete beginner or an experienced aerialist, our studio provides a supportive environment where you can explore, challenge yourself, and grow. We focus on safe progression, proper technique, the joy of movement and self-expression.
+              I believe that aerial arts are for everyone, and I'm committed to making this beautiful form of movement accessible to all who want to explore it. Our studio emphasizes safe progression, proper technique, and most importantly, the joy of movement. Whether you're looking to perform professionally or simply want to try something new, there's a place for you here in our aerial family.
             </p>
           </div>
         </motion.div>

@@ -34,12 +34,12 @@ export function Eggs() {
               <p className="mb-4">
                 Our hens live their best lives on our small, sustainable farm. They enjoy:
               </p>
-              <ul className="space-y-2 mb-4">
-                <li>Free-range access to fresh pasture</li>
-                <li>Natural pest control through rotation</li>
+              <ul className="space-y-4 mb-4">
+                <li>Our hens spend their days roaming freely across fresh pastures, scratching in the dirt for insects and seeds, and taking dust baths in the sunshine. This natural lifestyle allows them to express their innate behaviors and stay healthy.</li>
+                <li>We practice rotational grazing, moving our hens to fresh pasture regularly. This approach not only provides them with new foraging opportunities but also naturally controls pests and fertilizes our land, creating a harmonious ecosystem that benefits both the chickens and the soil.</li>
               </ul>
               <p>
-                Happy hens lay the most nutritious eggs, and our careful attention to their well-being shows in every golden yolk.
+                Happy hens lay the most nutritious eggs, and our careful attention to their well-being shows in every golden yolk. When you crack open one of our eggs, you'll notice the difference in both color and taste - it's the result of our hens' natural diet and stress-free lifestyle.
               </p>
             </div>
           </motion.div>
@@ -57,33 +57,6 @@ export function Eggs() {
             />
           </motion.div>
         </div>
-      </section>
-
-      {/* Infographic Section */}
-      <section className="container mx-auto px-4 py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="bg-[#008000] rounded-lg shadow-xl p-8 text-white"
-        >
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold mb-4">Our Sustainable Cycle</h2>
-            <p className="text-lg">
-              Click the image below to download our detailed infographic about our sustainable farming practices.
-            </p>
-          </div>
-          
-          <div className="relative group cursor-pointer">
-            {/* Placeholder for infographic - in production, replace with actual infographic */}
-            <div className="bg-white/10 rounded-lg p-8 text-center">
-              <Download className="w-16 h-16 mx-auto mb-4" />
-              <p className="text-lg font-semibold">
-                Download Our Farm Practices Infographic
-              </p>
-            </div>
-          </div>
-        </motion.div>
       </section>
 
       {/* Pricing & Ordering */}
