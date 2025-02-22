@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Instagram, Facebook, Mail, MapPin, Feather } from 'lucide-react';
+// Remove next/image import since we're using React, not Next.js
+// Use regular img tag instead of Next.js Image component
 
 export function Footer() {
   return (
@@ -8,8 +10,13 @@ export function Footer() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-center mb-12">
           <Link to="/" className="flex items-center gap-3">
-            <Feather className="h-10 w-10 text-[#22C55E]" />
-            <span className="text-3xl font-bold text-white text-shadow-glow">Ducking Gravity</span>
+            <img 
+              src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-green.png"
+              alt="Ducking Gravity Logo"
+              width={200}
+              height={50}
+              className="object-contain"
+            />
           </Link>
         </div>
 

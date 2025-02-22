@@ -14,7 +14,11 @@ export function Navbar() {
           to="/" 
           className="text-white text-2xl font-bold flex items-center gap-3 hover:text-[#22C55E] transition-all duration-300"
         >
-          <Feather className="h-8 w-8" />
+          <img 
+            src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-green.png"
+            alt="Ducking Gravity Logo"
+            className="h-8 w-8"
+          />
           <span className="text-shadow-glow">Ducking Gravity</span>
         </Link>
         
