@@ -19,17 +19,19 @@ const silksImages = [
 
 export function AerialSilks() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#00B7EB]/10 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-[#1E3A5F] to-[#3B82F6]">
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-16">
+      <section className="container mx-auto px-4 py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <h1 className="text-5xl font-bold text-gray-800 mb-6">The Art of Aerial Silks</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <h1 className="text-6xl font-bold text-white mb-8 uppercase tracking-wider text-shadow-glow">
+            The Art of Aerial Silks
+          </h1>
+          <p className="text-2xl text-gray-200 max-w-3xl mx-auto font-light">
             Experience the freedom of flight and the grace of dance, combined in the beautiful art of aerial silks.
           </p>
         </motion.div>
@@ -38,15 +40,16 @@ export function AerialSilks() {
       </section>
 
       {/* Journey Section */}
-      <section className="container mx-auto px-4 py-16">
+      <section className="container mx-auto px-4 py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="bg-white rounded-lg shadow-xl p-8"
+          className="bg-white/10 backdrop-blur-md rounded-lg p-12 card-hover
+                   border border-white/5 shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
         >
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">My Journey with Aerial Silks</h2>
-          <div className="prose prose-lg max-w-none text-gray-600">
+          <h2 className="text-3xl font-bold text-white mb-6 uppercase tracking-wide">My Journey with Aerial Silks</h2>
+          <div className="prose prose-lg max-w-none text-gray-200">
             <p className="mb-4">
               Welcome to our aerial arts community! I'm Christina, and I'm passionate about sharing the transformative power of aerial silks. What started as a spark of inspiration when I first discovered aerial arts has grown into a deep love for both performing and teaching this beautiful art form.
             </p>
@@ -61,28 +64,29 @@ export function AerialSilks() {
       </section>
 
       {/* Class Information */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-2 gap-8">
+      <section className="container mx-auto px-4 py-20">
+        <div className="grid md:grid-cols-2 gap-12">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="bg-[#00B7EB] rounded-lg shadow-xl p-8 text-white"
+            className="bg-white/10 backdrop-blur-md rounded-lg p-12 card-hover
+                     border border-white/5 shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
           >
-            <h3 className="text-2xl font-bold mb-4">Class Schedule</h3>
-            <ul className="space-y-4">
+            <h3 className="text-2xl font-bold text-white mb-4 uppercase tracking-wide">Class Schedule</h3>
+            <ul className="space-y-4 text-gray-200">
               <li>
-                <strong>Beginner Classes:</strong>
+                <strong className="text-[#22C55E]">Beginner Classes:</strong>
                 <br />
                 Monday & Wednesday 6:00 PM - 7:30 PM
               </li>
               <li>
-                <strong>Intermediate:</strong>
+                <strong className="text-[#22C55E]">Intermediate:</strong>
                 <br />
                 Tuesday & Thursday 6:00 PM - 7:30 PM
               </li>
               <li>
-                <strong>Advanced:</strong>
+                <strong className="text-[#22C55E]">Advanced:</strong>
                 <br />
                 Saturday 10:00 AM - 12:00 PM
               </li>
@@ -93,10 +97,11 @@ export function AerialSilks() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="bg-gray-800 rounded-lg shadow-xl p-8 text-white"
+            className="bg-white/10 backdrop-blur-md rounded-lg p-12 card-hover
+                     border border-white/5 shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
           >
-            <h3 className="text-2xl font-bold mb-4">What to Expect</h3>
-            <ul className="space-y-4">
+            <h3 className="text-2xl font-bold text-white mb-4 uppercase tracking-wide">What to Expect</h3>
+            <ul className="space-y-4 text-gray-200">
               <li>• Professional-grade equipment and safety measures</li>
               <li>• Small class sizes for personalized attention</li>
               <li>• Progressive skill development</li>

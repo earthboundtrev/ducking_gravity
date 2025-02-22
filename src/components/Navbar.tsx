@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Feather, Egg } from 'lucide-react';
+import { Home, Feather, Egg, Info } from 'lucide-react';
 
 export function Navbar() {
   const location = useLocation();
@@ -8,29 +8,39 @@ export function Navbar() {
   const isActive = (path: string) => location.pathname === path;
   
   return (
-    <nav className="bg-gradient-to-r from-[#00B7EB] to-[#008000] p-4 shadow-lg">
-      <div className="container mx-auto flex items-center justify-between">
-        <Link to="/" className="text-white text-2xl font-bold flex items-center gap-2">
+    <nav className="bg-[#1E3A5F]/95 backdrop-blur-md border-b border-white/10 sticky top-0 z-50 shadow-[0_8px_30px_rgba(0,0,0,0.3)]">
+      <div className="container mx-auto flex items-center justify-between py-4 px-4">
+        <Link 
+          to="/" 
+          className="text-white text-2xl font-bold flex items-center gap-3 hover:text-[#22C55E] transition-all duration-300"
+        >
           <Feather className="h-8 w-8" />
-          Ducking Gravity
+          <span className="text-shadow-glow">Ducking Gravity</span>
         </Link>
         
-        <div className="flex gap-6">
+        <div className="flex gap-8">
           <Link
             to="/"
-            className={`flex items-center gap-2 text-white hover:text-gray-200 transition-colors ${
-              isActive('/') ? 'border-b-2 border-white' : ''
-            }`}
+            className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2 
+                      ${isActive('/') ? 'border-b-2 border-[#22C55E]' : ''}`}
           >
             <Home className="h-5 w-5" />
             Home
           </Link>
           
           <Link
+            to="/about"
+            className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2
+                      ${isActive('/about') ? 'border-b-2 border-[#22C55E]' : ''}`}
+          >
+            <Info className="h-5 w-5" />
+            About
+          </Link>
+          
+          <Link
             to="/aerial-silks"
-            className={`flex items-center gap-2 text-white hover:text-gray-200 transition-colors ${
-              isActive('/aerial-silks') ? 'border-b-2 border-white' : ''
-            }`}
+            className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2
+                      ${isActive('/aerial-silks') ? 'border-b-2 border-[#22C55E]' : ''}`}
           >
             <Feather className="h-5 w-5" />
             Aerial Silks
@@ -38,9 +48,8 @@ export function Navbar() {
           
           <Link
             to="/eggs"
-            className={`flex items-center gap-2 text-white hover:text-gray-200 transition-colors ${
-              isActive('/eggs') ? 'border-b-2 border-white' : ''
-            }`}
+            className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2
+                      ${isActive('/eggs') ? 'border-b-2 border-[#22C55E]' : ''}`}
           >
             <Egg className="h-5 w-5" />
             Farm Fresh Eggs
