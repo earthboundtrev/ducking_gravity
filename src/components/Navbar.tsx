@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Feather, Egg, Info } from 'lucide-react';
+import { Home, Feather, Egg, Info, Menu, X } from 'lucide-react';
 
 export function Navbar() {
   const location = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   const isActive = (path: string) => location.pathname === path;
   
@@ -21,8 +22,17 @@ export function Navbar() {
           />
           <span className="text-shadow-glow">Ducking Gravity</span>
         </Link>
+
+        {/* Mobile menu button */}
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="md:hidden text-white hover:text-[#22C55E] transition-all duration-300"
+        >
+          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
         
-        <div className="flex gap-8">
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex gap-8">
           <Link
             to="/"
             className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2 
@@ -58,6 +68,57 @@ export function Navbar() {
             <Egg className="h-5 w-5" />
             Farm Fresh Eggs
           </Link>
+        </div>
+
+        {/* Mobile Navigation */}
+        <div className={`
+          absolute top-full left-0 right-0 
+          bg-[#1E3A5F]/95 backdrop-blur-md
+          md:hidden
+          transition-all duration-300
+          ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}
+        `}>
+          <div className="flex flex-col p-4 space-y-4">
+            <Link
+              to="/"
+              className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2 
+                        ${isActive('/') ? 'text-[#22C55E]' : ''}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Home className="h-5 w-5" />
+              Home
+            </Link>
+            
+            <Link
+              to="/about"
+              className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2
+                        ${isActive('/about') ? 'text-[#22C55E]' : ''}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Info className="h-5 w-5" />
+              About
+            </Link>
+            
+            <Link
+              to="/aerial-silks"
+              className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2
+                        ${isActive('/aerial-silks') ? 'text-[#22C55E]' : ''}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Feather className="h-5 w-5" />
+              Aerial Silks
+            </Link>
+            
+            <Link
+              to="/eggs"
+              className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2
+                        ${isActive('/eggs') ? 'text-[#22C55E]' : ''}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Egg className="h-5 w-5" />
+              Farm Fresh Eggs
+            </Link>
+          </div>
         </div>
       </div>
     </nav>
