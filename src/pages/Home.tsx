@@ -29,7 +29,7 @@ export function Home() {
               <span className="block text-[#22C55E] mt-2">in a Community You'll Love</span>
             </h1>
             <p className="text-xl text-gray-200 mb-8 max-w-2xl font-light">
-              Ducking Gravity offers more than exceptional aerial arts training. We're a unique community where artistry meets earth, empowering every member to learn, grow, and soar.
+              Ducking Gravity is an upcoming studio that will offer exceptional aerial arts training. We're a unique community where artistry meets earth, empowering every member to learn, grow, and soar.
             </p>
             <div className="flex gap-4">
               <Link

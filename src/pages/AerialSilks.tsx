@@ -29,10 +29,10 @@ export function AerialSilks() {
           className="text-center mb-20"
         >
           <h1 className="text-6xl font-bold text-white mb-8 uppercase tracking-wider text-shadow-glow">
-            The Art of Aerial Silks
+            Mastering the Beauty of Aerial Silks
           </h1>
           <p className="text-2xl text-gray-200 max-w-3xl mx-auto font-light">
-            Experience the freedom of flight and the grace of dance, combined in the beautiful art of aerial silks.
+            Experience the freedom of flight and the grace of dance, combined in the beautiful world of aerial arts.
           </p>
         </motion.div>
 
@@ -48,10 +48,10 @@ export function AerialSilks() {
           className="bg-white/10 backdrop-blur-md rounded-lg p-12 card-hover
                    border border-white/5 shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
         >
-          <h2 className="text-3xl font-bold text-white mb-6 uppercase tracking-wide">My Journey with Aerial Silks</h2>
+          <h2 className="text-3xl font-bold text-white mb-6 uppercase tracking-wide">My Journey with Aerial Arts</h2>
           <div className="prose prose-lg max-w-none text-gray-200">
             <p className="mb-4">
-              Welcome to our aerial arts community! I'm Christina, and I'm passionate about sharing the transformative power of aerial silks. What started as a spark of inspiration when I first discovered aerial arts has grown into a deep love for both performing and teaching this beautiful art form.
+              Welcome to our aerial arts community! I'm Christina, and I'm passionate about sharing the transformative power of aerial arts. What started as a spark of inspiration when I first discovered aerials has grown into a deep love for both performing and teaching this beautiful art form.
             </p>
             <p className="mb-4">
               As an instructor, I've had the incredible privilege of guiding students from their very first climb to performing in showcases. My teaching philosophy centers around creating a supportive environment where everyone can thrive, regardless of their background or experience level. I've seen firsthand how aerial arts can build not just physical strength, but also confidence, creativity, and a sense of community.
@@ -78,17 +78,17 @@ export function AerialSilks() {
               <li>
                 <strong className="text-[#22C55E]">Beginner Classes:</strong>
                 <br />
-                Monday & Wednesday 6:00 PM - 7:30 PM
+                TBD
               </li>
               <li>
                 <strong className="text-[#22C55E]">Intermediate:</strong>
                 <br />
-                Tuesday & Thursday 6:00 PM - 7:30 PM
+                TBD
               </li>
               <li>
                 <strong className="text-[#22C55E]">Advanced:</strong>
                 <br />
-                Saturday 10:00 AM - 12:00 PM
+                TBD
               </li>
             </ul>
           </motion.div>
