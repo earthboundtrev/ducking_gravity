@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Star, Users, Heart } from 'lucide-react';
+import { ContactForm } from '../components/ContactForm';
 
 export function Home() {
   return (
@@ -143,6 +144,9 @@ export function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* Contact Form Section */}
+      <ContactForm />
     </div>
   );
 }
