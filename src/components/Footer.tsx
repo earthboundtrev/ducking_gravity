@@ -41,7 +41,7 @@ export function Footer() {
               </li>
               <li>
                 <Link to="/eggs" className="hover:text-[#22C55E] transition-all duration-300">
-                  Farm Fresh Eggs
+                  Hobby Farm
                 </Link>
               </li>
             </ul>
