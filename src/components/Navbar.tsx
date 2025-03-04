@@ -66,7 +66,7 @@ export function Navbar() {
                       ${isActive('/eggs') ? 'border-b-2 border-[#22C55E]' : ''}`}
           >
             <Egg className="h-5 w-5" />
-            Farm Fresh Eggs
+            Hobby Farm
           </Link>
         </div>
 
