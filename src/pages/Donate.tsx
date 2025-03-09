@@ -190,7 +190,7 @@ export function Donate() {
             >
               $100
             </button>
-            <div className="relative">
+            <div className="relative md:relative static">
               <input
                 type="number"
                 value={customAmount}
@@ -201,11 +201,19 @@ export function Donate() {
               <button
                 onClick={() => handleDonation('custom')}
                 disabled={isProcessing || !customAmount}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#22C55E] text-white px-4 py-2 rounded"
+                className="md:absolute md:right-2 md:top-1/2 md:-translate-y-1/2 hidden md:block bg-[#22C55E] text-white px-4 py-2 rounded"
               >
                 Donate
               </button>
             </div>
+            {/* Mobile-only donate button */}
+            <button
+              onClick={() => handleDonation('custom')}
+              disabled={isProcessing || !customAmount}
+              className="md:hidden col-span-2 bg-[#22C55E] text-white px-4 py-2 rounded mx-auto mt-2 w-1/2"
+            >
+              Donate
+            </button>
           </div>
 
           {isProcessing && (
