@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Feather, Egg, Info, Menu, X } from 'lucide-react';
+import { Home, Feather, Egg, Info, Menu, X, Heart } from 'lucide-react';
 
 export function Navbar() {
   const location = useLocation();
@@ -33,6 +33,7 @@ export function Navbar() {
         
         {/* Desktop Navigation */}
         <div className="hidden md:flex gap-8">
+          {/* Original navigation links commented out
           <Link
             to="/"
             className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2 
@@ -68,6 +69,17 @@ export function Navbar() {
             <Egg className="h-5 w-5" />
             Hobby Farm
           </Link>
+          */}
+
+          {/* New Donate link */}
+          <Link
+            to="/donate"
+            className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2
+                      ${isActive('/donate') ? 'border-b-2 border-[#22C55E]' : ''}`}
+          >
+            <Heart className="h-5 w-5" />
+            Support Us
+          </Link>
         </div>
 
         {/* Mobile Navigation */}
@@ -79,6 +91,7 @@ export function Navbar() {
           ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}
         `}>
           <div className="flex flex-col p-4 space-y-4">
+            {/* Original mobile navigation links commented out
             <Link
               to="/"
               className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2 
@@ -117,6 +130,18 @@ export function Navbar() {
             >
               <Egg className="h-5 w-5" />
               Farm Fresh Eggs
+            </Link>
+            */}
+
+            {/* New Donate link for mobile */}
+            <Link
+              to="/donate"
+              className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2
+                        ${isActive('/donate') ? 'text-[#22C55E]' : ''}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Heart className="h-5 w-5" />
+              Support Us
             </Link>
           </div>
         </div>
