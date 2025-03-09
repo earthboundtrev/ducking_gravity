@@ -25,10 +25,11 @@ export function Footer() {
             <h3 className="text-xl font-bold mb-6 text-[#22C55E] uppercase tracking-wide">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/" className="hover:text-[#22C55E] transition-all duration-300">
-                  Home
+                <Link to="/donate" className="hover:text-[#22C55E] transition-all duration-300">
+                  Support Us
                 </Link>
               </li>
+              {/* Other links commented out
               <li>
                 <Link to="/about" className="hover:text-[#22C55E] transition-all duration-300">
                   About
@@ -44,6 +45,7 @@ export function Footer() {
                   Hobby Farm
                 </Link>
               </li>
+              */}
             </ul>
           </div>
           
