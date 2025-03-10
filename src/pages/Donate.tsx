@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ImageCarousel } from '../components/ImageCarousel';
-import { Heart } from 'lucide-react';
+import { Heart, Instagram, Facebook } from 'lucide-react';
 // import { getStripe } from '../utils/stripe';
 import { useState } from 'react';
 
@@ -123,16 +123,34 @@ export function Donate() {
           <h2 className="text-3xl font-bold text-white mb-6 uppercase tracking-wide">I'm so excited!!!</h2>
           <div className="prose prose-lg max-w-none text-gray-200">
             <p className="mb-6">
-              Y'all, I can hardly contain my excitement! After months of searching, we've finally secured the perfect location for our aerial arts studio. This space has everything we've been dreaming of - soaring ceilings, and enough room for our community to grow (plus bathrooms, HVAC, insulation, a floor...ya know...😁). But here's where I need your help to bring this vision to life.
+              After months of searching, we have finally found the perfect home for our aerial arts studio!
             </p>
             <p className="mb-6">
-              Right now, we're standing at the edge of something amazing. The space is secured, but we need proper rigging to make it safe for everyone. I'm talking about professional-grade trusses, safety mats, and rigging points that will let us all fly with complete confidence. Together, we can create a studio that's not just safe, but exceptional.
+              This space has everything we've been dreaming of—soaring ceilings, room for our community to thrive, and yes, the essentials like bathrooms, HVAC, and insulation (even a floor...imagine that! 😄). But to bring this dream to life, I need your help.
             </p>
             <p className="mb-6">
-              My vision isn't just about creating another aerial studio - it's about building a home where everyone feels welcome to explore the aerial arts. Whether you're a complete beginner or an experienced aerialist, this space will be yours to grow, challenge yourself, and discover just how high you can soar.
+              We're on the brink of creating something truly special. The space is secured, but now we need professional rigging to make it safe and ready for everyone. This includes top-quality trusses, safety mats, and multiple rigging points to ensure we can all fly with confidence. I've chosen to work with VerticalArtDance, whose breathtaking installations, like <a href="https://www.verticalartdance.com/blog/neon-soul-yoga-chica" target="_blank" rel="noopener noreferrer" className="text-[#22C55E] hover:text-[#16A34A] transition-colors">this one</a>, show their expertise in creating safe yet inspiring aerial environments.
+            </p>
+            <p className="mb-6">
+              Together, we can transform this space into our space: a space that's not just safe for us as aerialists, but also a place that is safe for anyone and everyone to come together as a community and express themselves in a safe and open environment.
+            </p>
+            <p className="mb-6">
+              My vision is more than just opening another aerial arts studio. It's about building a welcoming home for everyone to explore the art of flight and express themselves freely. Whether you're a complete beginner or a seasoned aerialist, scared of heights, or ready to soar, this will be a place where you can grow, challenge yourself, and reach new highs—literally and figuratively.
+            </p>
+            <p className="mb-6">
+              Every contribution, big or small, brings us one step closer to making this dream a reality.
+            </p>
+            <p className="mb-6">
+              To start soaring immediately, we're aiming to raise $4,000 for a portable rig from JuggleGear, perfect not only for the studio but also for festivals and events: <a href="https://www.jugglegear.com/aerial/aerial-rigs-and-frames/aerial-rig-mk3-20ft-16ft-12ft.html" target="_blank" rel="noopener noreferrer" className="text-[#22C55E] hover:text-[#16A34A] transition-colors">https://www.jugglegear.com/aerial/aerial-rigs-and-frames/aerial-rig-mk3-20ft-16ft-12ft.html</a>
+            </p>
+            <p className="mb-6">
+              From there, anything else will go towards the design, purchase and installation of circus trusses as well as the design and implementation of open space where our community can gather, be active, hang out, dream, and play together.
+            </p>
+            <p className="mb-6">
+              Your support means so much to me and to the entire aerial community. Let's come together and build something incredible!
             </p>
             <p>
-              Every donation, no matter the size, brings us closer to making this dream a reality. Your support means the world to me and to our entire aerial community. Let's build something extraordinary together!
+              Thank you, from the very bottom of my heart.
             </p>
           </div>
         </motion.div>
@@ -224,6 +242,42 @@ export function Donate() {
           )}
         </motion.div>
       </section>
+
+      {/* Social Media Section */}
+      <section className="container mx-auto px-4 pb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.9 }}
+          className="max-w-2xl mx-auto bg-white/10 backdrop-blur-md rounded-lg p-12 card-hover
+                   border border-white/5 shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
+        >
+          <div className="text-center">
+            <h3 className="text-2xl font-bold text-white mb-6">Follow Us to Keep Up with Our Progress</h3>
+            <div className="flex justify-center gap-8">
+              <a 
+                href="https://instagram.com/duckinggravity" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 text-white hover:text-[#22C55E] transition-all duration-300 hover:scale-105"
+              >
+                <Instagram className="h-8 w-8" />
+                <span>@duckinggravity</span>
+              </a>
+              <a 
+                href="https://www.facebook.com/profile.php?id=61557121516331" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 text-white hover:text-[#22C55E] transition-all duration-300 hover:scale-105"
+              >
+                <Facebook className="h-8 w-8" />
+                <span>Facebook</span>
+              </a>
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
     </div>
   );
 } 
