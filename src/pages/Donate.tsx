@@ -39,6 +39,10 @@ const donateMedia = [
   }
 ];
 
+const FUNDRAISING_GOAL = 4000;
+const CURRENT_AMOUNT = 0; // This is the value you'll update manually
+const INTERVAL_AMOUNT = 500; // Shows marks every $500
+
 export function Donate() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [customAmount, setCustomAmount] = useState('');
@@ -161,6 +165,63 @@ export function Donate() {
           height="800px"
           objectFit="contain"
         />
+      </section>
+
+      {/* Fundraising Progress Section */}
+      <section className="container mx-auto px-4 py-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="max-w-3xl mx-auto bg-white/10 backdrop-blur-md rounded-lg p-12 card-hover
+                   border border-white/5 shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
+        >
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold text-white mb-2">Fundraising Progress</h3>
+            <p className="text-xl text-gray-200">
+              ${CURRENT_AMOUNT.toLocaleString()} raised of ${FUNDRAISING_GOAL.toLocaleString()} goal
+            </p>
+          </div>
+
+          {/* Thermometer Container */}
+          <div className="relative">
+            {/* Background Track */}
+            <div className="h-8 bg-white/10 rounded-full w-full mb-4">
+              {/* Progress Bar */}
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${(CURRENT_AMOUNT / FUNDRAISING_GOAL) * 100}%` }}
+                transition={{ duration: 1.5, ease: "easeOut" }}
+                className="h-full bg-[#22C55E] rounded-full"
+              />
+            </div>
+
+            {/* Interval Markers */}
+            <div className="relative h-6 w-full">
+              {Array.from({ length: Math.floor(FUNDRAISING_GOAL / INTERVAL_AMOUNT) + 1 }).map((_, index) => {
+                const value = index * INTERVAL_AMOUNT;
+                const position = (value / FUNDRAISING_GOAL) * 100;
+                return (
+                  <div
+                    key={index}
+                    className="absolute transform -translate-x-1/2"
+                    style={{ left: `${position}%` }}
+                  >
+                    <div className="h-2 w-0.5 bg-gray-400 mx-auto mb-1" />
+                    <span className="text-sm text-gray-300">${value.toLocaleString()}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Progress Stats */}
+          <div className="mt-8 text-center">
+            <p className="text-gray-200">
+              {((CURRENT_AMOUNT / FUNDRAISING_GOAL) * 100).toFixed(1)}% of our goal
+            </p>
+          </div>
+        </motion.div>
       </section>
 
       {/* Donation Section */}
