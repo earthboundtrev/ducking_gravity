@@ -120,10 +120,10 @@ export function Donate() {
           className="bg-white/10 backdrop-blur-md rounded-lg p-12 card-hover mb-20
                    border border-white/5 shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
         >
-          <h2 className="text-3xl font-bold text-white mb-6 uppercase tracking-wide">I'm so excited!</h2>
+          <h2 className="text-3xl font-bold text-white mb-6 uppercase tracking-wide">I'm so excited!!!</h2>
           <div className="prose prose-lg max-w-none text-gray-200">
             <p className="mb-6">
-              Y'all, I can hardly contain my excitement! After months of searching, we've finally secured the perfect location for our aerial arts studio. This space has everything we've been dreaming of - soaring ceilings, natural light flooding through the windows, and enough room for our community to grow. But here's where I need your help to bring this vision to life.
+              Y'all, I can hardly contain my excitement! After months of searching, we've finally secured the perfect location for our aerial arts studio. This space has everything we've been dreaming of - soaring ceilings, and enough room for our community to grow (plus bathrooms, HVAC, insulation, a floor...ya know...😁). But here's where I need your help to bring this vision to life.
             </p>
             <p className="mb-6">
               Right now, we're standing at the edge of something amazing. The space is secured, but we need proper rigging to make it safe for everyone. I'm talking about professional-grade trusses, safety mats, and rigging points that will let us all fly with complete confidence. Together, we can create a studio that's not just safe, but exceptional.
