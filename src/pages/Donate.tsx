@@ -137,7 +137,7 @@ export function Donate() {
           <h2 className="text-3xl font-bold text-white mb-6 uppercase tracking-wide">I'm so excited!!!</h2>
           <div className="prose prose-lg max-w-none text-gray-200">
             <p className="mb-6">
-              After months of searching, we have finally found the perfect home for our aerial arts studio!
+              After months of searching, we have finally found a new home for Ducking Gravity, Culpeper's newest aerial arts studio!
             </p>
             <p className="mb-6">
               This space has everything we've been dreaming of—soaring ceilings, room for our community to thrive, and yes, the essentials like bathrooms, HVAC, and insulation (even a floor...imagine that! 😄). But to bring this dream to life, I need your help.
