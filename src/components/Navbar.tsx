@@ -20,7 +20,7 @@ export function Navbar() {
             alt="Ducking Gravity Logo"
             className="h-8 w-8"
           />
-          <span className="text-shadow-glow">Ducking Gravity</span>
+          <span className="text-white">Ducking Gravity</span>
         </Link>
 
         {/* Mobile menu button */}
