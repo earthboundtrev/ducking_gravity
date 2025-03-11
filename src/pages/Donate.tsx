@@ -98,6 +98,10 @@ export function Donate() {
     */
   };
 
+  const scrollToDonate = () => {
+    document.getElementById('donate-section')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1E3A5F] to-[#3B82F6]">
       {/* Hero Section */}
@@ -108,12 +112,18 @@ export function Donate() {
           transition={{ duration: 0.6 }}
           className="text-center mb-20"
         >
-          <h1 className="text-6xl font-bold text-white mb-8 uppercase tracking-wider text-shadow-glow">
+          <h1 className="text-6xl font-bold text-white mb-8">
             Help Us Build Our Dream Studio
           </h1>
-          <p className="text-2xl text-gray-200 max-w-3xl mx-auto font-light">
+          <p className="text-2xl text-gray-200 max-w-3xl mx-auto font-light mb-8">
             Together, we can create a space where everyone can learn to fly.
           </p>
+          <button
+            onClick={scrollToDonate}
+            className="bg-[#22C55E] text-white px-8 py-4 rounded-lg hover:bg-[#16A34A] transition-colors text-lg font-semibold"
+          >
+            Donate now!
+          </button>
         </motion.div>
 
         {/* Journey Section - Moved up */}
@@ -145,10 +155,10 @@ export function Donate() {
               Every contribution, big or small, brings us one step closer to making this dream a reality.
             </p>
             <p className="mb-6">
-              To start soaring immediately, we're aiming to raise $4,000 for a portable rig from JuggleGear, perfect not only for the studio but also for festivals and events: <a href="https://www.jugglegear.com/aerial/aerial-rigs-and-frames/aerial-rig-mk3-20ft-16ft-12ft.html" target="_blank" rel="noopener noreferrer" className="text-[#22C55E] hover:text-[#16A34A] transition-colors">https://www.jugglegear.com/aerial/aerial-rigs-and-frames/aerial-rig-mk3-20ft-16ft-12ft.html</a>
+              To start soaring immediately, we're aiming to raise $4,000 for a <a href="https://www.jugglegear.com/aerial/aerial-rigs-and-frames/aerial-rig-mk3-20ft-16ft-12ft.html" target="_blank" rel="noopener noreferrer" className="text-[#22C55E] hover:text-[#16A34A] transition-colors">portable rig</a> from JuggleGear, perfect not only for the studio but also for festivals and events.
             </p>
             <p className="mb-6">
-              From there, anything else will go towards the design, purchase and installation of circus trusses as well as the design and implementation of open space where our community can gather, be active, hang out, dream, and play together.
+              From there, anything else will go towards the design, purchase, and installation of circus trusses as well as the design and implementation of open space where our community can gather, be active, hang out, dream, and play together.
             </p>
             <p className="mb-6">
               Your support means so much to me and to the entire aerial community. Let's come together and build something incredible!
@@ -165,6 +175,16 @@ export function Donate() {
           height="800px"
           objectFit="contain"
         />
+        
+        {/* Second Donate Button */}
+        <div className="text-center mt-12">
+          <button
+            onClick={scrollToDonate}
+            className="bg-[#22C55E] text-white px-8 py-4 rounded-lg hover:bg-[#16A34A] transition-colors text-lg font-semibold"
+          >
+            Donate now!
+          </button>
+        </div>
       </section>
 
       {/* Fundraising Progress Section */}
@@ -224,8 +244,8 @@ export function Donate() {
         </motion.div>
       </section>
 
-      {/* Donation Section */}
-      <section className="container mx-auto px-4 py-20">
+      {/* Donation Section - Added ID here */}
+      <section id="donate-section" className="container mx-auto px-4 py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
