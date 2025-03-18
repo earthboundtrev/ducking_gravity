@@ -63,7 +63,8 @@ export function Footer() {
               </p>
               <p className="flex items-center gap-3 justify-center md:justify-start">
                 <MapPin className="h-5 w-5 text-[#22C55E]" />
-                Culpeper, Virginia
+                15532 Montanus Dr, Suite E<br />
+                Culpeper, VA 22701
               </p>
             </div>
           </div>
