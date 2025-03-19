@@ -2,8 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ImageCarousel } from '../components/ImageCarousel';
 import { Heart, Instagram, Facebook } from 'lucide-react';
-// import { getStripe } from '../utils/stripe';
 import { useState } from 'react';
+import { loadStripe } from '@stripe/stripe-js';
+
+// Initialize Stripe with your publishable key
+const stripePromise = loadStripe('pk_live_51R0ljc2N3nCujaANOV24EcEeG9nfef2gWLc8A9ZloI3r1JndNxsObtHg3ypYKR8HtxIeRS8oANajkJdyas5UFQSm00GDkHTg1I');
 
 const donateMedia = [
     {
@@ -45,57 +48,10 @@ const INTERVAL_AMOUNT = 1000; // Shows marks every $500
 
 export function Donate() {
   const [isProcessing, setIsProcessing] = useState(false);
-  const [customAmount, setCustomAmount] = useState('');
 
-  const handleDonation = async (amount: string) => {
-    // Temporary handler for testing
-    console.log('Donation amount:', amount);
-    alert(`Test donation of ${amount === 'custom' ? `$${customAmount}` : amount}`);
-
-    /* Commented out Stripe implementation
-    try {
-      setIsProcessing(true);
-      const stripe = await getStripe();
-      
-      if (!stripe) {
-        throw new Error('Stripe failed to initialize');
-      }
-
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/create-checkout-session`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          amount,
-          customAmount: amount === 'custom' ? parseFloat(customAmount) : null,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const session = await response.json();
-
-      if (session.error) {
-        throw new Error(session.error);
-      }
-
-      const result = await stripe.redirectToCheckout({
-        sessionId: session.id,
-      });
-
-      if (result.error) {
-        throw new Error(result.error.message);
-      }
-    } catch (error) {
-      console.error('Payment Error:', error);
-      alert('Payment failed. Please try again.');
-    } finally {
-      setIsProcessing(false);
-    }
-    */
+  const handleDonation = () => {
+    // Using the direct payment link as it's more flexible and reliable
+    window.location.href = 'https://buy.stripe.com/4gwdR52l0gGa1UsdQR';
   };
 
   const scrollToDonate = () => {
@@ -267,60 +223,14 @@ export function Donate() {
             </ul>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="flex flex-col items-center gap-4">
             <button
-              onClick={() => handleDonation('small')}
-              disabled={isProcessing}
-              className="bg-white/10 text-white p-6 rounded-lg hover:bg-white/20 transition-colors"
+              onClick={() => window.location.href = 'https://buy.stripe.com/4gwdR52l0gGa1UsdQR'}
+              className="w-full bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition-colors text-xl"
             >
-              $25
-            </button>
-            <button
-              onClick={() => handleDonation('medium')}
-              disabled={isProcessing}
-              className="bg-white/10 text-white p-6 rounded-lg hover:bg-white/20 transition-colors"
-            >
-              $50
-            </button>
-            <button
-              onClick={() => handleDonation('large')}
-              disabled={isProcessing}
-              className="bg-white/10 text-white p-6 rounded-lg hover:bg-white/20 transition-colors"
-            >
-              $100
-            </button>
-            <div className="relative md:relative static">
-              <input
-                type="number"
-                value={customAmount}
-                onChange={(e) => setCustomAmount(e.target.value)}
-                placeholder="Custom amount"
-                className="w-full bg-white/10 text-white p-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#22C55E]"
-              />
-              <button
-                onClick={() => handleDonation('custom')}
-                disabled={isProcessing || !customAmount}
-                className="md:absolute md:right-2 md:top-1/2 md:-translate-y-1/2 hidden md:block bg-[#22C55E] text-white px-4 py-2 rounded"
-              >
-                Donate
-              </button>
-            </div>
-            {/* Mobile-only donate button */}
-            <button
-              onClick={() => handleDonation('custom')}
-              disabled={isProcessing || !customAmount}
-              className="md:hidden col-span-2 bg-[#22C55E] text-white px-4 py-2 rounded mx-auto mt-2 w-1/2"
-            >
-              Donate
+              Donate now!
             </button>
           </div>
-
-          {isProcessing && (
-            <div className="text-center text-gray-200">
-              <div className="animate-spin inline-block w-6 h-6 border-2 border-current border-t-transparent rounded-full mb-2" />
-              <p>Processing...</p>
-            </div>
-          )}
         </motion.div>
       </section>
 
