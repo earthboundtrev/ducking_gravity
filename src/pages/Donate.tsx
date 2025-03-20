@@ -197,6 +197,12 @@ export function Donate() {
               {((CURRENT_AMOUNT / FUNDRAISING_GOAL) * 100).toFixed(1)}% of our goal
             </p>
           </div>
+
+          <div className="mt-8">
+            <p className="text-white/80 text-sm italic">
+              *Our fundraising total and percentage counter is not high-tech enough to automatically update (yet, our tech guy is working on it), but will be manually updated so everyone can see our progress!
+            </p>
+          </div>
         </motion.div>
       </section>
 
