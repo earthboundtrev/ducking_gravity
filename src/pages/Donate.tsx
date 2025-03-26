@@ -58,6 +58,12 @@ export function Donate() {
     document.getElementById('donate-section')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const scrollToFundraising = () => {
+    document.getElementById('fundraising-section')?.scrollIntoView({ 
+      behavior: 'smooth'
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1E3A5F] to-[#3B82F6]">
       {/* Hero Section */}
@@ -66,7 +72,7 @@ export function Donate() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-20"
+          className="text-center"
         >
           <h1 className="text-6xl font-bold text-white mb-8">
             Help Us Build Our Dream Studio
@@ -76,18 +82,24 @@ export function Donate() {
           </p>
           <button
             onClick={scrollToDonate}
-            className="bg-[#22C55E] text-white px-8 py-4 rounded-lg hover:bg-[#16A34A] transition-colors text-lg font-semibold"
+            className="bg-[#22C55E] text-white px-8 py-4 rounded-lg hover:bg-[#16A34A] transition-colors text-lg font-semibold mb-8"
           >
             Donate now!
           </button>
         </motion.div>
+        <p 
+          onClick={scrollToFundraising}
+          className="text-white/90 text-lg md:text-xl text-center mb-8 animate-fadeIn cursor-pointer hover:text-white transition-colors"
+        >
+          Wow! We've already raised $1,029 of our $4,000 goal! 
+        </p>
 
         {/* Journey Section - Moved up */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="bg-white/10 backdrop-blur-md rounded-lg p-12 card-hover mb-20
+          className="bg-white/10 backdrop-blur-md rounded-lg p-12 card-hover mb-8
                    border border-white/5 shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
         >
           <h2 className="text-3xl font-bold text-white mb-6 uppercase tracking-wide">I'm so excited!!!</h2>
@@ -119,9 +131,7 @@ export function Donate() {
             <p className="mb-6">
               Your support means so much to me and to the entire aerial community. Let's come together and build something incredible!
             </p>
-            <p>
-              Thank you, from the very bottom of my heart.
-            </p>
+            <p className="mb-16 md:mb-32">Thank you, from the very bottom of my heart.</p>
           </div>
         </motion.div>
 
@@ -144,7 +154,7 @@ export function Donate() {
       </section>
 
       {/* Fundraising Progress Section */}
-      <section className="container mx-auto px-4 py-20">
+      <section id="fundraising-section" className="container mx-auto px-4 py-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -231,8 +241,9 @@ export function Donate() {
 
           <div className="flex flex-col items-center gap-4">
             <button
-              onClick={() => window.location.href = 'https://buy.stripe.com/4gwdR52l0gGa1UsdQR'}
-              className="w-full bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition-colors text-xl"
+              onClick={handleDonation}
+              disabled={isProcessing}
+              className="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition-colors"
             >
               Donate now!
             </button>
@@ -274,6 +285,8 @@ export function Donate() {
           </div>
         </motion.div>
       </section>
+
+      
 
     </div>
   );
