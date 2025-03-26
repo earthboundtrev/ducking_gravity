@@ -7,8 +7,8 @@ import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { AerialSilks } from './pages/AerialSilks';
-import { Eggs } from './pages/Eggs';
 */
+import { Eggs } from './pages/Eggs';
 import { Donate } from './pages/Donate';
 import { DonationSuccess } from './pages/DonationSuccess';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -26,8 +26,8 @@ export default function App() {
               {/*
               <Route path="/about" element={<About />} />
               <Route path="/aerial-silks" element={<AerialSilks />} />
-              <Route path="/eggs" element={<Eggs />} />
               */}
+              <Route path="/eggs" element={<Eggs />} />
               <Route path="/donate" element={<Donate />} />
               <Route path="/donation-success" element={<DonationSuccess />} />
             </Routes>
