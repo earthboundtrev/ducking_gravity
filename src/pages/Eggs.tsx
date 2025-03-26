@@ -53,7 +53,7 @@ export function Eggs() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1E3A5F] to-[#3B82F6]">
       {/* Hero Section with Page Links */}
-      <section className="container mx-auto px-4 py-24">
+      <section className="container mx-auto px-4 pt-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -72,15 +72,22 @@ export function Eggs() {
                 About Fresh Eggs
               </button>
             </li>
-            <li>What To Expect From Your Eggs</li>
             <li>
               <button 
                 onClick={() => scrollToSection('our-birds')}
                 className="hover:text-[#22C55E] transition-colors duration-300 cursor-pointer"
               >
-                Birds, Birds, Birds!
+                What To Expect From Your Eggs
               </button>
             </li>
+            {/* <li>
+              <button 
+                onClick={() => scrollToSection('chicken-varieties')}
+                className="hover:text-[#22C55E] transition-colors duration-300 cursor-pointer"
+              >
+                Birds, Birds, Birds!
+              </button>
+            </li> */}
             <li>
               <button 
                 onClick={() => scrollToSection('our-farm')}
@@ -141,7 +148,7 @@ export function Eggs() {
           <div className="prose prose-lg max-w-none text-gray-200">
             <p>At our farm, we take great pride in raising free-range birds that are not only well cared for but also truly loved. Our diverse flock, which includes chickens, ducks, guinea fowl, quail, turkeys, and geese, thrives in an environment that celebrates their natural behaviors and instincts. They are free to roam in a large protected area, enjoying fresh air and sunshine as they forage, dust bathe, snack on fresh vegetation and bugs and take dips in one of their 3 pools. Their daily diet consists of 50 pounds of chicken feed supplemented by over 10 gallons of fresh fruits and vegetables, ensuring their health and vitality. While they are not considered 'organic' their diet is fresh, healthy, and varied, and they are never treated with hormones, steroids, or any other drugs or medications.</p>
             <h3 className="text-2xl font-bold text-white mt-8 mb-4">We have many varieties of birds on our farm:</h3>
-            <p>For chickens, we have:</p>
+            <p id="chicken-varieties">For chickens, we have:</p>
             <br></br>
             <p>Rhode Island Red, Leghorn, Barred Plymouth Rock, Sussex, Wyandotte, Australorp, Orpington, Ameraucana, Brahma, Ancona, Welsummer, Jersey Giants, Legbars, and we have just added French Bresse birds this year as a dual purpose bird.</p>
           </div>

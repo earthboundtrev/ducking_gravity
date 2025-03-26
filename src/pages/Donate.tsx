@@ -68,7 +68,7 @@ export function Donate() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1E3A5F] to-[#3B82F6]">
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-24">
+      <section className="container mx-auto px-4 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
