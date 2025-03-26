@@ -4,14 +4,22 @@ import { Instagram, Facebook, Mail, MapPin, Feather } from 'lucide-react';
 // Remove next/image import since we're using React, not Next.js
 // Use regular img tag instead of Next.js Image component
 
-export function Footer() {
+// Add interface for Footer props
+interface FooterProps {
+  logoSrc?: string; // Optional prop for custom logo
+}
+
+// Default logo URL
+const DEFAULT_LOGO = "https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-green.png";
+
+export function Footer({ logoSrc }: FooterProps) {
   return (
     <footer className="bg-black/90 backdrop-blur-md border-t border-white/10 text-white py-16 shadow-[0_-8px_30px_rgba(0,0,0,0.3)]">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-center mb-12">
           <Link to="/" className="flex items-center gap-3">
             <img 
-              src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-green.png"
+              src={logoSrc || DEFAULT_LOGO}
               alt="Ducking Gravity Logo"
               width={200}
               height={50}

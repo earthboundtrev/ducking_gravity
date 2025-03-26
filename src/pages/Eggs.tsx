@@ -122,7 +122,7 @@ export function Eggs() {
             <p>Farm fresh unwashed eggs, when stored on the counter, can typically last a minimum of 2 to 3 weeks. For longer storage, refrigeration is recommended, and in that case, unwashed eggs can last for several months or more.</p>
             <h3 
               onClick={() => scrollToSection('contact-form')} 
-              className="text-2xl font-bold text-white mt-8 mb-4 group flex items-center gap-2 w-fit"
+              className="text-lg font-semibold bg-[#22C55E] text-white px-8 py-3 rounded-lg hover:bg-[#16A34A] transition-colors duration-300 mt-8 mb-4 group flex items-center gap-2 w-fit cursor-pointer shadow-lg"
             >
               Need eggs? Contact me!
               <ChevronRight className="w-5 h-5 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" />
