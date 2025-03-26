@@ -132,7 +132,7 @@ export function ContactForm({
         transition={{ duration: 0.6 }}
         className="text-center mb-12"
       >
-        <h2 className="text-4xl font-bold text-white mb-6 uppercase tracking-wider text-shadow-glow">
+        <h2 className="text-4xl font-bold text-white mb-6 uppercase tracking-wider">
           Get in Touch
         </h2>
         <p className="text-xl text-gray-200 max-w-2xl mx-auto font-light">
