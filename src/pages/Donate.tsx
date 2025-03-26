@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ImageCarousel } from '../components/ImageCarousel';
-import { Heart, Instagram, Facebook } from 'lucide-react';
+import { Heart, Instagram, Facebook, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { ContactForm } from '../components/ContactForm';
@@ -90,9 +90,10 @@ export function Donate() {
         </motion.div>
         <p 
           onClick={scrollToFundraising}
-          className="text-white/90 text-lg md:text-xl text-center mb-8 animate-fadeIn cursor-pointer hover:text-white transition-colors"
+          className="text-white/90 text-lg md:text-xl text-center mb-8 animate-fadeIn cursor-pointer group flex items-center justify-center gap-2 w-fit mx-auto"
         >
-          Wow! We've already raised $1,029 of our $4,000 goal! 
+          Wow! We've already raised $1,029 of our $4,000 goal!
+          <ChevronRight className="w-5 h-5 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" />
         </p>
 
         {/* Journey Section - Moved up */}
