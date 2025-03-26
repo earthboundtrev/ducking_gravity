@@ -4,6 +4,7 @@ import { ImageCarousel } from '../components/ImageCarousel';
 import { Heart, Instagram, Facebook } from 'lucide-react';
 import { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
+import { ContactForm } from '../components/ContactForm';
 
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe('pk_live_51R0ljc2N3nCujaANOV24EcEeG9nfef2gWLc8A9ZloI3r1JndNxsObtHg3ypYKR8HtxIeRS8oANajkJdyas5UFQSm00GDkHTg1I');
@@ -286,7 +287,11 @@ export function Donate() {
         </motion.div>
       </section>
 
-      
+      {/* Contact Form Section */}
+      <ContactForm 
+        description="Want to learn more about our fundraising efforts or have questions about how you can help? We'd love to hear from you!"
+        padding="py-8"
+      />
 
     </div>
   );

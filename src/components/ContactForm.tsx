@@ -3,7 +3,15 @@ import { Mail, Send } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import { motion } from 'framer-motion';
 
-export function ContactForm() {
+interface ContactFormProps {
+  description?: string;
+  padding?: string;
+}
+
+export function ContactForm({ 
+  description = "Have questions about our classes or want to learn more? We'd love to hear from you!",
+  padding = "py-20"
+}: ContactFormProps) {
   useEffect(() => {
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
     if (!publicKey) {
@@ -117,7 +125,7 @@ export function ContactForm() {
   };
 
   return (
-    <section className="container mx-auto px-4 py-20">
+    <section className={`container mx-auto px-4 ${padding}`}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -128,7 +136,7 @@ export function ContactForm() {
           Get in Touch
         </h2>
         <p className="text-xl text-gray-200 max-w-2xl mx-auto font-light">
-          Have questions about our classes or want to learn more? We'd love to hear from you!
+          {description}
         </p>
       </motion.div>
 
