@@ -92,7 +92,7 @@ export function Donate() {
           onClick={scrollToFundraising}
           className="text-white/90 text-lg md:text-xl text-center mb-8 animate-fadeIn cursor-pointer group flex items-center justify-center gap-2 w-fit mx-auto"
         >
-          Wow! We've already raised $1,029 of our $4,000 goal!
+          Wow! We've already raised ${CURRENT_AMOUNT.toLocaleString()} of our ${FUNDRAISING_GOAL.toLocaleString()} goal!
           <ChevronRight className="w-5 h-5 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" />
         </p>
 
