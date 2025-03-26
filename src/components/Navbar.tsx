@@ -60,15 +60,6 @@ export function Navbar() {
             <Feather className="h-5 w-5" />
             Aerial Silks
           </Link>
-          
-          <Link
-            to="/eggs"
-            className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2
-                      ${isActive('/eggs') ? 'border-b-2 border-[#22C55E]' : ''}`}
-          >
-            <Egg className="h-5 w-5" />
-            Hobby Farm
-          </Link>
           */}
 
           {/* New Donate link */}
@@ -80,16 +71,19 @@ export function Navbar() {
             <Heart className="h-5 w-5" />
             Support Us
           </Link>
+
+          <Link
+            to="/eggs"
+            className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2
+                      ${isActive('/eggs') ? 'border-b-2 border-[#22C55E]' : ''}`}
+          >
+            <Egg className="h-5 w-5" />
+            Hobby Farm
+          </Link>
         </div>
 
         {/* Mobile Navigation */}
-        <div className={`
-          absolute top-full left-0 right-0 
-          bg-[#1E3A5F]/95 backdrop-blur-md
-          md:hidden
-          transition-all duration-300
-          ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}
-        `}>
+        <div className={`absolute top-full left-0 right-0 bg-[#1E3A5F]/95 backdrop-blur-md md:hidden transition-all duration-300 ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
           <div className="flex flex-col p-4 space-y-4">
             {/* Original mobile navigation links commented out
             <Link
@@ -121,18 +115,8 @@ export function Navbar() {
               <Feather className="h-5 w-5" />
               Aerial Silks
             </Link>
-            
-            <Link
-              to="/eggs"
-              className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2
-                        ${isActive('/eggs') ? 'text-[#22C55E]' : ''}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <Egg className="h-5 w-5" />
-              Farm Fresh Eggs
-            </Link>
             */}
-
+            
             {/* New Donate link for mobile */}
             <Link
               to="/donate"
@@ -142,6 +126,16 @@ export function Navbar() {
             >
               <Heart className="h-5 w-5" />
               Support Us
+            </Link>
+            
+            <Link
+              to="/eggs"
+              className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2
+                        ${isActive('/eggs') ? 'text-[#22C55E]' : ''}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Egg className="h-5 w-5" />
+              Hobby Farm
             </Link>
           </div>
         </div>

@@ -1,96 +1,185 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { ImageCarousel } from '../components/ImageCarousel';
+import { ContactForm } from '../components/ContactForm';
+import { ChevronRight } from 'lucide-react';
+
+// You'll need to add your image arrays here for each section
+const freshEggsMedia = [
+  {
+    url: "https://images.unsplash.com/photo-1569288052389-dac9b01c9c05?q=80&w=800", // Brown eggs in basket
+    alt: "Fresh farm eggs in a rustic basket"
+  },
+  {
+    url: "https://images.unsplash.com/photo-1482510356941-d087154c2931?q=80&w=800", // Eggs on counter
+    alt: "Farm fresh eggs displayed on kitchen counter"
+  },
+  {
+    url: "https://images.unsplash.com/photo-1598965675045-45c5e72c7d05?q=80&w=800", // Different colored eggs
+    alt: "Variety of colored fresh eggs"
+  }
+];
+
+const birdsMedia = [
+  {
+    url: "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?q=80&w=800", // Free range chickens
+    alt: "Free range chickens in the yard"
+  },
+  {
+    url: "https://images.unsplash.com/photo-1612170153139-6f881ff067e0?q=80&w=800", // Rhode Island Red
+    alt: "Rhode Island Red chicken"
+  }
+];
+
+const farmMedia = [
+  {
+    url: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=800", // Sunrise farm
+    alt: "Beautiful sunrise over the farm"
+  },
+  {
+    url: "https://images.unsplash.com/photo-1500076656116-558758c991c1?q=80&w=800", // Farm landscape
+    alt: "Scenic view of the farm grounds"
+  }
+];
 
 export function Eggs() {
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1E3A5F] to-[#3B82F6]">
-      {/* Hero Section */}
+      {/* Hero Section with Page Links */}
       <section className="container mx-auto px-4 py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-20"
+          className="text-center"
         >
-          <h1 className="text-5xl font-bold text-white mb-8 uppercase tracking-wider text-shadow-glow">
-            Our Hobby Farm's Hen Family
+          <h1 className="text-5xl font-bold text-white mb-8 uppercase tracking-wider">
+            Our Hobby Farm!
           </h1>
-          <p className="text-xl text-gray-200 max-w-3xl mx-auto font-light">
-            Meet our free-range hens and learn about our sustainable farming practices on our small hobby farm.
-          </p>
+          <ul className="text-xl text-gray-200 max-w-3xl mx-auto font-light space-y-2">
+            <li>
+              <button 
+                onClick={() => scrollToSection('fresh-eggs')}
+                className="hover:text-[#22C55E] transition-colors duration-300 cursor-pointer"
+              >
+                About Fresh Eggs
+              </button>
+            </li>
+            <li>What To Expect From Your Eggs</li>
+            <li>
+              <button 
+                onClick={() => scrollToSection('our-birds')}
+                className="hover:text-[#22C55E] transition-colors duration-300 cursor-pointer"
+              >
+                Birds, Birds, Birds!
+              </button>
+            </li>
+            <li>
+              <button 
+                onClick={() => scrollToSection('our-farm')}
+                className="hover:text-[#22C55E] transition-colors duration-300 cursor-pointer"
+              >
+                Our Farm, Kevinsgate
+              </button>
+            </li>
+          </ul>
         </motion.div>
       </section>
 
-      {/* Farm Practices */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="grid md:grid-cols-2 gap-12">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="bg-white/10 backdrop-blur-md rounded-lg p-12 card-hover
-                     border border-white/5 shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
-          >
-            <h2 className="text-3xl font-bold text-white mb-6 uppercase tracking-wide">Our Farm Practices</h2>
-            <div className="prose prose-lg max-w-none text-gray-200">
-              <p className="mb-4">
-                Our hens live their best lives on our small, sustainable farm. They enjoy:
-              </p>
-              <ul className="space-y-4 mb-4">
-                <li>Our hens spend their days roaming freely across fresh pastures, scratching in the dirt for insects and seeds, and taking dust baths in the sunshine. This natural lifestyle allows them to express their innate behaviors and stay healthy.</li>
-                <li>We practice rotational grazing, moving our hens to fresh pasture regularly. This approach not only provides them with new foraging opportunities but also naturally controls pests and fertilizes our land, creating a harmonious ecosystem that benefits both the chickens and the soil.</li>
-              </ul>
-              <p>
-                Happy hens lay the most nutritious eggs, and our careful attention to their well-being shows in every golden yolk. When you crack open one of our eggs, you'll notice the difference in both color and taste - it's the result of our hens' natural diet and stress-free lifestyle.
-              </p>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="relative"
-          >
-            <img
-              src="https://images.unsplash.com/photo-1518214598173-1666bc921d66?ixlib=rb-4.0.3"
-              alt="Happy hens on pasture"
-              className="rounded-lg shadow-[0_8px_30px_rgba(59,130,246,0.1)] w-full h-full object-cover"
-            />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Farm Information */}
-      <section className="container mx-auto px-4 py-20">
+      {/* About Fresh Eggs Section */}
+      <section id="fresh-eggs" className="container mx-auto px-4 py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.9 }}
+          transition={{ duration: 0.6 }}
           className="bg-white/10 backdrop-blur-md rounded-lg p-12 card-hover
                    border border-white/5 shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
         >
-          <h2 className="text-3xl font-bold text-white mb-6 uppercase tracking-wide">Visit Our Farm</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="text-xl font-semibold mb-4 text-[#22C55E]">Follow Our Journey</h3>
-              <p className="text-gray-200 mb-4">
-                Want to learn more about our small hobby farm? Follow our daily adventures and farm life on Instagram.
-              </p>
-              <a 
-                href="https://instagram.com/duckinggravity" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-[#22C55E] hover:text-[#22C55E]/80 transition-colors duration-200"
-              >
-                @duckinggravity
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.09 1.064.077 1.791.232 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.233.636.388 1.363.465 2.427.077 1.067.09 1.407.09 4.123v.08c0 2.643-.012 2.987-.09 4.043-.077 1.064-.232 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.233-1.363.388-2.427.465-1.067.077-1.407.09-4.123.09h-.08c-2.643 0-2.987-.012-4.043-.09-1.064-.077-1.791-.232-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.233-.636-.388-1.363-.465-2.427-.077-1.024-.087-1.379-.087-4.808v-.63c0-2.43.013-2.784.087-4.808.077-1.064.232-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.233 1.363-.388 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clipRule="evenodd" />
-                </svg>
-              </a>
-            </div>
+          <h2 className="text-3xl font-bold text-white mb-6">About Fresh Eggs</h2>
+          <div className="prose prose-lg max-w-none text-gray-200">
+            <p>The eggs you received are unwashed and counter-kept, but</p>
+            <h3 className="text-2xl font-bold text-white mt-8 mb-4">WHAT DOES THAT MEAN????</h3>
+            <p>When a hen lays an egg, it is naturally coated with a protective layer called the "bloom". This invisible coating helps seal the eggshell's porous surface, preventing bacteria and moisture from entering the egg and keeping it fresh for longer.</p>
+            <br />
+            <p>In the U.S., commercially sold eggs are washed to meet regulatory standards, which removes the bloom. This process requires refrigeration to prevent contamination. However, with unwashed farm-fresh eggs, the bloom remains intact, allowing the eggs to stay safely at room temperature for a minimum of two weeks or more.</p>
+            <br />
+            <p>If refrigeration is required later, unwashed eggs can be chilled, though once refrigerated, they should stay cold to prevent condensation and bacterial growth.</p>
+            <br />
+            <p>Farm fresh unwashed eggs, when stored on the counter, can typically last a minimum of 2 to 3 weeks. For longer storage, refrigeration is recommended, and in that case, unwashed eggs can last for several months or more.</p>
+            <h3 
+              onClick={() => scrollToSection('contact-form')} 
+              className="text-2xl font-bold text-white mt-8 mb-4 group flex items-center gap-2 w-fit"
+            >
+              Need eggs? Contact me!
+              <ChevronRight className="w-5 h-5 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" />
+            </h3>
+            <p>I travel to the Springfield, Arlington, and Alexandria area every other week. Bring back your empty egg cartons for 50 cents off per dozen! All donations go toward helping feed our girls!</p>
+          </div>
+          <div className="mt-8">
+            <ImageCarousel media={freshEggsMedia} height="600px" objectFit="cover" />
           </div>
         </motion.div>
+      </section>
+
+      {/* About Our Birds Section */}
+      <section id="our-birds" className="container mx-auto px-4 py-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="bg-white/10 backdrop-blur-md rounded-lg p-12 card-hover
+                   border border-white/5 shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
+        >
+          <h2 className="text-3xl font-bold text-white mb-6">About Our Birds</h2>
+          <div className="prose prose-lg max-w-none text-gray-200">
+            <p>At our farm, we take great pride in raising free-range birds that are not only well cared for but also truly loved. Our diverse flock, which includes chickens, ducks, guinea fowl, quail, turkeys, and geese, thrives in an environment that celebrates their natural behaviors and instincts. They are free to roam in a large protected area, enjoying fresh air and sunshine as they forage, dust bathe, snack on fresh vegetation and bugs and take dips in one of their 3 pools. Their daily diet consists of 50 pounds of chicken feed supplemented by over 10 gallons of fresh fruits and vegetables, ensuring their health and vitality. While they are not considered 'organic' their diet is fresh, healthy, and varied, and they are never treated with hormones, steroids, or any other drugs or medications.</p>
+            <h3 className="text-2xl font-bold text-white mt-8 mb-4">We have many varieties of birds on our farm:</h3>
+            <p>For chickens, we have:</p>
+            <br></br>
+            <p>Rhode Island Red, Leghorn, Barred Plymouth Rock, Sussex, Wyandotte, Australorp, Orpington, Ameraucana, Brahma, Ancona, Welsummer, Jersey Giants, Legbars, and we have just added French Bresse birds this year as a dual purpose bird.</p>
+          </div>
+          <div className="mt-8">
+            <ImageCarousel media={birdsMedia} height="600px" objectFit="cover" />
+          </div>
+        </motion.div>
+      </section>
+
+      {/* About Our Farm Section */}
+      <section id="our-farm" className="container mx-auto px-4 py-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="bg-white/10 backdrop-blur-md rounded-lg p-12 card-hover
+                   border border-white/5 shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
+        >
+          <h2 className="text-3xl font-bold text-white mb-6">About Our Farm</h2>
+          <div className="prose prose-lg max-w-none text-gray-200">
+            <p>In 2020, we embarked on a new chapter in Culpeper, searching for a piece of green where our family of eight could settle and grow. What started as a simple dream soon turned into a memorable adventure—leaving Tractor Supply with four chirping chicks tucked in a red-and-white cardboard box, carefully perched on the knees of four excited kids in the back seat.</p>
+            <br />
+            <p>Today, our flock has blossomed into a diverse, bustling community of over 100 birds. From their charming antics to the nourishment and joy they bring, these feathered companions have enriched our lives in countless ways. They've taught us invaluable lessons—about loving and losing, commitment, and making tough decisions when needed.</p>
+            <br />
+            <p>For us, the farm is more than a place for production. It's a sanctuary—a space where our birds thrive under our care and affection. Each one is given the freedom, nourishment, and love they deserve, and in return, they remind us daily of the rewards of living in harmony with nature. Our commitment to ethical farming practices stems from this belief: happy, healthy animals create a farm that is full of life and meaning.</p>
+          </div>
+          <div className="mt-8">
+            <ImageCarousel media={farmMedia} height="600px" objectFit="cover" />
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Contact Form Section */}
+      <section id="contact-form">
+        <ContactForm 
+          description="Want to learn more about our farm-fresh eggs or schedule a pickup? We'd love to hear from you!"
+          padding="py-12"
+        />
       </section>
     </div>
   );

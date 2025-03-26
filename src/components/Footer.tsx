@@ -29,23 +29,11 @@ export function Footer() {
                   Support Us
                 </Link>
               </li>
-              {/* Other links commented out
-              <li>
-                <Link to="/about" className="hover:text-[#22C55E] transition-all duration-300">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link to="/aerial-silks" className="hover:text-[#22C55E] transition-all duration-300">
-                  Aerial Silks
-                </Link>
-              </li>
               <li>
                 <Link to="/eggs" className="hover:text-[#22C55E] transition-all duration-300">
                   Hobby Farm
                 </Link>
               </li>
-              */}
             </ul>
           </div>
           
