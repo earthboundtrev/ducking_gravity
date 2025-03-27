@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface MediaItem {
@@ -33,16 +33,23 @@ export function ImageCarousel({
   const renderMediaItem = (item: MediaItem) => {
     if (item.type === 'video') {
       return (
-        <video
-          key={currentIndex}
-          src={item.url}
-          controls
-          className={`absolute w-full h-full object-${objectFit}`}
-          poster={item.thumbnail}
-        >
-          <source src={item.url} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        <div className="relative w-full h-full">
+          <video
+            key={currentIndex}
+            src={item.url}
+            controls
+            className={`absolute w-full h-full object-${objectFit}`}
+            poster={item.thumbnail}
+          >
+            <source src={item.url} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="w-20 h-20 bg-black/50 rounded-full flex items-center justify-center backdrop-blur-sm">
+              <Play className="h-10 w-10 text-white fill-white" />
+            </div>
+          </div>
+        </div>
       );
     }
 

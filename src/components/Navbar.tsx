@@ -9,11 +9,11 @@ export function Navbar() {
   const isActive = (path: string) => location.pathname === path;
   
   return (
-    <nav className="bg-[#1E3A5F]/95 backdrop-blur-md border-b border-white/10 sticky top-0 z-50 shadow-[0_8px_30px_rgba(0,0,0,0.3)]">
+    <nav className="bg-[#1E3A5F]/95 backdrop-filter backdrop-blur-md border-b border-[#42A5F5] sticky top-0 z-50 shadow-[0_8px_30px_rgba(0,0,0,0.3)]">
       <div className="container mx-auto flex items-center justify-between py-4 px-4">
         <Link 
           to="/" 
-          className="text-white text-2xl font-bold flex items-center gap-3 hover:text-[#22C55E] transition-all duration-300"
+          className="text-white text-3xl font-bold flex items-center gap-3 hover:text-[#FFC107] transition-all duration-300"
         >
           <img 
             src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-green.png"

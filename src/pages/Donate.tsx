@@ -85,18 +85,20 @@ export function Donate() {
               Click here 🐔
             </Link>
           </p>
-          <h1 className="text-6xl font-bold text-white mb-8">
+          <h1 className="text-6xl font-['Amatic_SC'] text-white mb-8">
             Help Us Build Our Dream Studio
           </h1>
           <p className="text-2xl text-gray-200 max-w-3xl mx-auto font-light mb-8">
             Together, we can create a space where everyone can learn to fly.
           </p>
-          <button
-            onClick={scrollToDonate}
-            className="bg-[#22C55E] text-white px-8 py-4 rounded-lg hover:bg-[#16A34A] transition-colors text-lg font-semibold mb-8"
-          >
-            Donate now!
-          </button>
+          <div className="flex justify-center mb-8">
+            <button
+              onClick={scrollToDonate}
+              className="donate-button"
+            >
+              Donate now!
+            </button>
+          </div>
         </motion.div>
         <p 
           onClick={scrollToFundraising}
@@ -111,8 +113,8 @@ export function Donate() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="bg-white/10 backdrop-blur-md rounded-lg p-12 card-hover mb-8
-                   border border-white/5 shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
+          className="bg-white/10 backdrop-filter backdrop-blur-md rounded-lg p-12 card-hover
+                   border border-[#42A5F5] shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
         >
           <h2 className="text-3xl font-bold text-white mb-6 uppercase tracking-wide">I'm so excited!!!</h2>
           <div className="prose prose-lg max-w-none text-gray-200">
@@ -143,22 +145,24 @@ export function Donate() {
             <p className="mb-6">
               Your support means so much to me and to the entire aerial community. Let's come together and build something incredible!
             </p>
-            <p className="mb-16 md:mb-32">Thank you, from the very bottom of my heart.</p>
+            <p className="mb-6">Thank you, from the very bottom of my heart.</p>
           </div>
         </motion.div>
 
         {/* Image Carousel - Moved down */}
-        <ImageCarousel 
-          media={donateMedia} 
-          height="800px"
-          objectFit="contain"
-        />
+        <div className="mt-20">
+          <ImageCarousel 
+            media={donateMedia} 
+            height="800px"
+            objectFit="contain"
+          />
+        </div>
         
         {/* Second Donate Button */}
         <div className="text-center mt-12">
           <button
             onClick={scrollToDonate}
-            className="bg-[#22C55E] text-white px-8 py-4 rounded-lg hover:bg-[#16A34A] transition-colors text-lg font-semibold"
+            className="donate-button"
           >
             Donate now!
           </button>
@@ -171,8 +175,8 @@ export function Donate() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="max-w-3xl mx-auto bg-white/10 backdrop-blur-md rounded-lg p-12 card-hover
-                   border border-white/5 shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
+          className="max-w-3xl mx-auto bg-white/10 backdrop-filter backdrop-blur-md rounded-lg p-12 card-hover
+                   border border-[#42A5F5] shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
         >
           <div className="text-center mb-8">
             <h3 className="text-2xl font-bold text-white mb-2">Fundraising Progress</h3>
@@ -234,8 +238,8 @@ export function Donate() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="max-w-2xl mx-auto bg-white/10 backdrop-blur-md rounded-lg p-12 card-hover
-                   border border-white/5 shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
+          className="max-w-2xl mx-auto bg-white/10 backdrop-filter backdrop-blur-md rounded-lg p-12 card-hover
+                   border border-[#42A5F5] shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
         >
           <div className="text-center mb-8">
             <Heart className="h-12 w-12 text-[#22C55E] mx-auto mb-6" />
@@ -269,8 +273,8 @@ export function Donate() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.9 }}
-          className="max-w-2xl mx-auto bg-white/10 backdrop-blur-md rounded-lg p-12 card-hover
-                   border border-white/5 shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
+          className="max-w-2xl mx-auto bg-white/10 backdrop-filter backdrop-blur-md rounded-lg p-12 card-hover
+                   border border-[#42A5F5] shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
         >
           <div className="text-center">
             <h3 className="text-2xl font-bold text-white mb-6">Follow Us to Keep Up with Our Progress</h3>

@@ -2,21 +2,73 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;600&display=swap');
+/* Import new fonts */
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap');
 
-/* Add to your existing CSS */
 :root {
   --primary-blue: #1E3A5F;
   --accent-blue: #3B82F6;
   --neon-green: #22C55E;
+  --duck-yellow: #FFC107;
+  --strap-blue: #42A5F5;
 }
 
+/* Global styles */
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
+/* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Amatic SC', cursive;
+}
+
+h1 {
+  font-size: 4.5rem !important;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 3rem !important;
+  display: inline-block;
+  border-bottom: 2px solid var(--duck-yellow);
+}
+
+/* Card styles */
+.card-hover {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--strap-blue);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(66, 165, 245, 0.2);
+}
+
+/* Button styles */
+.donate-button {
+  @apply bg-[#22C55E] text-white px-8 py-4 rounded-lg transition-all duration-300;
+}
+
+.donate-button:hover {
+  @apply bg-[#16A34A];
+  transform: translateY(-5px);
+}
+
+/* Duck footprints decoration */
+.footprints {
+  display: flex;
+  gap: 8px;
+  margin: 2rem 0;
+}
+
+.footprint {
+  width: 20px;
+  height: 20px;
+  background-color: var(--duck-yellow);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
 
 .text-shadow-glow {
@@ -32,14 +84,4 @@ html {
 /* Enhance button interactions */
 button, a {
   transition: all 0.3s ease;
-}
-
-/* Card hover effects */
-.card-hover {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card-hover:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.2);
 }
