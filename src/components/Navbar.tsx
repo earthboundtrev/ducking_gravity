@@ -72,14 +72,14 @@ export function Navbar() {
             Support Us
           </Link>
 
-          <Link
+          {/* <Link
             to="/eggs"
             className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2
                       ${isActive('/eggs') ? 'border-b-2 border-[#22C55E]' : ''}`}
           >
             <Egg className="h-5 w-5" />
             Hobby Farm
-          </Link>
+          </Link> */}
         </div>
 
         {/* Mobile Navigation */}
@@ -128,7 +128,7 @@ export function Navbar() {
               Support Us
             </Link>
             
-            <Link
+            {/* <Link
               to="/eggs"
               className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2
                         ${isActive('/eggs') ? 'text-[#22C55E]' : ''}`}
@@ -136,7 +136,7 @@ export function Navbar() {
             >
               <Egg className="h-5 w-5" />
               Hobby Farm
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

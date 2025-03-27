@@ -37,11 +37,11 @@ export function Footer({ logoSrc }: FooterProps) {
                   Support Us
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/eggs" className="hover:text-[#22C55E] transition-all duration-300">
                   Hobby Farm
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
           
