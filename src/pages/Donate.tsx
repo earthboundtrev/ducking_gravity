@@ -5,6 +5,7 @@ import { Heart, Instagram, Facebook, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { ContactForm } from '../components/ContactForm';
+import { Link } from 'react-router-dom';
 
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe('pk_live_51R0ljc2N3nCujaANOV24EcEeG9nfef2gWLc8A9ZloI3r1JndNxsObtHg3ypYKR8HtxIeRS8oANajkJdyas5UFQSm00GDkHTg1I');
@@ -75,6 +76,15 @@ export function Donate() {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
+          <p className="text-2xl text-gray-200 max-w-3xl mx-auto font-light mb-10">
+            Looking for eggs?{" "}
+            <Link 
+              to="/eggs"
+              className="bg-[#22C55E] text-white px-4 py-2 rounded-lg hover:bg-[#16A34A] transition-colors inline-flex items-center gap-2"
+            >
+              Click here 🐔
+            </Link>
+          </p>
           <h1 className="text-6xl font-bold text-white mb-8">
             Help Us Build Our Dream Studio
           </h1>
