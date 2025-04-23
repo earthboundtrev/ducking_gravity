@@ -1,38 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Feather, Egg, Info, Menu, X, Heart } from 'lucide-react';
 
 export function Navbar() {
   const location = useLocation();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   const isActive = (path: string) => location.pathname === path;
   
   return (
-    <nav className="bg-[#1E3A5F]/95 backdrop-filter backdrop-blur-md border-b border-[#42A5F5] sticky top-0 z-50 shadow-[0_8px_30px_rgba(0,0,0,0.3)]">
-      <div className="container mx-auto flex items-center justify-between py-4 px-4">
+    <nav className="bg-white backdrop-filter backdrop-blur-md border-b border-[#42A5F5] z-50 shadow-[0_8px_30px_rgba(0,0,0,0.3)]">
+      <div className="container mx-auto flex items-center justify-center py-4 px-4 relative">
+        {/* Logo - Centered */}
         <Link 
           to="/" 
-          className="text-white text-3xl font-bold flex items-center gap-3 hover:text-[#FFC107] transition-all duration-300"
+          className="flex items-center justify-center hover:opacity-80 transition-all duration-300"
         >
           <img 
             src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-green.png"
             alt="Ducking Gravity Logo"
-            className="h-8 w-8"
+            className="h-36 w-auto"
           />
-          <span className="text-white">Ducking Gravity</span>
         </Link>
 
-        {/* Mobile menu button */}
-        <button
+        {/* Mobile menu button - Positioned absolutely on the right */}
+        {/* <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden text-white hover:text-[#22C55E] transition-all duration-300"
+          className="md:hidden text-[#07BDFF] hover:text-[#22C55E] transition-all duration-300 absolute right-4 modern-sans"
         >
           {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        </button> */}
         
         {/* Desktop Navigation */}
-        <div className="hidden md:flex gap-8">
+        <div className="hidden md:flex gap-8 absolute right-4">
           {/* Original navigation links commented out
           <Link
             to="/"
@@ -63,14 +63,14 @@ export function Navbar() {
           */}
 
           {/* New Donate link */}
-          <Link
+          {/* <Link
             to="/donate"
-            className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2
+            className={`flex items-center gap-2 text-[#07BDFF] hover:text-[#22C55E] transition-all duration-300 py-2 modern-sans
                       ${isActive('/donate') ? 'border-b-2 border-[#22C55E]' : ''}`}
           >
             <Heart className="h-5 w-5" />
             Support Us
-          </Link>
+          </Link> */}
 
           {/* <Link
             to="/eggs"
@@ -83,7 +83,7 @@ export function Navbar() {
         </div>
 
         {/* Mobile Navigation */}
-        <div className={`absolute top-full left-0 right-0 bg-[#1E3A5F]/95 backdrop-blur-md md:hidden transition-all duration-300 ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
+        {/* <div className={`absolute top-full left-0 right-0 bg-white backdrop-blur-md md:hidden transition-all duration-300 ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
           <div className="flex flex-col p-4 space-y-4">
             {/* Original mobile navigation links commented out
             <Link
@@ -118,15 +118,15 @@ export function Navbar() {
             */}
             
             {/* New Donate link for mobile */}
-            <Link
+            {/* <Link
               to="/donate"
-              className={`flex items-center gap-2 text-white hover:text-[#22C55E] transition-all duration-300 py-2
+              className={`flex items-center gap-2 text-[#07BDFF] hover:text-[#22C55E] transition-all duration-300 py-2 modern-sans
                         ${isActive('/donate') ? 'text-[#22C55E]' : ''}`}
               onClick={() => setIsMenuOpen(false)}
             >
               <Heart className="h-5 w-5" />
               Support Us
-            </Link>
+            </Link> */}
             
             {/* <Link
               to="/eggs"
@@ -137,8 +137,8 @@ export function Navbar() {
               <Egg className="h-5 w-5" />
               Hobby Farm
             </Link> */}
-          </div>
-        </div>
+          {/* </div>
+        </div> */}
       </div>
     </nav>
   );
