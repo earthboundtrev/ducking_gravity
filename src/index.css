@@ -2,15 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import new fonts */
-@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+/* Import Poppins font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary-blue: #1E3A5F;
-  --accent-blue: #3B82F6;
-  --neon-green: #22C55E;
-  --duck-yellow: #FFC107;
-  --strap-blue: #42A5F5;
+  --teal: #26C6DA;
+  --soft-teal: #B2DFDB;
+  --lavender: #E6E6FA;
+  --orange: #FF9800;
+  --mint: #1CBE4E;
 }
 
 /* Global styles */
@@ -18,20 +18,29 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+/* Remove underlines */
+a {
+  text-decoration: none !important;
+}
+
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Amatic SC', cursive;
+  font-family: 'Poppins', sans-serif;
+  text-decoration: none !important;
+  border-bottom: none !important;
 }
 
 h1 {
   font-size: 4.5rem !important;
   line-height: 1.2;
+  font-weight: 700;
 }
 
 h2 {
   font-size: 3rem !important;
   display: inline-block;
   border-bottom: 2px solid var(--duck-yellow);
+  font-weight: 600;
 }
 
 /* Card styles */
