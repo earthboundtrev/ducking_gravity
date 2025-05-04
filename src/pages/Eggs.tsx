@@ -55,7 +55,7 @@ export function Eggs() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1E3A5F] to-[#3B82F6]">
+    <div className="min-h-screen bg-[#0378C2]">
       {/* Hero Section with Page Links */}
       <section className="container mx-auto px-4 pt-12">
         <motion.div
