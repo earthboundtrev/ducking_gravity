@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, Mail, MapPin, Feather } from 'lucide-react';
+import { Instagram, Facebook, Mail, MapPin } from 'lucide-react';
 // Remove next/image import since we're using React, not Next.js
 // Use regular img tag instead of Next.js Image component
 
@@ -14,39 +14,12 @@ const DEFAULT_LOGO = "https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/duckin
 
 export function Footer({ logoSrc }: FooterProps) {
   return (
-    <footer className="bg-[#1E3A5F]/95 backdrop-filter backdrop-blur-md border-t border-[#42A5F5] text-white py-16 shadow-[0_-8px_30px_rgba(0,0,0,0.3)]">
+    <footer className="bg-[#E6E6FA] backdrop-filter backdrop-blur-md border-t border-[#42A5F5] text-black py-16 shadow-[0_-8px_30px_rgba(0,0,0,0.3)]">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-center mb-12">
-          <Link to="/" className="flex items-center gap-3">
-            <img 
-              src={logoSrc || DEFAULT_LOGO}
-              alt="Ducking Gravity Logo"
-              width={200}
-              height={50}
-              className="object-contain"
-            />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-          <div className="text-center md:text-left">
-            <h3 className="text-2xl font-['Amatic_SC'] mb-6 text-[#FFC107] uppercase tracking-wide">Quick Links</h3>
-            <ul className="space-y-3">
-              <li>
-                <Link to="/donate" className="hover:text-[#22C55E] transition-all duration-300">
-                  Support Us
-                </Link>
-              </li>
-              {/* <li>
-                <Link to="/eggs" className="hover:text-[#22C55E] transition-all duration-300">
-                  Hobby Farm
-                </Link>
-              </li> */}
-            </ul>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
           
           <div className="text-center md:text-left">
-            <h3 className="text-2xl font-['Amatic_SC'] mb-6 text-[#FFC107] uppercase tracking-wide">Contact</h3>
+            <h3 className="text-2xl font-semibold mb-6 text-black uppercase tracking-wide">Contact</h3>
             <div className="space-y-4">
               <p className="flex items-center gap-3 justify-center md:justify-start">
                 <Mail className="h-5 w-5 text-[#22C55E]" />
@@ -66,7 +39,7 @@ export function Footer({ logoSrc }: FooterProps) {
           </div>
           
           <div className="text-center md:text-left">
-            <h3 className="text-2xl font-['Amatic_SC'] mb-6 text-[#FFC107] uppercase tracking-wide">Follow Us</h3>
+            <h3 className="text-2xl font-semibold mb-6 text-black uppercase tracking-wide">Follow Us</h3>
             <div className="flex gap-6 justify-center md:justify-start">
               <a 
                 href="https://instagram.com/duckinggravity" 
@@ -88,8 +61,8 @@ export function Footer({ logoSrc }: FooterProps) {
           </div>
         </div>
         
-        <div className="pt-8 border-t border-white/10 text-center">
-          <p className="text-gray-400">
+        <div className="pt-8 border-t border-black/10 text-center">
+          <p className="text-gray-600">
             &copy; {new Date().getFullYear()} Ducking Gravity. All rights reserved.
           </p>
         </div>

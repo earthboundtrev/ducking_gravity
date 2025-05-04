@@ -67,7 +67,7 @@ export function Donate() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1E3A5F] to-[#3B82F6]">
+    <div className="min-h-screen bg-[#0378C2]">
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-12">
         <motion.div
@@ -85,7 +85,7 @@ export function Donate() {
               Click here 🐔
             </Link>
           </p>
-          <h1 className="text-6xl font-['Amatic_SC'] text-white mb-8">
+          <h1 className="text-6xl font-bold text-white mb-8">
             Help Us Build Our Dream Studio
           </h1>
           <p className="text-2xl text-gray-200 max-w-3xl mx-auto font-light mb-8">
