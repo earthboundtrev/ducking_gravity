@@ -45,7 +45,7 @@ const donateMedia = [
 ];
 
 const FUNDRAISING_GOAL = 4000;
-const CURRENT_AMOUNT = 2559; // This is the value you'll update manually
+const CURRENT_AMOUNT = 4000; // This is the value you'll update manually
 const INTERVAL_AMOUNT = 1000; // Shows marks every $500
 
 export function Donate() {
@@ -146,6 +146,11 @@ export function Donate() {
               Your support means so much to me and to the entire aerial community. Let's come together and build something incredible!
             </p>
             <p className="mb-6">Thank you, from the very bottom of my heart.</p>
+
+            <p className="mb-6">
+              UPDATE: I'm absolutely thrilled to share that we've reached our funding goal for the JuggleGear rig, and it's now safely sitting in our studio! Your incredible support has made this possible, and I can't express enough gratitude. Any additional contributions will now go towards other essential studio materials and equipment, helping us create an even more amazing space for our community to thrive!
+            </p>
+            
           </div>
         </motion.div>
 
