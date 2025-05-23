@@ -11,22 +11,19 @@ import { Link } from 'react-router-dom';
 const stripePromise = loadStripe('pk_live_51R0ljc2N3nCujaANOV24EcEeG9nfef2gWLc8A9ZloI3r1JndNxsObtHg3ypYKR8HtxIeRS8oANajkJdyas5UFQSm00GDkHTg1I');
 
 const donateMedia = [
+    // {
+    //     url: 'https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/inside_video.mp4',
+    //     alt: 'Studio walkthrough video',
+    //     type: 'video',
+    //     thumbnail: 'https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/inside_picture_4.jpg' // Optional
+    // },
+
     {
-        url: 'https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/inside_video.mp4',
-        alt: 'Studio walkthrough video',
-        type: 'video',
-        thumbnail: 'https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/inside_picture_4.jpg' // Optional
+      url: 'https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/silks_setup.jpg',
+      alt: 'Future home of our aerial studio',
+      type: 'image'
     },
-    {
-    url: 'https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/inside_picture_1.jpg',
-    alt: 'Future home of our aerial studio',
-    type: 'image'
-  },
-  {
-    url: 'https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/inside_picture_2.jpg',
-    alt: 'Aerial performance showcase',
-    type: 'image'
-  },
+    
   {
     url: 'https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/inside_picture_3.jpg',
     alt: 'Future home of our aerial studio',
@@ -44,7 +41,7 @@ const donateMedia = [
   }
 ];
 
-const FUNDRAISING_GOAL = 4000;
+const FUNDRAISING_GOAL = 8000;
 const CURRENT_AMOUNT = 4000; // This is the value you'll update manually
 const INTERVAL_AMOUNT = 1000; // Shows marks every $500
 
@@ -86,7 +83,7 @@ export function Donate() {
             </Link>
           </p>
           <h1 className="text-6xl font-bold text-white mb-8">
-            Help Us Build Our Dream Studio
+              Help Us Keep Building Our Aerial Space!
           </h1>
           <p className="text-2xl text-gray-200 max-w-3xl mx-auto font-light mb-8">
             Together, we can create a space where everyone can learn to fly.
@@ -116,39 +113,17 @@ export function Donate() {
           className="bg-white/10 backdrop-filter backdrop-blur-md rounded-lg p-12 card-hover
                    border border-[#42A5F5] shadow-[0_8px_30px_rgba(59,130,246,0.1)]"
         >
-          <h2 className="text-3xl font-bold text-white mb-6 uppercase tracking-wide">I'm so excited!!!</h2>
+          <h2 className="text-3xl font-bold text-white mb-6 uppercase tracking-wide">We're not done yet!!!</h2>
           <div className="prose prose-lg max-w-none text-gray-200">
+            
             <p className="mb-6">
-              After months of searching, we have finally found a new home for Ducking Gravity, Culpeper's newest aerial arts studio!
+              Thanks to incredible generosity, we've successfully funded our first aerial rig from <a href="https://www.jugglegear.com/aerial/aerial-rigs-and-frames/aerial-rig-mk3-20ft-16ft-12ft.html" target="_blank" rel="noopener noreferrer" className="text-[#22C55E] hover:text-[#16A34A] transition-colors">Juggle Gear</a>—a huge milestone in shaping this studio a thriving community for movement, artistry, and self-expression.
             </p>
             <p className="mb-6">
-              This space has everything we've been dreaming of—soaring ceilings, room for our community to thrive, and yes, the essentials like bathrooms, HVAC, and insulation (even a floor...imagine that! 😄). But to bring this dream to life, I need your help.
+              But we're not done yet! To continue growing and expanding what we offer, we're raising funds for our second rig, new silks, and new mats. Every contribution helps us create a more vibrant, inspiring space that helps us open even more doors and expand our reach even farther.
             </p>
             <p className="mb-6">
-              We're on the brink of creating something truly special. The space is secured, but now we need professional rigging to make it safe and ready for everyone. This includes top-quality trusses, safety mats, and multiple rigging points to ensure we can all fly with confidence. I've chosen to work with VerticalArtDance, whose breathtaking installations, like <a href="https://www.verticalartdance.com/blog/neon-soul-yoga-chica" target="_blank" rel="noopener noreferrer" className="text-[#22C55E] hover:text-[#16A34A] transition-colors">this one</a>, show their expertise in creating safe yet inspiring aerial environments.
-            </p>
-            <p className="mb-6">
-              Together, we can transform this space into our space: a space that's not just safe for us as aerialists, but also a place that is safe for anyone and everyone to come together as a community and express themselves in a safe and open environment.
-            </p>
-            <p className="mb-6">
-              My vision is more than just opening another aerial arts studio. It's about building a welcoming home for everyone to explore the art of flight and express themselves freely. Whether you're a complete beginner or a seasoned aerialist, scared of heights, or ready to soar, this will be a place where you can grow, challenge yourself, and reach new highs—literally and figuratively.
-            </p>
-            <p className="mb-6">
-              Every contribution, big or small, brings us one step closer to making this dream a reality.
-            </p>
-            <p className="mb-6">
-              To start soaring immediately, we're aiming to raise $4,000 for a <a href="https://www.jugglegear.com/aerial/aerial-rigs-and-frames/aerial-rig-mk3-20ft-16ft-12ft.html" target="_blank" rel="noopener noreferrer" className="text-[#22C55E] hover:text-[#16A34A] transition-colors">portable rig</a> from JuggleGear, perfect not only for the studio but also for festivals and events.
-            </p>
-            <p className="mb-6">
-              From there, anything else will go towards the design, purchase, and installation of circus trusses as well as the design and implementation of open space where our community can gather, be active, hang out, dream, and play together.
-            </p>
-            <p className="mb-6">
-              Your support means so much to me and to the entire aerial community. Let's come together and build something incredible!
-            </p>
-            <p className="mb-6">Thank you, from the very bottom of my heart.</p>
-
-            <p className="mb-6">
-              UPDATE: I'm absolutely thrilled to share that we've reached our funding goal for the JuggleGear rig, and it's now safely sitting in our studio! Your incredible support has made this possible, and I can't express enough gratitude. Any additional contributions will now go towards other essential studio materials and equipment, helping us create an even more amazing space for our community to thrive!
+              If you'd like to be part of this journey, you can support us by donating, spreading the word, or simply sharing your enthusiasm for what we're building. Thank you for being a part of this creative collective—we wouldn't be here without you!
             </p>
             
           </div>
