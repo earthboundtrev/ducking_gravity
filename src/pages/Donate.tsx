@@ -43,7 +43,7 @@ const donateMedia = [
 
 const FUNDRAISING_GOAL = 8000;
 const CURRENT_AMOUNT = 4010; // This is the value you'll update manually
-const INTERVAL_AMOUNT = 1000; // Shows marks every $500
+const INTERVAL_AMOUNT = 2000; // Shows marks every $500
 
 export function Donate() {
   const [isProcessing, setIsProcessing] = useState(false);
