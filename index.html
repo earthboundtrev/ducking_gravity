@@ -6,6 +6,9 @@
     <title>Ducking Gravity - Aerial Arts Studio</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    // EmailJS initialization will be injected here by inject-env.js
+  </script>
   <style>
     :root {
       --teal: #b1d2cc;
@@ -388,6 +391,18 @@
       }
     }
   </style>
+
+<script>
+  window.EMAILJS_PUBLIC_KEY = "undefined";
+  window.EMAILJS_SERVICE_ID = "undefined";
+  window.EMAILJS_TEMPLATE_ID = "undefined";
+</script>
+
+<script>
+  window.EMAILJS_PUBLIC_KEY = "KaOSEmcu_W96fyEkr";
+  window.EMAILJS_SERVICE_ID = "service_73674e9";
+  window.EMAILJS_TEMPLATE_ID = "template_i7fp09h";
+</script>
 </head>
 <body>
   <div class="mobile-header">
@@ -612,6 +627,12 @@
 
     // Add EmailJS initialization and form handling
     (function() {
+      // Wait for EmailJS to be loaded
+      if (typeof emailjs === 'undefined') {
+        console.error('EmailJS is not loaded');
+        return;
+      }
+
       // Initialize EmailJS with your public key
       emailjs.init(window.EMAILJS_PUBLIC_KEY);
 
@@ -707,11 +728,15 @@
         try {
           const templateParams = {
             from_name: `${firstName} ${lastName}`,
-            from_email: email,
+            reply_to: email,
             phone: phone,
             subject: formData.get('subject'),
             message: message
           };
+
+          console.log('Sending email with params:', templateParams);
+          console.log('Using service ID:', window.EMAILJS_SERVICE_ID);
+          console.log('Using template ID:', window.EMAILJS_TEMPLATE_ID);
 
           await emailjs.send(
             window.EMAILJS_SERVICE_ID,
@@ -726,11 +751,11 @@
           form.reset();
 
         } catch (error) {
-          // Show error message
+          // Show detailed error message
+          console.error('Full EmailJS Error:', error);
           formStatus.style.display = 'block';
           formStatus.style.color = 'red';
-          formStatus.textContent = 'Failed to send message. Please try again.';
-          console.error('EmailJS Error:', error);
+          formStatus.textContent = `Failed to send message: ${error.message || 'Unknown error'}`;
         } finally {
           // Reset button state
           submitButton.disabled = false;

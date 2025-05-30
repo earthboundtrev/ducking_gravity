@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config();
 
 // Read the index.html file
 const htmlPath = path.join(__dirname, 'index.html');
@@ -18,4 +19,9 @@ const envScript = `
 html = html.replace('</head>', `${envScript}</head>`);
 
 // Write the modified HTML back to the file
-fs.writeFileSync(htmlPath, html); 
+fs.writeFileSync(htmlPath, html);
+
+console.log('Environment variables injected successfully');
+console.log('EMAILJS_PUBLIC_KEY:', process.env.EMAILJS_PUBLIC_KEY ? 'Set' : 'Not set');
+console.log('EMAILJS_SERVICE_ID:', process.env.EMAILJS_SERVICE_ID ? 'Set' : 'Not set');
+console.log('EMAILJS_TEMPLATE_ID:', process.env.EMAILJS_TEMPLATE_ID ? 'Set' : 'Not set'); 
