@@ -1,13 +1,743 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-blue.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ducking Gravity</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ducking Gravity - Aerial Arts Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <style>
+    :root {
+      --teal: #b1d2cc;
+      --sky: #d5e3e5;
+      --aqua: #bfd2d6;
+      --mint: #dff0f1;
+      --gray: #f5f8f8;
+      --light-blue: #e0ebed;
+      --footer-blue: #bcd4d7;
+      --hard-green: #2e7d32;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--gray);
+      color: #333;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: var(--sky);
+    }
+
+    .social {
+      font-size: 0.9em;
+    }
+
+    .logo {
+      height: 120px;
+      width: auto;
+    }
+
+    .cta-button {
+      background-color: var(--teal);
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .hero {
+      position: relative;
+      height: 220px;
+      background: url('hero-image.jpg') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .hero h1 {
+      color: white;
+      font-size: 1.6rem;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    .hero-location {
+      position: absolute;
+      bottom: 10px;
+      right: 20px;
+      color: white;
+      font-size: 0.9rem;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background-color: var(--aqua);
+      border-bottom: 2px solid var(--sky);
+      padding: 0 10%;
+    }
+
+    nav a {
+      color: white;
+      flex: 1;
+      text-align: center;
+      padding: 15px 0;
+      text-decoration: none;
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      position: relative;
+      width: 33.33%;
+      display: inline-block;
+    }
+
+    nav a::after {
+      content: '|';
+      position: absolute;
+      right: -12px;
+      color: #777;
+    }
+
+    nav a:last-child::after {
+      content: '';
+    }
+
+    .about-section {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 30px;
+      background: #fff;
+    }
+
+    .about-section img {
+      width: 50%;
+      max-width: 50%;
+      border-radius: 10px;
+    }
+
+    .about-text {
+      flex: 1;
+      padding-left: 30px;
+      width: 50%;
+    }
+
+    .about-text h2 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .about-text p {
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .benefits-section {
+      background-color: var(--mint);
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .benefits-section h2 {
+      color: white;
+      
+      font-size: 1.4rem;
+      margin-bottom: 30px;
+    
+    }
+
+    .benefits {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .benefit {
+      flex: 1 1 30%;
+      max-width: 33%;
+      text-align: center;
+    }
+
+    .benefit h3 {
+      color: white;
+      
+      margin: 10px 0;
+      font-size: 1rem;
+    
+    }
+
+    .map-section {
+      padding: 30px;
+      background-color: var(--light-blue);
+    }
+
+    .map-section h2 {
+      color: white;
+      
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    
+    }
+
+    .map-section iframe {
+      width: 100%;
+      height: 300px;
+      border: none;
+    }
+
+    .contact-section {
+      background-color: #fff;
+      padding: 40px 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      margin: 20px;
+    }
+
+    .contact-section h2 {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .contact-section h2::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background-color: var(--aqua);
+      border-radius: 2px;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 40px;
+    }
+
+    form input,
+    form textarea {
+      width: 48%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      background-color: white;
+      position: relative;
+    }
+
+    form textarea {
+      width: 100%;
+      resize: vertical;
+    }
+
+    .submit-button {
+      margin: 20px auto 0 auto;
+      display: block;
+      background-color: var(--teal);
+      padding: 12px 24px;
+      border: none;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    footer {
+      background-color: var(--footer-blue);
+      padding: 20px;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+
+    .mobile-header {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 0 0 0;
+      background: var(--sky);
+    }
+    @media (max-width: 700px) {
+      header {
+        display: none !important;
+      }
+      .mobile-header {
+        display: flex !important;
+      }
+      header .logo {
+        display: none !important;
+      }
+      .logo-mobile {
+        display: block !important;
+      }
+      .about-section {
+        flex-direction: column;
+        align-items: center;
+      }
+      .about-text {
+        padding-left: 0 !important;
+        margin-top: 28px;
+        text-align: center;
+        max-width: 90vw;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .about-text h2, .about-text p {
+        text-align: center;
+      }
+      .carousel {
+        max-width: 80vw !important;
+        width: 80vw !important;
+        margin-right: 0 !important;
+        height: 40vw !important;
+        min-height: 200px;
+      }
+      .carousel img,
+      #carousel-image {
+        width: 80vw !important;
+        max-width: 80vw !important;
+        height: 40vw !important;
+        min-height: 200px;
+        object-fit: cover;
+      }
+    }
+    @media (min-width: 701px) {
+      header {
+        display: flex !important;
+      }
+      .mobile-header {
+        display: none !important;
+      }
+      .logo {
+        display: inline;
+      }
+    }
+    @media (min-width: 600px) and (max-width: 900px) {
+      .main-header .social {
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        white-space: nowrap !important;
+        align-items: center;
+      }
+      .about-section {
+        flex-direction: row !important;
+        align-items: flex-start !important;
+      }
+      .carousel {
+        max-width: 40vw !important;
+        width: 40vw !important;
+        margin-right: 0 !important;
+        height: 40vw !important;
+        min-height: 200px;
+      }
+      .carousel img,
+      #carousel-image {
+        width: 40vw !important;
+        max-width: 40vw !important;
+        height: 40vw !important;
+        min-height: 200px;
+        object-fit: contain;
+      }
+    }
+    @media (max-width: 600px) {
+      .carousel {
+        height: 80vw !important;
+        min-height: 120px;
+      }
+      .carousel img,
+      #carousel-image {
+        height: 80vw !important;
+        min-height: 120px;
+        object-fit: cover;
+      }
+    }
+    @media (min-width: 901px) {
+      .carousel {
+        max-width: 40vw !important;
+        width: 40vw !important;
+        margin-right: 0 !important;
+        height: 40vw !important;
+        min-height: 200px;
+      }
+      .carousel img,
+      #carousel-image {
+        width: 40vw !important;
+        max-width: 40vw !important;
+        height: 40vw !important;
+        min-height: 200px;
+        object-fit: contain;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="mobile-header">
+    <img class="logo-mobile" src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-green.png" alt="Ducking Gravity Logo" style="height:90px; width:auto;">
+    <div class="social" style="font-size:2.1em; color:#6b8c85; display:flex; align-items:center; gap:16px;">
+      <span style="margin-right:8px;">Social Media</span>
+      <span style="margin: 0 4px; font-size:1em; color:#6b8c85;">|</span>
+      <a href="https://www.facebook.com/profile.php?id=61557121516331" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; color:#6b8c85; text-decoration:none;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6b8c85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H6v4h4v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a href="https://instagram.com/duckinggravity" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; color:#6b8c85; text-decoration:none;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6b8c85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
+      </a>
+    </div>
+    <button class="cta-button" style="font-size:1.4em; padding:18px 40px; border-radius:40px; color:#fff;" onclick="document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' });">Book a session!</button>
+  </div>
+
+  <header class="main-header" style="padding: 32px 20px 32px 20px; display: flex; justify-content: space-between; align-items: center;">
+    <div class="social" style="font-size:2.1em; color:#6b8c85; display:flex; align-items:center; gap:16px; flex:1;">
+      <span style="margin-right:8px;">Social Media</span>
+      <span style="margin: 0 4px; font-size:1em; color:#6b8c85;">|</span>
+      <a href="https://www.facebook.com/profile.php?id=61557121516331" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; color:#6b8c85; text-decoration:none;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6b8c85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H6v4h4v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a href="https://instagram.com/duckinggravity" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; color:#6b8c85; text-decoration:none;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6b8c85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
+      </a>
+    </div>
+    <div style="flex:1; display:flex; justify-content:center; align-items:center;">
+      <img class="logo" src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-green.png" alt="Ducking Gravity Logo" style="height:120px; width:auto;">
+            </div>
+    <div style="flex:1; display:flex; justify-content:flex-end; align-items:center;">
+      <button class="cta-button" style="font-size:1.4em; padding:18px 40px; border-radius:40px; color:#fff;" onclick="document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' });">Book a session!</button>
+        </div>
+    </header>
+
+  <div class="hero">
+    <h1>
+      Ducking Gravity<br>
+      <span style="font-weight: 400;">An Aerial Arts Studio</span>
+    </h1>
+    <div class="hero-location" style="border: 1px solid white; padding: 5px; border-radius: 5px; background-color: rgba(0, 0, 0, 0.6); font-size: 1.6rem; color: white;">Culpeper, VA</div>
+  </div>
+
+  <nav>
+    <a href="#about" id="about-tab" onclick="showSection('about'); return false;">About Us</a>
+    <a href="#book" id="book-tab" onclick="showSection('book'); return false;">Book a Session</a>
+    <a href="#offer" id="offer-tab" onclick="showSection('offer'); return false;">What We Offer</a>
+  </nav>
+
+  <section id="about-section" class="about-section" style="display:block;">
+    <div class="carousel" style="max-width:400px; margin-right:32px; position:relative; display:flex; flex-direction:column; align-items:center;">
+      <div style="display:flex; align-items:center; justify-content:center; width:100%;">
+        <button class="carousel-arrow left" onclick="prevImage()" aria-label="Previous" style="position:static; margin-right:12px;">&#10094;</button>
+        <div style="flex:1; position:relative; display:flex; align-items:center; justify-content:center;">
+          <img id="carousel-image" src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/silks_setup.jpg" alt="Future home of our aerial studio" style="width:100%; border-radius:10px; display:block;">
+        </div>
+        <button class="carousel-arrow right" onclick="nextImage()" aria-label="Next" style="position:static; margin-left:12px;">&#10095;</button>
+        </div>
+      <div class="carousel-dots" id="carousel-dots" style="display:flex; justify-content:center; align-items:center; margin-top:18px; gap:16px;"></div>
+        </div>
+    <div class="about-text">
+      <h2>Ready to take flight?</h2>
+      <p style="color:#6b8c85;">Ducking Gravity is an inclusive community where Culpeper can come together to celebrate movement and promote physical and emotional well-being through the dynamic self-expression of aerial arts.</p>
+        </div>
+  </section>
+
+  <section id="book-section" class="about-section" style="display:none;">
+    <div class="about-text">
+      <h2>Book a Session</h2>
+      <p style="color:#6b8c85;">At the moment, I don't have my booking app up and running yet, <button onclick="document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' });" style="background:none; border:none; color:#6b8c85; text-decoration:underline; cursor:pointer;">contact me</button> to sign up for classes. Payment will be processed once minimum capacity for the class has been reached.</p>
+        </div>
+    </section>
+
+  <section id="offer-section" class="about-section" style="display:none;">
+    <div class="about-text">
+      <h2>What We Offer</h2>
+      <p style="color:#6b8c85;">We offer flexible memberships and drop-in rates for aerial arts, yoga, and community hours. Whether you're a beginner or experienced, there's a class for every age and skill level, including special options for kids and families.</p>
+      <p style="color:#6b8c85;">Our schedule includes weekly classes, open practice times, and community events. Join us to build strength, confidence, and connection in a welcoming, creative environment!</p>
+        </div>
+    </section>
+
+  <section class="benefits-section">
+    <h2>Why Aerial Arts?</h2>
+    <div class="benefits">
+      <div class="benefit">
+        <h3>STRENGTH</h3>
+        <p>Enhance core and body strength through creative movement.</p>
+      </div>
+      <div class="benefit">
+        <h3>FOCUS</h3>
+        <p>Build mental clarity and coordination with each session.</p>
+                </div>
+      <div class="benefit">
+        <h3>STRESS RELIEF</h3>
+        <p>Reduce anxiety and enjoy uplifting expression through motion.</p>
+                </div>
+            </div>
+  </section>
+
+  <section class="map-section">
+    <div style="background: #a8bfc4; padding: 18px 0 18px 32px; text-align: left; color: #fff; font-size: 2rem; font-weight: bold; letter-spacing: 0.5px; border-radius: 4px; margin-bottom: 20px; max-width: 100vw;">
+      Where to Find Us
+    </div>
+    <iframe src="https://www.google.com/maps?q=15532+Montanus+Dr,+Suite+E,+Culpeper,+VA+22701&output=embed" allowfullscreen></iframe>
+  </section>
+
+  <section class="contact-section" id="contact-section">
+    <h2>Got any questions? Contact Us!</h2>
+    <form id="contact-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px 40px;">
+      <div style="display: flex; flex-direction: column; grid-column: 1 / 2;">
+        <label for="first-name" style="margin-bottom: 6px;">First Name</label>
+        <input id="first-name" name="first_name" type="text" style="width: 100%;" required>
+        <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
+      </div>
+      <div style="display: flex; flex-direction: column; grid-column: 2 / 3;">
+        <label for="last-name" style="margin-bottom: 6px;">Last Name</label>
+        <input id="last-name" name="last_name" type="text" style="width: 100%;" required>
+        <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
+      </div>
+      <div style="display: flex; flex-direction: column; grid-column: 1 / 2;">
+        <label for="email" style="margin-bottom: 6px;">Email</label>
+        <input id="email" name="email" type="email" style="width: 100%;" required>
+        <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
+      </div>
+      <div style="display: flex; flex-direction: column; grid-column: 2 / 3;">
+        <label for="phone" style="margin-bottom: 6px;">Phone Number</label>
+        <input id="phone" name="phone" type="tel" style="width: 100%;" required>
+        <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
+      </div>
+      <div style="display: flex; flex-direction: column; grid-column: 1 / 3;">
+        <label for="subject" style="margin-bottom: 6px;">Subject</label>
+        <input id="subject" name="subject" type="text" style="width: 100%;" required>
+        <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
+      </div>
+      <div style="display: flex; flex-direction: column; grid-column: 1 / 3;">
+        <label for="message" style="margin-bottom: 6px;">Message</label>
+        <textarea id="message" name="message" rows="5" style="width: 100%;" required></textarea>
+        <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
+      </div>
+      <button type="submit" class="submit-button" style="grid-column: 1 / 3;">Submit</button>
+    </form>
+    <div id="form-status" style="text-align: center; margin-top: 20px; display: none;"></div>
+  </section>
+
+    <footer>
+    <div>duckinggravity@gmail.com | 15532 Montanus Dr, Suite E, Culpeper, VA 22701</div>
+    <div>&copy; 2025 Ducking Gravity. All rights reserved.</div>
+    </footer>
+
+  <script>
+    const images = [
+      {
+        url: 'https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/silks_setup.jpg',
+        alt: 'Future home of our aerial studio'
+      },
+      {
+        url: 'https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/inside_picture_3.jpg',
+        alt: 'Future home of our aerial studio'
+      },
+      {
+        url: 'https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/inside_picture_4.jpg',
+        alt: 'Aerial performance showcase'
+      },
+      {
+        url: 'https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/inside_picture_5.jpg',
+        alt: 'Future home of our aerial studio'
+      }
+    ];
+    let currentIndex = 0;
+
+    function renderDots() {
+      const dotsContainer = document.getElementById('carousel-dots');
+      dotsContainer.innerHTML = '';
+      images.forEach((img, idx) => {
+        const dot = document.createElement('button');
+        dot.className = 'carousel-dot' + (idx === currentIndex ? ' active' : '');
+        dot.onclick = () => { currentIndex = idx; showImage(currentIndex); renderDots(); };
+        dotsContainer.appendChild(dot);
+      });
+    }
+
+    function showImage(index) {
+      const img = document.getElementById('carousel-image');
+      img.src = images[index].url;
+      img.alt = images[index].alt;
+      renderDots();
+    }
+
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      showImage(currentIndex);
+    }
+
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % images.length;
+      showImage(currentIndex);
+    }
+
+    // Initialize the carousel with the first image and dots
+    showImage(currentIndex);
+
+    // Tab logic
+    function showSection(section) {
+      // Hide all sections
+      document.getElementById('about-section').style.display = 'none';
+      document.getElementById('book-section').style.display = 'none';
+      document.getElementById('offer-section').style.display = 'none';
+      // Show the selected section as flex (for correct layout)
+      if (section === 'about') document.getElementById('about-section').style.display = 'flex';
+      if (section === 'book') document.getElementById('book-section').style.display = 'flex';
+      if (section === 'offer') document.getElementById('offer-section').style.display = 'flex';
+      // Optionally, highlight the active tab
+      document.getElementById('about-tab').style.fontWeight = (section === 'about') ? 'bold' : '';
+      document.getElementById('book-tab').style.fontWeight = (section === 'book') ? 'bold' : '';
+      document.getElementById('offer-tab').style.fontWeight = (section === 'offer') ? 'bold' : '';
+      // Increase font size for the selected tab
+      document.getElementById('about-tab').style.fontSize = (section === 'about') ? '1.5rem' : '1.3rem';
+      document.getElementById('book-tab').style.fontSize = (section === 'book') ? '1.5rem' : '1.3rem';
+      document.getElementById('offer-tab').style.fontSize = (section === 'offer') ? '1.5rem' : '1.3rem';
+    }
+
+    // Add EmailJS initialization and form handling
+    (function() {
+      // Initialize EmailJS with your public key
+      emailjs.init(window.EMAILJS_PUBLIC_KEY);
+
+      const form = document.getElementById('contact-form');
+      const formStatus = document.getElementById('form-status');
+
+      // Validation functions
+      function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+      }
+
+      function validatePhone(phone) {
+        const re = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        return re.test(phone);
+      }
+
+      function validateName(name) {
+        return name.trim().length >= 2;
+      }
+
+      function showError(input, message) {
+        const errorElement = input.nextElementSibling;
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+        input.style.borderColor = 'red';
+      }
+
+      function clearError(input) {
+        const errorElement = input.nextElementSibling;
+        errorElement.style.display = 'none';
+        input.style.borderColor = '';
+      }
+
+      // Add input event listeners for real-time validation
+      const inputs = form.querySelectorAll('input, textarea');
+      inputs.forEach(input => {
+        input.addEventListener('input', () => {
+          clearError(input);
+        });
+      });
+
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        let isValid = true;
+        const formData = new FormData(form);
+
+        // Validate first name
+        const firstName = formData.get('first_name');
+        if (!validateName(firstName)) {
+          showError(document.getElementById('first-name'), 'Please enter a valid first name');
+          isValid = false;
+        }
+
+        // Validate last name
+        const lastName = formData.get('last_name');
+        if (!validateName(lastName)) {
+          showError(document.getElementById('last-name'), 'Please enter a valid last name');
+          isValid = false;
+        }
+
+        // Validate email
+        const email = formData.get('email');
+        if (!validateEmail(email)) {
+          showError(document.getElementById('email'), 'Please enter a valid email address');
+          isValid = false;
+        }
+
+        // Validate phone
+        const phone = formData.get('phone');
+        if (!validatePhone(phone)) {
+          showError(document.getElementById('phone'), 'Please enter a valid phone number');
+          isValid = false;
+        }
+
+        // Validate message
+        const message = formData.get('message');
+        if (!message.trim()) {
+          showError(document.getElementById('message'), 'Please enter a message');
+          isValid = false;
+        }
+
+        if (!isValid) {
+          return;
+        }
+
+        // Show loading state
+        const submitButton = form.querySelector('.submit-button');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending...';
+
+        try {
+          const templateParams = {
+            from_name: `${firstName} ${lastName}`,
+            from_email: email,
+            phone: phone,
+            subject: formData.get('subject'),
+            message: message
+          };
+
+          await emailjs.send(
+            window.EMAILJS_SERVICE_ID,
+            window.EMAILJS_TEMPLATE_ID,
+            templateParams
+          );
+
+          // Show success message
+          formStatus.style.display = 'block';
+          formStatus.style.color = 'green';
+          formStatus.textContent = 'Message sent successfully!';
+          form.reset();
+
+        } catch (error) {
+          // Show error message
+          formStatus.style.display = 'block';
+          formStatus.style.color = 'red';
+          formStatus.textContent = 'Failed to send message. Please try again.';
+          console.error('EmailJS Error:', error);
+        } finally {
+          // Reset button state
+          submitButton.disabled = false;
+          submitButton.textContent = 'Submit';
+        }
+      });
+    })();
+  </script>
+</body>
 </html>
