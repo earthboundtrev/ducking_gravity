@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ducking Gravity - Aerial Arts Studio</title>
+    <title>Ducking Gravity - An Aerial Arts Studio</title>
     <link rel="icon" type="image/png" href="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-green.png">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -60,16 +60,25 @@
       border: none;
       font-weight: bold;
       cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    @media (max-width: 700px) {
+      .cta-button {
+        display: none !important;
+      }
     }
 
     .hero {
       position: relative;
-      height: 220px;
+      /* height: 220px; */
       background: url('hero-image.jpg') center/cover no-repeat;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
+      margin-top: 0 !important;
+      padding: 20px 0 20px 0 !important;
     }
 
     .hero h1 {
@@ -130,18 +139,31 @@
       flex-wrap: wrap;
       padding: 30px;
       background: #fff;
+      flex-direction: row;
+      align-items: flex-start;
+    }
+
+    .about-section .carousel {
+      max-width: 400px;
+      margin: 0 32px 0 0;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .about-section .about-text {
+      flex: 1;
+      padding-left: 30px;
+      width: 50%;
+      min-width: 250px;
+      margin-top: 24px;
     }
 
     .about-section img {
       width: 50%;
       max-width: 50%;
       border-radius: 10px;
-    }
-
-    .about-text {
-      flex: 1;
-      padding-left: 30px;
-      width: 50%;
     }
 
     .about-text h2 {
@@ -296,19 +318,19 @@
         display: block !important;
       }
       .about-section {
-        flex-direction: column;
-        align-items: center;
+        flex-direction: column !important;
+        align-items: center !important;
       }
-      .about-text {
+      .about-section .carousel {
+        margin: 0 0 32px 0 !important;
+        max-width: 90vw !important;
+        width: 100% !important;
+      }
+      .about-section .about-text {
         padding-left: 0 !important;
-        margin-top: 28px;
-        text-align: center;
-        max-width: 90vw;
-        margin-left: auto;
-        margin-right: auto;
-      }
-      .about-text h2, .about-text p {
-        text-align: center;
+        width: 100% !important;
+        min-width: 0 !important;
+        margin-top: 0 !important;
       }
       .carousel {
         max-width: 80vw !important;
@@ -377,6 +399,36 @@
       }
     }
     @media (min-width: 901px) {
+      .logo {
+        height: 180px !important;
+        width: auto !important;
+      }
+      .hero {
+        /* height: 880px !important; */
+        padding: 40px 0 40px 0 !important;
+        margin-top: 0 !important;
+      }
+      .hero h1 {
+        font-size: 6.4rem !important;
+        padding: 20px 80px 20px 80px !important;
+        border-radius: 40px !important;
+      }
+      .hero h1 span {
+        font-size: 3.2rem !important;
+        display: block;
+        margin-top: 0.5em;
+      }
+      .hero-location {
+        font-size: 3.6rem !important;
+        bottom: 40px !important;
+        right: 80px !important;
+        padding: 20px 40px !important;
+        border-radius: 20px !important;
+        font-size: 1.4rem !important;
+        padding: 8px 18px !important;
+        bottom: 24px !important;
+        right: 40px !important;
+      }
       .carousel {
         max-width: 40vw !important;
         width: 40vw !important;
@@ -393,15 +445,26 @@
         object-fit: contain;
       }
     }
+    @media (max-width: 900px) {
+      .hero h1 span {
+        font-size: 1.2rem !important;
+        display: block;
+        margin-top: 0.5em;
+      }
+      .hero-location {
+        font-size: 0.8rem !important;
+        padding: 4px 10px !important;
+        bottom: 10px !important;
+        right: 10px !important;
+      }
+    }
   </style>
 
-</head>
-<body>
+  </head>
+  <body>
   <div class="mobile-header">
-    <img class="logo-mobile" src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-green.png" alt="Ducking Gravity Logo" style="height:90px; width:auto;">
+    <img class="logo-mobile" src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-green-wordless.jpg" alt="Ducking Gravity Logo" style="height:90px; width:auto;">
     <div class="social" style="font-size:2.1em; color:#6b8c85; display:flex; align-items:center; gap:16px;">
-      <span style="margin-right:8px;">Social Media</span>
-      <span style="margin: 0 4px; font-size:1em; color:#6b8c85;">|</span>
       <a href="https://www.facebook.com/profile.php?id=61557121516331" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; color:#6b8c85; text-decoration:none;">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6b8c85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H6v4h4v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
       </a>
@@ -414,8 +477,6 @@
 
   <header class="main-header" style="padding: 32px 20px 32px 20px; display: flex; justify-content: space-between; align-items: center;">
     <div class="social" style="font-size:2.1em; color:#6b8c85; display:flex; align-items:center; gap:16px; flex:1;">
-      <span style="margin-right:8px;">Social Media</span>
-      <span style="margin: 0 4px; font-size:1em; color:#6b8c85;">|</span>
       <a href="https://www.facebook.com/profile.php?id=61557121516331" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; color:#6b8c85; text-decoration:none;">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6b8c85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H6v4h4v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
       </a>
@@ -424,7 +485,7 @@
       </a>
     </div>
     <div style="flex:1; display:flex; justify-content:center; align-items:center;">
-      <img class="logo" src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-green.png" alt="Ducking Gravity Logo" style="height:120px; width:auto;">
+      <img class="logo" src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-green-wordless.jpg" alt="Ducking Gravity Logo" style="height:120px; width:auto;">
             </div>
     <div style="flex:1; display:flex; justify-content:flex-end; align-items:center;">
       <button class="cta-button" style="font-size:1.4em; padding:18px 40px; border-radius:40px; color:#fff;" onclick="document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' });">Contact Us!</button>
@@ -445,42 +506,72 @@
     <a href="#offer" id="offer-tab" onclick="showSection('offer'); return false;">What We Offer</a>
   </nav>
 
-  <section id="about-section" class="about-section" style="display:block;">
-    <div class="carousel" style="max-width:400px; margin-right:32px; position:relative; display:flex; flex-direction:column; align-items:center;">
+  <section id="about-section" class="about-section" style="display:none; flex-direction:row; align-items:center;">
+    <div class="carousel carousel-col" id="carousel-about" style="max-width:400px; margin: 0 32px 0 0; position:relative; display:flex; flex-direction:column; align-items:center;">
       <div style="display:flex; align-items:center; justify-content:center; width:100%;">
-        <button class="carousel-arrow left" onclick="prevImage()" aria-label="Previous" style="position:static; margin-right:12px;">&#10094;</button>
+        <button class="carousel-arrow left" onclick="prevImage('about')" aria-label="Previous" style="position:static; margin-right:12px;">&#10094;</button>
         <div style="flex:1; position:relative; display:flex; align-items:center; justify-content:center;">
-          <img id="carousel-image" src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/silks_setup.jpg" alt="Future home of our aerial studio" style="width:100%; border-radius:10px; display:block;">
+          <img id="carousel-image-about" src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/silks_setup.jpg" alt="Future home of our aerial studio" style="width:100%; border-radius:10px; display:block;">
         </div>
-        <button class="carousel-arrow right" onclick="nextImage()" aria-label="Next" style="position:static; margin-left:12px;">&#10095;</button>
-        </div>
-      <div class="carousel-dots" id="carousel-dots" style="display:flex; justify-content:center; align-items:center; margin-top:18px; gap:16px;"></div>
-        </div>
+        <button class="carousel-arrow right" onclick="nextImage('about')" aria-label="Next" style="position:static; margin-left:12px;">&#10095;</button>
+      </div>
+      <div class="carousel-dots" id="carousel-dots-about" style="display:flex; justify-content:center; align-items:center; margin-top:18px; gap:16px;"></div>
+    </div>
     <div class="about-text">
       <h2>Ready to take flight?</h2>
-      <p style="color:#6b8c85;">Ducking Gravity is an inclusive community where Culpeper can come together to celebrate movement and promote physical and emotional well-being through the dynamic self-expression of aerial arts.</p>
-        </div>
-  </section>
-
-  <section id="book-section" class="about-section" style="display:none;">
-    <div class="about-text">
-      <h2>Book a Session</h2>
-      <p style="color:#6b8c85;">At the moment, I don't have my booking app up and running yet, <button onclick="document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' });" style="background:none; border:none; color:#6b8c85; text-decoration:underline; cursor:pointer;">contact me</button> to sign up for classes. Payment will be processed once minimum capacity for the class has been reached.</p>
-      <div style="margin-top: 20px; text-align: center;">
-        <button onclick="window.location.href='https://buy.stripe.com/4gwdR52l0gGa1UsdQR'" style="background-color: var(--teal); color: white; padding: 15px 30px; border: none; border-radius: 25px; font-size: 1.2em; cursor: pointer; transition: background-color 0.3s;">
-          Book & Pay Now
-        </button>
-      </div>
+      <p style="color:#6b8c85;">Ducking Gravity is an inclusive aerial arts community in Culpeper, VA. Whether you are seeking self expression, a cross-training challenge, or just a unique, supportive community environment, we celebrate movement while promoting physical and emotional well-being, ensuring accessibility for all, regardless of ability or background.</p>
+      <p style="color:#6b8c85;">Whether you are just starting out, or an experienced aerialist, our mixed level classes are designed to meet you where you are, and our coaches work with you specifically to help you define and reach your aerial goals.</p>
+      <p style="color:#6b8c85;">Want to learn more and book a session? <a href="#contact-section" onclick="document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' }); return false;" style="color: var(--teal); text-decoration: underline; font-weight: bold;">Contact Us</a></p>
     </div>
   </section>
 
-  <section id="offer-section" class="about-section" style="display:none;">
+  <section id="book-section" class="about-section" style="display:flex; flex-direction:row; align-items:center;">
+    <div class="carousel carousel-col" id="carousel-book" style="max-width:400px; margin: 0 32px 0 0; position:relative; display:flex; flex-direction:column; align-items:center;">
+      <div style="display:flex; align-items:center; justify-content:center; width:100%;">
+        <button class="carousel-arrow left" onclick="prevImage('book')" aria-label="Previous" style="position:static; margin-right:12px;">&#10094;</button>
+        <div style="flex:1; position:relative; display:flex; align-items:center; justify-content:center;">
+          <img id="carousel-image-book" src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/silks_setup.jpg" alt="Future home of our aerial studio" style="width:100%; border-radius:10px; display:block;">
+        </div>
+        <button class="carousel-arrow right" onclick="nextImage('book')" aria-label="Next" style="position:static; margin-left:12px;">&#10095;</button>
+      </div>
+      <div class="carousel-dots" id="carousel-dots-book" style="display:flex; justify-content:center; align-items:center; margin-top:18px; gap:16px;"></div>
+    </div>
+    <div class="about-text">
+      <h2>Book a Session</h2>
+      <p style="color:#6b8c85; margin-bottom: 18px;">✨ Already spoken with a coach and enrolled in a class? Secure your spot by making a payment here: <a href="https://buy.stripe.com/4gwdR52l0gGa1UsdQR" target="_blank" style="color: var(--teal); text-decoration: underline; font-weight: bold;">Make a Payment</a></p>
+      <p style="color:#6b8c85;">⚡ Scheduling app under construction! If you'd like to book a class but haven't yet spoken to a coach for placement, reach out and we'll help find the perfect fit: <a href="#contact-section" onclick="document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' }); return false;" style="color: var(--teal); text-decoration: underline; font-weight: bold;">Contact Us</a></p>
+    </div>
+  </section>
+
+  <section id="offer-section" class="about-section" style="display:none; flex-direction:row; align-items:center;">
+    <div class="carousel carousel-col" id="carousel-offer" style="max-width:400px; margin: 0 32px 0 0; position:relative; display:flex; flex-direction:column; align-items:center;">
+      <div style="display:flex; align-items:center; justify-content:center; width:100%;">
+        <button class="carousel-arrow left" onclick="prevImage('offer')" aria-label="Previous" style="position:static; margin-right:12px;">&#10094;</button>
+        <div style="flex:1; position:relative; display:flex; align-items:center; justify-content:center;">
+          <img id="carousel-image-offer" src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/silks_setup.jpg" alt="Future home of our aerial studio" style="width:100%; border-radius:10px; display:block;">
+        </div>
+        <button class="carousel-arrow right" onclick="nextImage('offer')" aria-label="Next" style="position:static; margin-left:12px;">&#10095;</button>
+      </div>
+      <div class="carousel-dots" id="carousel-dots-offer" style="display:flex; justify-content:center; align-items:center; margin-top:18px; gap:16px;"></div>
+    </div>
     <div class="about-text">
       <h2>What We Offer</h2>
-      <p style="color:#6b8c85;">We offer flexible memberships and drop-in rates for aerial arts, yoga, and community hours. Whether you're a beginner or experienced, there's a class for every age and skill level, including special options for kids and families.</p>
-      <p style="color:#6b8c85;">Our schedule includes weekly classes, open practice times, and community events. Join us to build strength, confidence, and connection in a welcoming, creative environment!</p>
-        </div>
-    </section>
+      <ul style="color:#6b8c85; margin-bottom: 18px; list-style: disc inside;">
+        <li>Aerial classes for ages 3-8 on a membership basis</li>
+        <li>Aerial classes for ages 9-Adult on a membership or drop-in basis</li>
+        <li>Open Aerials, a time for members of our community to work on what they are learning</li>
+        <li>Community Hours on Fridays from 6:30-8PM (Drop on in! $15 at the door! No reservation or experience necessary!)</li>
+        <li>Birthday Parties</li>
+        <li>Corporate and Team Building Events</li>
+        <li>Yoga</li>
+        <li>Summer Programs</li>
+        <li>Birthday Parties</li>
+        <li>Bachelorette Parties</li>
+        <li>Special Events and Classes</li>
+      </ul>
+      <p style="color:#6b8c85;">Want to find out more and book a class? <a href="#contact-section" onclick="document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' }); return false;" style="color: var(--teal); text-decoration: underline; font-weight: bold;">Contact Us</a></p>
+    </div>
+  </section>
 
   <section class="benefits-section">
     <h2>Why Aerial Arts?</h2>
@@ -569,38 +660,49 @@
         alt: 'Future home of our aerial studio'
       }
     ];
-    let currentIndex = 0;
+    const carouselState = {
+      about: 0,
+      book: 0,
+      offer: 0
+    };
 
-    function renderDots() {
-      const dotsContainer = document.getElementById('carousel-dots');
+    function renderDots(tab) {
+      const dotsContainer = document.getElementById(`carousel-dots-${tab}`);
+      if (!dotsContainer) return;
       dotsContainer.innerHTML = '';
       images.forEach((img, idx) => {
         const dot = document.createElement('button');
-        dot.className = 'carousel-dot' + (idx === currentIndex ? ' active' : '');
-        dot.onclick = () => { currentIndex = idx; showImage(currentIndex); renderDots(); };
+        dot.className = 'carousel-dot' + (idx === carouselState[tab] ? ' active' : '');
+        dot.onclick = () => { carouselState[tab] = idx; showImage(tab, carouselState[tab]); renderDots(tab); };
         dotsContainer.appendChild(dot);
       });
     }
 
-    function showImage(index) {
-      const img = document.getElementById('carousel-image');
+    function showImage(tab, index) {
+      const img = document.getElementById(`carousel-image-${tab}`);
+      if (!img) return;
       img.src = images[index].url;
       img.alt = images[index].alt;
-      renderDots();
+      renderDots(tab);
     }
 
-    function prevImage() {
-      currentIndex = (currentIndex - 1 + images.length) % images.length;
-      showImage(currentIndex);
+    function prevImage(tab) {
+      carouselState[tab] = (carouselState[tab] - 1 + images.length) % images.length;
+      showImage(tab, carouselState[tab]);
     }
 
-    function nextImage() {
-      currentIndex = (currentIndex + 1) % images.length;
-      showImage(currentIndex);
+    function nextImage(tab) {
+      carouselState[tab] = (carouselState[tab] + 1) % images.length;
+      showImage(tab, carouselState[tab]);
     }
 
-    // Initialize the carousel with the first image and dots
-    showImage(currentIndex);
+    // Initialize the carousels for all tabs
+    document.addEventListener('DOMContentLoaded', function() {
+      showImage('about', carouselState['about']);
+      showImage('book', carouselState['book']);
+      showImage('offer', carouselState['offer']);
+      showSection('book');
+    });
 
     // Tab logic
     function showSection(section) {
@@ -761,5 +863,5 @@
       });
     })();
   </script>
-</body>
+  </body>
 </html>
