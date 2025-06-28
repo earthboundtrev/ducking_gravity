@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summer Camps | Ducking Gravity</title>
+    <link rel="icon" type="image/png" href="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-green.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --teal: #b1d2cc;
+            --hyperlink-color: #208b0b;
+            --sky: #d5e3e5;
+            --aqua: #bfd2d6;
+            --mint: #dff0f1;
+            --gray: #f5f8f8;
+            --light-blue: #e0ebed;
+            --footer-blue: #bcd4d7;
+            --hard-green: #2e7d32;
+            --text-dark: #2c3e50;
+            --text-light: #6b8c85;
+            --white: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray);
+            color: var(--text-dark);
+            margin: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background: var(--white);
+            box-shadow: 0 2px 10px var(--shadow);
+            padding: 1.5rem 0 1rem 0;
+            text-align: center;
+        }
+        .logo {
+            height: 70px;
+            margin-bottom: 0.5rem;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: var(--hard-green);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+        }
+        .back-link:hover {
+            color: var(--teal);
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 1.5rem 0 0.5rem 0;
+            text-align: center;
+        }
+        .camp-section {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 16px var(--shadow);
+            margin: 2rem 0;
+            padding: 2rem 1.5rem;
+        }
+        .camp-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--hard-green);
+            margin-bottom: 0.5rem;
+        }
+        .camp-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        .camp-table th, .camp-table td {
+            padding: 0.7rem 0.5rem;
+            text-align: left;
+        }
+        .camp-table th {
+            color: var(--text-dark);
+            font-weight: 600;
+            border-bottom: 2px solid var(--teal);
+        }
+        .camp-table td {
+            color: var(--text-light);
+            border-bottom: 1px solid var(--light-blue);
+        }
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--hard-green);
+            font-weight: 600;
+            margin: 2.5rem 0 1rem 0;
+        }
+        ul.camp-list {
+            margin: 0 0 1.5rem 1.5rem;
+            padding: 0;
+            color: var(--text-light);
+        }
+        ul.camp-list li {
+            margin-bottom: 0.7em;
+            font-size: 1.05rem;
+        }
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 0.3em;
+        }
+        .note {
+            background: var(--mint);
+            border-left: 4px solid var(--hard-green);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            color: var(--text-dark);
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            .camp-section {
+                padding: 1rem 0.5rem;
+            }
+            .container {
+                padding: 0 5px;
+            }
+        }
+        .info-btn {
+            background: var(--hard-green);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.25em 0.9em;
+            font-size: 0.95em;
+            font-weight: 600;
+            margin-left: 0.7em;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s;
+            vertical-align: middle;
+            box-shadow: 0 2px 6px var(--shadow);
+        }
+        .info-btn:hover, .info-btn:focus {
+            background: #176b22;
+            outline: none;
+        }
+        /* Footer */
+        footer {
+            background: var(--footer-blue);
+            padding: 3rem 0 2rem;
+            text-align: center;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-section h4 {
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .footer-section p,
+        .footer-section a {
+            color: var(--text-light);
+            text-decoration: none;
+            line-height: 1.6;
+        }
+        .footer-section a:hover {
+            color: var(--hard-green);
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--white);
+            border-radius: 50%;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+        .social-links a:hover {
+            background: var(--hard-green);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+        .footer-bottom {
+            border-top: 1px solid var(--aqua);
+            padding-top: 2rem;
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html"><img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-green-wordless.jpg" alt="Ducking Gravity Logo" class="logo"></a>
+        <div><a href="index.html" class="back-link">&larr; Back to Main Site</a></div>
+    </header>
+    <div class="container">
+        <h1>Summer Camps 2025</h1>
+        <div class="camp-section">
+            <div class="camp-title">Jr Camp <span style="color:var(--text-light); font-weight:400;">Ages 4-8</span>
+                <button class="info-btn" onclick="document.getElementById('camp-info').scrollIntoView({behavior: 'smooth'});" aria-label="More Info">Info</button>
+            </div>
+            <table class="camp-table">
+                <tr><th>Dates</th><th>Time</th><th>Price</th></tr>
+                <tr><td>June 30 - July 3</td><td>9am - 12pm</td><td>$180</td></tr>
+                <tr><td>July 7 - July 11</td><td>9am - 12pm</td><td>$225</td></tr>
+                <tr><td>July 14 - July 18</td><td>9am - 12pm</td><td>$225</td></tr>
+            </table>
+            <div class="camp-title">Beyond Aerials <span style="color:var(--text-light); font-weight:400;">Ages 9-14</span>
+                <button class="info-btn" onclick="document.getElementById('camp-info').scrollIntoView({behavior: 'smooth'});" aria-label="More Info">Info</button>
+            </div>
+            <table class="camp-table">
+                <tr><th>Dates</th><th>Time</th><th>Price</th></tr>
+                <tr><td>June 30 - July 3</td><td>9am - 3pm</td><td>$250</td></tr>
+                <tr><td>July 7 - July 11</td><td>9am - 3pm</td><td>$300</td></tr>
+                <tr><td>July 14 - July 18</td><td>9am - 3pm</td><td>$300</td></tr>
+            </table>
+        </div>
+        <div class="camp-section" id="camp-info">
+            <div class="section-title">What to Bring to Camp</div>
+            <div style="white-space: pre-line; color: var(--text-dark); font-size: 1.08rem;">
+To help your camper have a safe, fun, and comfortable experience, please be sure they come prepared with the following:
+
+🥤 Essentials
+A refillable water bottle (plastic or metal only—no glass)
+
+A healthy lunch and snacks to fuel their day
+
+👕 What to Wear
+Campers should wear:
+
+Snug-fitting bottoms that go past the knee
+
+A shirt that covers the midriff and can be tucked in
+
+⚠ Important: Clothing must not have buttons, zippers, snaps, or Velcro. These can snag on the silks and may prevent your camper from participating in certain activities.
+
+Long hair needs to be tied back so it does not get caught in the silks!
+
+Some aerialists like to wear a shorty tank leotard with leggings and a t-shirt to slip on over it—this is a great option, but not required.
+
+Please note: The studio gets HOT!  We do have AC in the front of the building, but dress accordingly and bring layers if needed.
+
+💦 Water Play Alert!
+We plan to have outdoor water activities, so please pack:
+
+A change of clothes
+
+Crocs, flip-flops, or other shoes that can get wet.
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Ducking Gravity</h4>
+                    <p>An inclusive aerial arts community in Culpeper, VA, promoting physical and emotional well-being through movement.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/profile.php?id=61557121516331" target="_blank" aria-label="Facebook">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H6v4h4v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        </a>
+                        <a href="https://instagram.com/duckinggravity" target="_blank" aria-label="Instagram">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>Email: duckinggravity@gmail.com</p>
+                    <p>Address: 15532 Montanus Dr, Suite E<br>Culpeper, VA 22701</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <p><a href="index.html#about">About Us</a></p>
+                    <p><a href="index.html#services">Services</a></p>
+                    <p><a href="index.html#pricing">Pricing</a></p>
+                    <p><a href="https://duckinggravity-astro.replit.app/" target="_blank">Schedule</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Ducking Gravity. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html> 
