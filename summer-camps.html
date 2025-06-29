@@ -201,15 +201,35 @@
             padding-top: 2rem;
             color: var(--text-light);
         }
+        .camp-hero-img-wrapper {
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        .camp-hero-img {
+            width: 100%;
+            max-width: 100%;
+            height: 400px;
+            object-fit: contain;
+            border-radius: 0;
+            box-shadow: none;
+            display: block;
+        }
+        @media (max-width: 600px) {
+            .camp-hero-img {
+                height: 220px;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
-        <a href="index.html"><img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-green-wordless.jpg" alt="Ducking Gravity Logo" class="logo"></a>
+        <a href="index.html"><img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking_gravity_logo_long.jpg" alt="Ducking Gravity Logo" class="logo"></a>
         <div><a href="index.html" class="back-link">&larr; Back to Main Site</a></div>
     </header>
+    <div class="camp-hero-img-wrapper" style="margin-top:2.5rem;">
+      <img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-summer-camp-image.jpg" alt="Ducking Gravity Summer Camp" class="camp-hero-img">
+    </div>
     <div class="container">
-        <h1>Summer Camps 2025</h1>
         <div class="camp-section">
             <div class="camp-title">Jr Camp <span style="color:var(--text-light); font-weight:400;">Ages 4-8</span>
                 <button class="info-btn" onclick="document.getElementById('camp-info').scrollIntoView({behavior: 'smooth'});" aria-label="More Info">Info</button>
