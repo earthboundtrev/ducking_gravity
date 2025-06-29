@@ -230,7 +230,7 @@
         }
 
         .image-gallery {
-            position: relative;
+      position: relative;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 8px 24px var(--shadow);
@@ -278,7 +278,7 @@
 
         .service-card p {
             color: var(--text-light);
-            line-height: 1.6;
+      line-height: 1.6;
         }
 
         /* Pricing Section */
@@ -381,7 +381,7 @@
 
         .form-group input,
         .form-group textarea {
-            width: 100%;
+      width: 100%;
             padding: 12px;
             border: 2px solid var(--light-blue);
             border-radius: 8px;
@@ -409,7 +409,7 @@
         }
 
         .footer-content {
-            display: grid;
+      display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
             margin-bottom: 2rem;
@@ -441,7 +441,7 @@
 
         .social-links a {
             display: inline-flex;
-            align-items: center;
+      align-items: center;
             justify-content: center;
             width: 40px;
             height: 40px;
@@ -516,7 +516,7 @@
         }
 
         @media (max-width: 480px) {
-            header {
+      header {
                 position: static;
             }
             
@@ -585,34 +585,233 @@
             margin-top: 1rem;
             text-align: center;
     }
+
+    .hero-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .hero-location-pill {
+      background: var(--white);
+      color: var(--text-dark);
+      border-radius: 30px;
+      box-shadow: 0 2px 8px var(--shadow);
+      padding: 10px 28px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin: 0 auto 0.7rem auto;
+      display: block;
+      position: static;
+      z-index: 2;
+    }
+    .hero-subtitle-pill {
+      background: none;
+      color: var(--text-dark);
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 2rem;
+      text-align: center;
+      display: block;
+    }
+    @media (max-width: 600px) {
+      .hero-content {
+        position: relative;
+      }
+      .hero-row {
+        order: 2;
+        margin-bottom: 0.5rem;
+      }
+      .hero-location-pill {
+        position: static;
+        margin: 0.7rem auto 0 auto;
+        font-size: 1.05rem;
+        padding: 8px 16px;
+        max-width: 90vw;
+        width: auto;
+        display: block;
+      }
+      .hero-subtitle-pill {
+        position: static;
+        background: var(--white);
+        color: var(--text-dark);
+        border-radius: 30px;
+        box-shadow: 0 2px 8px var(--shadow);
+        padding: 8px 16px;
+        font-size: 1rem;
+        font-weight: 500;
+        margin: 0.7rem auto 0.7rem auto;
+        text-align: center;
+        max-width: none;
+        width: fit-content;
+        min-width: 0;
+        display: block;
+      }
+      .logo {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 0.5rem;
+      }
+      .nav-menu {
+        margin-bottom: 0.7rem;
+      }
+    }
+    @media (min-width: 601px) and (max-width: 1024px) {
+      .hero-content {
+        position: relative;
+      }
+      .hero-row {
+        order: 2;
+        margin-bottom: 0.5rem;
+      }
+      .hero-subtitle-pill {
+        position: static;
+        background: var(--white);
+        color: var(--text-dark);
+        border-radius: 30px;
+        box-shadow: 0 2px 8px var(--shadow);
+        padding: 10px 22px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin: 1.2rem auto 1.2rem auto;
+        text-align: center;
+        max-width: none;
+        width: fit-content;
+        min-width: 0;
+        display: block;
+      }
+      .hero-location-pill {
+        position: absolute;
+        right: 2vw;
+        top: 50%;
+        transform: translateY(-60%);
+        margin: 0;
+        font-size: 1.1rem;
+        padding: 10px 22px;
+        max-width: 70vw;
+        width: auto;
+        display: block;
+      }
+      .logo {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 0.5rem;
+      }
+      .nav-menu {
+        margin-bottom: 0.7rem;
+      }
+    }
+    @media (min-width: 1025px) {
+      .hero-content {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 0;
+        position: relative;
+        width: 100%;
+      }
+      .logo-col {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        flex-shrink: 0;
+        position: relative;
+      }
+      .logo {
+        margin: 0 24rem 0 0;
+        display: block;
+        align-self: flex-start;
+        max-width: 340px;
+        height: auto;
+      }
+      .hero-nav-and-pill {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        flex: 1;
+        min-width: 0;
+        position: relative;
+      }
+      .nav-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 100%;
+        position: relative;
+        margin-top: 18px;
+      }
+      .nav-menu {
+        display: flex;
+        flex-direction: row;
+        gap: 2.2rem;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translateX(0);
+      }
+      .nav-menu li {
+        margin: 0;
+      }
+      .hero-subtitle-pill {
+        background: var(--white);
+        color: var(--text-dark) !important;
+        border-radius: 30px;
+        box-shadow: 0 2px 8px var(--shadow);
+        padding: 10px 22px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin: 1.2rem 0 0 0;
+        text-align: left;
+        width: fit-content;
+        min-width: 0;
+        display: block;
+      }
+      .hero-location-pill {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        background: var(--white);
+        color: var(--text-dark) !important;
+        border-radius: 30px;
+        box-shadow: 0 2px 8px var(--shadow);
+        padding: 10px 28px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        display: block;
+        margin: 0;
+      }
+    }
   </style>
   </head>
   <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking_gravity_logo_long.jpg" alt="Ducking Gravity" class="logo">
-                <nav>
-                    <ul class="nav-menu">
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="summer-camps.html">Summer Camps</a></li>
-                        <li><a href="#pricing">Pricing</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </header>
-
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>Ducking Gravity</h1>
-                <p class="subtitle">An Aerial Arts Studio</p>
-                <div class="location">Culpeper, VA</div>
+                <div class="logo-col">
+                  <img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking_gravity_logo_long.jpg" alt="Ducking Gravity" class="logo">
+                  <div class="hero-subtitle-pill subtitle">An Aerial Arts Studio</div>
+                </div>
+                <div class="hero-nav-and-pill">
+                  <div class="nav-row">
+                    <nav style="margin-bottom:0;">
+                        <ul class="nav-menu">
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#services">Services</a></li>
+                            <li><a href="summer-camps.html">Summer Camps</a></li>
+                            <li><a href="#pricing">Pricing</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
+                    </nav>
+                  </div>
+                </div>
+                <div class="hero-location-pill location">Culpeper, VA</div>
             </div>
         </div>
     </section>
@@ -628,12 +827,12 @@
                         <h3>Welcome to Ducking Gravity</h3>
                         <p>Ducking Gravity is an inclusive aerial arts community in Culpeper, VA. Whether you are seeking self expression, a cross-training challenge, or just a unique, supportive community environment, we celebrate movement while promoting physical and emotional well-being, ensuring accessibility for all, regardless of ability or background.</p>
                         <p>Whether you are just starting out, or an experienced aerialist, our mixed level classes are designed to meet you where you are, and our coaches work with you specifically to help you define and reach your aerial goals.</p>
-                    </div>
+        </div>
                     <div class="image-gallery">
                         <img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/silks_setup.jpg" alt="Aerial Studio Setup" class="gallery-image">
-                    </div>
-                </div>
-            </section>
+      </div>
+    </div>
+  </section>
 
             <!-- Services Section -->
             <section id="services" class="section">
@@ -643,34 +842,34 @@
                         <h3>Summer Programs</h3>
                         <p>We are offering 3 Sessions of Beyond Aerial Summer Camps this year for ages 4-14. These camps are centered around aerial silks, and include games, crafts, outdoor fun, and other skill-building activities.</p>
                         <a href="summer-camps.html" class="cta-button" style="margin-top:1.2rem;">Learn More</a>
-                    </div>
+        </div>
                     <div class="service-card">
                         <h3>Aerial Classes</h3>
                         <p>Aerial classes for ages 3-8 on a membership basis, and ages 9-Adult on a membership or drop-in basis. Mixed level classes designed to meet you where you are.</p>
                         <a href="#contact" class="cta-button" style="margin-top:1.2rem;">Join Us</a>
-                    </div>
+      </div>
                     <div class="service-card">
                         <h3>Open Aerials</h3>
                         <p>Dedicated time for members of our community to work on what they are learning in a supportive environment.</p>
                         <a href="#contact" class="cta-button" style="margin-top:1.2rem;">Join Us</a>
-                    </div>
+    </div>
                     <div class="service-card">
                         <h3>Community Hours</h3>
                         <p>Fridays from 6:30-8PM. Drop on in! $15 at the door! No reservation or experience necessary!</p>
                         <a href="#contact" class="cta-button">Join Us</a>
-                    </div>
+    </div>
                     <div class="service-card">
                         <h3>Special Events</h3>
                         <p>Birthday parties, corporate events, team building, bachelorette parties, and special classes for all occasions.</p>
                         <a href="#contact" class="cta-button" style="margin-top:1.2rem;">Join Us</a>
-                    </div>
+        </div>
                     <div class="service-card">
                         <h3>Yoga & Training</h3>
                         <p>Yoga classes and workshops to support your aerial journey.</p>
                         <a href="#contact" class="cta-button" style="margin-top:1.2rem;">Join Us</a>
-                    </div>
-                </div>
-            </section>
+      </div>
+    </div>
+  </section>
 
             <!-- Pricing Section -->
             <section id="pricing" class="section">
@@ -681,21 +880,21 @@
                         <div class="pricing-price">$15</div>
                         <p class="pricing-description">Drop-in sessions every Friday from 6:30-8PM. No reservation or experience necessary!</p>
                         <a href="#contact" class="cta-button">Join Us</a>
-                    </div>
+      </div>
                     <div class="pricing-card featured">
                         <h3 class="pricing-title">Membership</h3>
                         <div class="pricing-price">Contact Us</div>
                         <p class="pricing-description">Flexible membership options for regular aerialists. Includes access to classes, open aerials, and special events.</p>
                         <a href="#contact" class="cta-button">Learn More</a>
-                    </div>
+                </div>
                     <div class="pricing-card">
                         <h3 class="pricing-title">Drop-In Classes</h3>
                         <div class="pricing-price">Contact Us</div>
                         <p class="pricing-description">Interested in trying aerial arts or visiting occasionally? Contact us to learn more about our drop-in class options for ages 9-Adult.</p>
                         <a href="#contact" class="cta-button">Learn More</a>
-                    </div>
                 </div>
-            </section>
+            </div>
+  </section>
 
             <!-- Contact Section -->
             <section id="contact" class="contact-section">
@@ -713,29 +912,29 @@
                                 <iframe
                                     src="https://www.google.com/maps?q=15532+Montanus+Dr,+Suite+E,+Culpeper,+VA+22701&output=embed"
                                     width="100%" height="220" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                            </div>
-                        </div>
+    </div>
+      </div>
                         <div class="contact-form">
                             <form id="contact-form">
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label for="first-name">First Name</label>
                                         <input type="text" id="first-name" name="first_name" required>
-                                    </div>
+      </div>
                                     <div class="form-group">
                                         <label for="last-name">Last Name</label>
                                         <input type="text" id="last-name" name="last_name" required>
-                                    </div>
-                                </div>
+      </div>
+      </div>
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label for="email">Email</label>
                                         <input type="email" id="email" name="email" required>
-                                    </div>
+      </div>
                                     <div class="form-group">
                                         <label for="phone">Phone</label>
                                         <input type="tel" id="phone" name="phone" required>
-                                    </div>
+      </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="subject">Subject</label>
@@ -746,12 +945,12 @@
                                     <textarea id="message" name="message" rows="5" required></textarea>
                                 </div>
                                 <button type="submit" class="cta-button" style="width: 100%;">Send Message</button>
-                            </form>
+    </form>
                             <div id="form-status"></div>
                         </div>
                     </div>
                 </div>
-            </section>
+  </section>
         </div>
     </main>
 
@@ -768,9 +967,9 @@
                         </a>
                         <a href="https://instagram.com/duckinggravity" target="_blank" aria-label="Instagram">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
-                        </a>
-                    </div>
-                </div>
+        </a>
+      </div>
+    </div>
                 <div class="footer-section">
                     <h4>Contact Info</h4>
                     <p>Email: duckinggravity@gmail.com</p>
