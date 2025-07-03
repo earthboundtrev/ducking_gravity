@@ -368,6 +368,12 @@
             box-shadow: 0 4px 16px var(--shadow);
         }
 
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -393,12 +399,6 @@
         .form-group textarea:focus {
             outline: none;
             border-color: var(--hard-green);
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
         }
 
         /* Footer */
@@ -917,38 +917,44 @@
     </div>
       </div>
                         <div class="contact-form">
-                            <form id="contact-form">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="first-name">First Name</label>
-                                        <input type="text" id="first-name" name="first_name" required>
-      </div>
-                                    <div class="form-group">
-                                        <label for="last-name">Last Name</label>
-                                        <input type="text" id="last-name" name="last_name" required>
-      </div>
-      </div>
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input type="email" id="email" name="email" required>
-      </div>
-                                    <div class="form-group">
-                                        <label for="phone">Phone</label>
-                                        <input type="tel" id="phone" name="phone" required>
-      </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="subject">Subject</label>
-                                    <input type="text" id="subject" name="subject" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="message">Message</label>
-                                    <textarea id="message" name="message" rows="5" required></textarea>
-                                </div>
-                                <button type="submit" class="cta-button" style="width: 100%;">Send Message</button>
+    <form id="contact-form">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="first-name">First Name</label>
+                <input type="text" id="first-name" name="first_name" required>
+                <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
+            </div>
+            <div class="form-group">
+                <label for="last-name">Last Name</label>
+                <input type="text" id="last-name" name="last_name" required>
+                <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" name="phone" required>
+                <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" required>
+            <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
+        </div>
+        <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+            <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
+        </div>
+        <button type="submit" class="cta-button" style="width: 100%;">Send Message</button>
     </form>
-                            <div id="form-status"></div>
+    <div id="form-status"></div>
                         </div>
                     </div>
                 </div>
@@ -1029,16 +1035,19 @@
 
         // EmailJS form handling
     (function() {
+      // Wait for EmailJS to be loaded
       if (typeof emailjs === 'undefined') {
         console.error('EmailJS is not loaded');
         return;
       }
 
+      // Initialize EmailJS with your public key
       emailjs.init(window.EMAILJS_PUBLIC_KEY);
 
       const form = document.getElementById('contact-form');
       const formStatus = document.getElementById('form-status');
 
+      // Validation functions
       function validateEmail(email) {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(email);
@@ -1053,47 +1062,76 @@
         return name.trim().length >= 2;
       }
 
-            function showMessage(message, type) {
-                formStatus.innerHTML = `<div class="${type}-message">${message}</div>`;
-                formStatus.style.display = 'block';
-            }
+      function showError(input, message) {
+        const errorElement = input.nextElementSibling;
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+        input.style.borderColor = 'red';
+      }
+
+      function clearError(input) {
+        const errorElement = input.nextElementSibling;
+        errorElement.style.display = 'none';
+        input.style.borderColor = '';
+      }
+
+      // Add input event listeners for real-time validation
+      const inputs = form.querySelectorAll('input, textarea');
+      inputs.forEach(input => {
+        input.addEventListener('input', () => {
+          clearError(input);
+        });
+      });
 
       form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
+        let isValid = true;
         const formData = new FormData(form);
+
+        // Validate first name
         const firstName = formData.get('first_name');
+        if (!validateName(firstName)) {
+          showError(document.getElementById('first-name'), 'Please enter a valid first name');
+          isValid = false;
+        }
+
+        // Validate last name
         const lastName = formData.get('last_name');
-                const email = formData.get('email');
-                const phone = formData.get('phone');
-                const message = formData.get('message');
+        if (!validateName(lastName)) {
+          showError(document.getElementById('last-name'), 'Please enter a valid last name');
+          isValid = false;
+        }
 
-                // Validation
-                if (!validateName(firstName) || !validateName(lastName)) {
-                    showMessage('Please enter valid names (at least 2 characters each)', 'error');
-                    return;
-                }
-
+        // Validate email
+        const email = formData.get('email');
         if (!validateEmail(email)) {
-                    showMessage('Please enter a valid email address', 'error');
-                    return;
+          showError(document.getElementById('email'), 'Please enter a valid email address');
+          isValid = false;
         }
 
+        // Validate phone
+        const phone = formData.get('phone');
         if (!validatePhone(phone)) {
-                    showMessage('Please enter a valid phone number', 'error');
-                    return;
+          showError(document.getElementById('phone'), 'Please enter a valid phone number');
+          isValid = false;
         }
 
+        // Validate message
+        const message = formData.get('message');
         if (!message.trim()) {
-                    showMessage('Please enter a message', 'error');
+          showError(document.getElementById('message'), 'Please enter a message');
+          isValid = false;
+        }
+
+        if (!isValid) {
           return;
         }
 
         // Show loading state
-                const submitButton = form.querySelector('.cta-button');
+        const submitButton = form.querySelector('.cta-button');
         submitButton.disabled = true;
         submitButton.textContent = 'Sending...';
-                form.classList.add('loading');
 
         try {
           const templateParams = {
@@ -1104,22 +1142,32 @@
             message: message
           };
 
+          console.log('Sending email with params:', templateParams);
+          console.log('Using service ID:', window.EMAILJS_SERVICE_ID);
+          console.log('Using template ID:', window.EMAILJS_TEMPLATE_ID);
+
           await emailjs.send(
             window.EMAILJS_SERVICE_ID,
             window.EMAILJS_TEMPLATE_ID,
             templateParams
           );
 
-                    showMessage('Message sent successfully! We\'ll get back to you soon.', 'success');
+          // Show success message
+          formStatus.style.display = 'block';
+          formStatus.style.color = 'green';
+          formStatus.textContent = 'Message sent successfully!';
           form.reset();
 
         } catch (error) {
-                    console.error('EmailJS Error:', error);
-                    showMessage(`Failed to send message: ${error.message || 'Unknown error'}`, 'error');
+          // Show detailed error message
+          console.error('Full EmailJS Error:', error);
+          formStatus.style.display = 'block';
+          formStatus.style.color = 'red';
+          formStatus.textContent = `Failed to send message: ${error.message || 'Unknown error'}`;
         } finally {
+          // Reset button state
           submitButton.disabled = false;
-                    submitButton.textContent = 'Send Message';
-                    form.classList.remove('loading');
+          submitButton.textContent = 'Send Message';
         }
       });
     })();
