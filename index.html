@@ -1035,23 +1035,6 @@
 
     // EmailJS form handling
 (function() {
-  // Debug: Log all EMAILJS_ keys on window
-  console.log('EMAILJS keys on window:', Object.keys(window).filter(k => k.startsWith('EMAILJS_')).reduce((acc, k) => { acc[k] = window[k]; return acc; }, {}));
-  // Debug: Log each key individually
-  console.log('EMAILJS_PUBLIC_KEY:', window.EMAILJS_PUBLIC_KEY);
-  console.log('EMAILJS_SERVICE_ID:', window.EMAILJS_SERVICE_ID);
-  console.log('EMAILJS_TEMPLATE_ID:', window.EMAILJS_TEMPLATE_ID);
-
-  if (!window.EMAILJS_PUBLIC_KEY) {
-    console.error('DEBUG: EMAILJS_PUBLIC_KEY is missing or empty!');
-  }
-  if (!window.EMAILJS_SERVICE_ID) {
-    console.error('DEBUG: EMAILJS_SERVICE_ID is missing or empty!');
-  }
-  if (!window.EMAILJS_TEMPLATE_ID) {
-    console.error('DEBUG: EMAILJS_TEMPLATE_ID is missing or empty!');
-  }
-
   // Wait for EmailJS to be loaded
   if (typeof emailjs === 'undefined') {
     console.error('EmailJS is not loaded');
@@ -1159,10 +1142,6 @@
         message: message
       };
 
-      console.log('Sending email with params:', templateParams);
-      console.log('Using service ID:', window.EMAILJS_SERVICE_ID);
-      console.log('Using template ID:', window.EMAILJS_TEMPLATE_ID);
-
       await emailjs.send(
         window.EMAILJS_SERVICE_ID,
         window.EMAILJS_TEMPLATE_ID,
@@ -1177,7 +1156,6 @@
 
     } catch (error) {
       // Show detailed error message
-      console.error('Full EmailJS Error:', error);
       formStatus.style.display = 'block';
       formStatus.style.color = 'red';
       formStatus.textContent = `Failed to send message: ${error.message || 'Unknown error'}`;
