@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Parties | Ducking Gravity</title>
+    <link rel="icon" type="image/png" href="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-green.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        :root {
+            --teal: #b1d2cc;
+            --hyperlink-color: #208b0b;
+            --sky: #d5e3e5;
+            --aqua: #bfd2d6;
+            --mint: #dff0f1;
+            --gray: #f5f8f8;
+            --light-blue: #e0ebed;
+            --footer-blue: #bcd4d7;
+            --hard-green: #2e7d32;
+            --text-dark: #2c3e50;
+            --text-light: #6b8c85;
+            --white: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray);
+            color: var(--text-dark);
+            margin: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background: var(--white);
+            box-shadow: 0 2px 10px var(--shadow);
+            padding: 1.5rem 0 1rem 0;
+            text-align: center;
+        }
+        .logo {
+            height: 70px;
+            margin-bottom: 0.5rem;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: var(--hard-green);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+        }
+        .back-link:hover {
+            color: var(--teal);
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 1.5rem 0 0.5rem 0;
+            text-align: center;
+        }
+        .camp-section {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 16px var(--shadow);
+            margin: 2rem 0;
+            padding: 2rem 1.5rem;
+        }
+        .camp-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--hard-green);
+            margin-bottom: 0.5rem;
+        }
+        .camp-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        .camp-table th, .camp-table td {
+            padding: 0.7rem 0.5rem;
+            text-align: left;
+        }
+        .camp-table th {
+            color: var(--text-dark);
+            font-weight: 600;
+            border-bottom: 2px solid var(--teal);
+        }
+        .camp-table td {
+            color: var(--text-light);
+            border-bottom: 1px solid var(--light-blue);
+        }
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--hard-green);
+            font-weight: 600;
+            margin: 2.5rem 0 1rem 0;
+        }
+        ul.camp-list {
+            margin: 0 0 1.5rem 1.5rem;
+            padding: 0;
+            color: var(--text-light);
+        }
+        ul.camp-list li {
+            margin-bottom: 0.7em;
+            font-size: 1.05rem;
+        }
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 0.3em;
+        }
+        .note {
+            background: var(--mint);
+            border-left: 4px solid var(--hard-green);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            color: var(--text-dark);
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            .camp-section {
+                padding: 1rem 0.5rem;
+            }
+            .container {
+                padding: 0 5px;
+            }
+        }
+        .info-btn {
+            background: var(--hard-green);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.25em 0.9em;
+            font-size: 0.95em;
+            font-weight: 600;
+            margin-left: 0.7em;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s;
+            vertical-align: middle;
+            box-shadow: 0 2px 6px var(--shadow);
+            text-decoration: none;
+        }
+        .info-btn:hover, .info-btn:focus {
+            background: #176b22;
+            outline: none;
+            text-decoration: none;
+        }
+        /* Footer */
+        footer {
+            background: var(--footer-blue);
+            padding: 3rem 0 2rem;
+            text-align: center;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-section h4 {
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .footer-section p,
+        .footer-section a {
+            color: var(--text-light);
+            text-decoration: none;
+            line-height: 1.6;
+        }
+        .footer-section a:hover {
+            color: var(--hard-green);
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--white);
+            border-radius: 50%;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+        .social-links a:hover {
+            background: var(--hard-green);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+        .footer-bottom {
+            border-top: 1px solid var(--aqua);
+            padding-top: 2rem;
+            color: var(--text-light);
+        }
+        .camp-hero-img-wrapper {
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        .camp-hero-img {
+            width: 100%;
+            max-width: 100%;
+            height: 400px;
+            object-fit: contain;
+            border-radius: 0;
+            box-shadow: none;
+            display: block;
+        }
+        @media (max-width: 600px) {
+            .camp-hero-img {
+                height: 220px;
+            }
+        }
+        .camp-table .info-btn {
+            font-size: 0.95em;
+        }
+        .camp-table .info-btn[data-mobile-label]::after {
+            content: 'Sign Up!';
+            display: inline;
+        }
+        .camp-table .info-btn[data-mobile-label] span {
+            display: none;
+        }
+        @media (min-width: 601px) {
+            .camp-table .info-btn[data-mobile-label]::after {
+                content: '';
+                display: none;
+            }
+            .camp-table .info-btn[data-mobile-label] span {
+                display: inline;
+            }
+        }
+        /* Contact Form Styles */
+        .contact-form {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px var(--shadow);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light-blue);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--hard-green);
+        }
+        .cta-button {
+            background: var(--hard-green);
+            color: var(--white);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            margin: 1.5rem auto 0 auto;
+            text-align: center;
+            width: fit-content;
+        }
+        .cta-button:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+        }
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html"><img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking_gravity_logo_long.jpg" alt="Ducking Gravity Logo" class="logo"></a>
+        <div>
+            <a href="index.html" class="back-link">&larr; Back to Main Site</a>
+        </div>
+    </header>
+    <div class="camp-hero-img-wrapper" style="margin-top:2.5rem;">
+      <img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/birthday_parties_flyer.png" alt="Birthday Parties Flyer" class="camp-hero-img">
+    </div>
+    <div class="container">
+        <div class="camp-section">
+            <div class="contact-form">
+                <form id="contact-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="first-name">First Name</label>
+                            <input type="text" id="first-name" name="first_name" required>
+                            <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name">Last Name</label>
+                            <input type="text" id="last-name" name="last_name" required>
+                            <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                            <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" name="phone" required>
+                            <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required>
+                        <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                        <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
+                    </div>
+                    <button type="submit" class="cta-button" style="width: 100%;">Send Message</button>
+                </form>
+                <div id="form-status"></div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Ducking Gravity</h4>
+                    <p>An inclusive aerial arts community in Culpeper, VA, promoting physical and emotional well-being through movement.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/profile.php?id=61557121516331" target="_blank" aria-label="Facebook">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H6v4h4v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        </a>
+                        <a href="https://instagram.com/duckinggravity" target="_blank" aria-label="Instagram">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>Email: duckinggravity@gmail.com</p>
+                    <p>Address: 15532E Montanus Dr, Culpeper, VA 22701</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <p><a href="index.html#about">About Us</a></p>
+                    <p><a href="index.html#services">Services</a></p>
+                    <p><a href="birthday-parties.html">Birthday Parties</a></p>
+                    <p><a href="https://duckinggravity-astro.replit.app/calendar" target="_blank">Schedule</a></p>
+                    <p><a href="summer-camps.html">Summer Camps</a></p>
+                    <p><a href="workshops.html">Workshops</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Ducking Gravity. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Set EmailJS keys here, before any logic uses them
+        window.EMAILJS_PUBLIC_KEY = "KaOSEmcu_W96fyEkr";
+        window.EMAILJS_SERVICE_ID = "service_73674e9";
+        window.EMAILJS_TEMPLATE_ID = "template_i7fp09h";
+
+        // EmailJS form handling
+        (function() {
+            // Wait for EmailJS to be loaded
+            if (typeof emailjs === 'undefined') {
+                console.error('EmailJS is not loaded');
+                return;
+            }
+
+            // Initialize EmailJS with your public key
+            emailjs.init(window.EMAILJS_PUBLIC_KEY);
+
+            const form = document.getElementById('contact-form');
+            const formStatus = document.getElementById('form-status');
+
+            // Validation functions
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+
+            function validatePhone(phone) {
+                const re = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+                return re.test(phone);
+            }
+
+            function validateName(name) {
+                return name.trim().length >= 2;
+            }
+
+            function showError(input, message) {
+                const errorElement = input.nextElementSibling;
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+                input.style.borderColor = 'red';
+            }
+
+            function clearError(input) {
+                const errorElement = input.nextElementSibling;
+                errorElement.style.display = 'none';
+                input.style.borderColor = '';
+            }
+
+            // Add input event listeners for real-time validation
+            const inputs = form.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    clearError(input);
+                });
+            });
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                let isValid = true;
+                const formData = new FormData(form);
+
+                // Validate first name
+                const firstName = formData.get('first_name');
+                if (!validateName(firstName)) {
+                    showError(document.getElementById('first-name'), 'Please enter a valid first name');
+                    isValid = false;
+                }
+
+                // Validate last name
+                const lastName = formData.get('last_name');
+                if (!validateName(lastName)) {
+                    showError(document.getElementById('last-name'), 'Please enter a valid last name');
+                    isValid = false;
+                }
+
+                // Validate email
+                const email = formData.get('email');
+                if (!validateEmail(email)) {
+                    showError(document.getElementById('email'), 'Please enter a valid email address');
+                    isValid = false;
+                }
+
+                // Validate phone
+                const phone = formData.get('phone');
+                if (!validatePhone(phone)) {
+                    showError(document.getElementById('phone'), 'Please enter a valid phone number');
+                    isValid = false;
+                }
+
+                // Validate message
+                const message = formData.get('message');
+                if (!message.trim()) {
+                    showError(document.getElementById('message'), 'Please enter a message');
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    return;
+                }
+
+                // Show loading state
+                const submitButton = form.querySelector('.cta-button');
+                submitButton.disabled = true;
+                submitButton.textContent = 'Sending...';
+
+                try {
+                    const templateParams = {
+                        from_name: `${firstName} ${lastName}`,
+                        reply_to: email,
+                        phone: phone,
+                        subject: formData.get('subject'),
+                        message: message
+                    };
+
+                    await emailjs.send(
+                        window.EMAILJS_SERVICE_ID,
+                        window.EMAILJS_TEMPLATE_ID,
+                        templateParams
+                    );
+
+                    // Show success message
+                    formStatus.style.display = 'block';
+                    formStatus.style.color = 'green';
+                    formStatus.textContent = 'Message sent successfully!';
+                    form.reset();
+
+                } catch (error) {
+                    // Show detailed error message
+                    formStatus.style.display = 'block';
+                    formStatus.style.color = 'red';
+                    formStatus.textContent = `Failed to send message: ${error.message || 'Unknown error'}`;
+                } finally {
+                    // Reset button state
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Send Message';
+                }
+            });
+        })();
+    </script>
+</body>
+</html> 

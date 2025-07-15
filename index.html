@@ -549,7 +549,7 @@
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
-            transition: all 0.6s ease;
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
         .fade-in.visible {
@@ -782,6 +782,26 @@
         margin: 0;
       }
     }
+
+    /* Hero Image Styles for Events */
+    .camp-hero-img-wrapper {
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+    .camp-hero-img {
+        width: 100%;
+        max-width: 100%;
+        height: 400px;
+        object-fit: contain;
+        border-radius: 0;
+        box-shadow: none;
+        display: block;
+    }
+    @media (max-width: 600px) {
+        .camp-hero-img {
+            height: 220px;
+        }
+    }
   </style>
   </head>
   <body>
@@ -801,7 +821,7 @@
                             <li><a href="#services">Services</a></li>
                             <li><a href="summer-camps.html">Summer Camps</a></li>
                             <li><a href="workshops.html">Workshops</a></li>
-                            <li><a href="#pricing">Pricing</a></li>
+                            <li><a href="birthday-parties.html">Birthday Parties</a></li>
                             <li><a href="#contact">Contact</a></li>
                         </ul>
                     </nav>
@@ -891,6 +911,14 @@
                 </div>
             </div>
   </section>
+
+            <!-- Upcoming Events Section -->
+            <section class="section">
+                <h2 class="section-title">Upcoming Events</h2>
+                <div class="camp-hero-img-wrapper">
+                    <img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/special_events_flyer.png" alt="Special Events Flyer" class="camp-hero-img">
+                </div>
+            </section>
 
             <!-- Contact Section -->
             <section id="contact" class="contact-section">
@@ -984,7 +1012,7 @@
                     <p><a href="#about">About Us</a></p>
                     <p><a href="summer-camps.html">Summer Camps</a></p>
                     <p><a href="#services">Services</a></p>
-                    <p><a href="#pricing">Pricing</a></p>
+                    <p><a href="birthday-parties.html">Birthday Parties</a></p>
                     <p><a href="https://duckinggravity-astro.replit.app/calendar" target="_blank">Schedule</a></p>
                 </div>
             </div>
