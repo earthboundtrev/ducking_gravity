@@ -7,6 +7,8 @@
     <link rel="icon" type="image/png" href="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-green.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <!-- Google reCAPTCHA -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <style>
     :root {
       --teal: #b1d2cc;
@@ -1016,6 +1018,10 @@
             <textarea id="message" name="message" rows="5" required></textarea>
             <span class="error-message" style="color: red; font-size: 0.8em; display: none;"></span>
         </div>
+        <div class="form-group" style="display: flex; justify-content: center; margin-top: 1rem;">
+            <div class="g-recaptcha" data-sitekey="6LdKbuorAAAAAFyh6QzcXPW6MylstEHC0OFafl8X"></div>
+        </div>
+        <div id="recaptcha-error" style="color: red; text-align: center; display: none; margin-top: 0.5rem;">Please complete the reCAPTCHA verification</div>
         <button type="submit" class="cta-button" style="width: 100%;">Send Message</button>
     </form>
     <div id="form-status"></div>
@@ -1200,6 +1206,16 @@
       isValid = false;
     }
 
+    // Validate reCAPTCHA
+    const recaptchaResponse = grecaptcha.getResponse();
+    const recaptchaError = document.getElementById('recaptcha-error');
+    if (!recaptchaResponse) {
+      recaptchaError.style.display = 'block';
+      isValid = false;
+    } else {
+      recaptchaError.style.display = 'none';
+    }
+
     if (!isValid) {
       return;
     }
@@ -1229,6 +1245,9 @@
       formStatus.style.color = 'green';
       formStatus.textContent = 'Message sent successfully!';
       form.reset();
+      
+      // Reset reCAPTCHA
+      grecaptcha.reset();
 
     } catch (error) {
       // Show detailed error message
