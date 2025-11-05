@@ -1257,11 +1257,12 @@
         }
         
         // Show popup if conditions are met
-        if (shouldShowPopup()) {
-            popup.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
-            sessionStorage.setItem(popupShownKey, 'true');
-        }
+        // DISABLED: Popup modal is currently disabled
+        // if (shouldShowPopup()) {
+        //     popup.style.display = 'block';
+        //     document.body.style.overflow = 'hidden'; // Prevent scrolling
+        //     sessionStorage.setItem(popupShownKey, 'true');
+        // }
         
         // Close popup handlers
         function closePopup() {
