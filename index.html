@@ -914,15 +914,30 @@
         margin-bottom: 1.5rem;
     }
     
-    .popup-age-links {
+    .popup-slots {
         display: flex;
-        justify-content: center;
-        gap: 2rem;
-        align-items: center;
-        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 1rem;
     }
     
-    .popup-age-button {
+    .popup-slot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem 1rem;
+        background: var(--gray);
+        border-radius: 10px;
+        box-shadow: 0 2px 6px var(--shadow);
+    }
+    
+    .popup-slot-time {
+        font-weight: 600;
+        color: var(--text-dark);
+        font-size: 1rem;
+    }
+    
+    .popup-slot-button {
         background: var(--hard-green);
         color: var(--white);
         padding: 12px 24px;
@@ -932,12 +947,14 @@
         font-size: 1rem;
         cursor: pointer;
         text-decoration: none;
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         transition: all 0.3s ease;
         box-shadow: 0 2px 8px rgba(46, 125, 50, 0.2);
     }
     
-    .popup-age-button:hover {
+    .popup-slot-button:hover {
         background: #1b5e20;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
@@ -945,13 +962,8 @@
         text-decoration: none;
     }
     
-    .popup-age-button:active {
+    .popup-slot-button:active {
         transform: translateY(0);
-    }
-    
-    .popup-age-label {
-        font-weight: 600;
-        color: var(--text-dark);
     }
     
     @media (max-width: 600px) {
@@ -961,9 +973,10 @@
             width: 95%;
         }
         
-        .popup-age-links {
+        .popup-slot {
             flex-direction: column;
-            gap: 1rem;
+            align-items: stretch;
+            text-align: center;
         }
         
         .popup-text {
@@ -978,13 +991,33 @@
     <div id="electAerialsPopup" class="popup-modal">
         <div class="popup-modal-content">
             <span class="popup-close" id="closePopup">&times;</span>
-            <img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/elect_aerials_flyer.jpg" alt="Elect Aerials Event" class="popup-image">
+            <img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/aerial_photography_flyer.jpg" alt="Aerial Photography Sessions" class="popup-image">
             <p class="popup-text">Want to learn more about the event?</p>
-            <div class="popup-age-links">
-                <span class="popup-age-label">4-7</span>
-                <a href="https://smartastro.app/calendar?class=662" target="_blank" class="popup-age-button">Learn More</a>
-                <span class="popup-age-label">8-14</span>
-                <a href="https://smartastro.app/calendar?class=663" target="_blank" class="popup-age-button">Learn More</a>
+            <div class="popup-slots">
+                <div class="popup-slot">
+                    <span class="popup-slot-time">9am - 10am</span>
+                    <a href="https://smartastro.app/calendar?class=682" target="_blank" class="popup-slot-button">Learn More</a>
+                </div>
+                <div class="popup-slot">
+                    <span class="popup-slot-time">10am - 11am</span>
+                    <a href="https://smartastro.app/calendar?class=689" target="_blank" class="popup-slot-button">Learn More</a>
+                </div>
+                <div class="popup-slot">
+                    <span class="popup-slot-time">11am - 12pm</span>
+                    <a href="https://smartastro.app/calendar?class=688" target="_blank" class="popup-slot-button">Learn More</a>
+                </div>
+                <div class="popup-slot">
+                    <span class="popup-slot-time">12pm - 1pm</span>
+                    <a href="https://smartastro.app/calendar?class=685" target="_blank" class="popup-slot-button">Learn More</a>
+                </div>
+                <div class="popup-slot">
+                    <span class="popup-slot-time">1pm - 2pm</span>
+                    <a href="https://smartastro.app/calendar?class=686" target="_blank" class="popup-slot-button">Learn More</a>
+                </div>
+                <div class="popup-slot">
+                    <span class="popup-slot-time">2pm - 3pm</span>
+                    <a href="https://smartastro.app/calendar?class=687" target="_blank" class="popup-slot-button">Learn More</a>
+                </div>
             </div>
         </div>
     </div>
@@ -1257,12 +1290,11 @@
         }
         
         // Show popup if conditions are met
-        // DISABLED: Popup modal is currently disabled
-        // if (shouldShowPopup()) {
-        //     popup.style.display = 'block';
-        //     document.body.style.overflow = 'hidden'; // Prevent scrolling
-        //     sessionStorage.setItem(popupShownKey, 'true');
-        // }
+        if (shouldShowPopup()) {
+            popup.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            sessionStorage.setItem(popupShownKey, 'true');
+        }
         
         // Close popup handlers
         function closePopup() {
