@@ -966,6 +966,14 @@
         transform: translateY(0);
     }
     
+    .popup-action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+        margin-top: 1.5rem;
+    }
+    
     .popup-website-button {
         margin-top: 1.5rem;
         background: var(--hard-green);
@@ -992,6 +1000,21 @@
     
     .popup-website-button:active {
         transform: translateY(0);
+    }
+    
+    .popup-close-secondary {
+        background: none;
+        border: none;
+        color: #c62828;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        text-decoration: underline;
+        transition: color 0.3s ease;
+    }
+    
+    .popup-close-secondary:hover {
+        color: #b71c1c;
     }
     
     @media (max-width: 600px) {
@@ -1047,8 +1070,9 @@
                     <a href="https://smartastro.app/calendar?class=687" target="_blank" class="popup-slot-button">Learn More</a>
                 </div>
             </div>
-            <div style="text-align: center;">
-                <a href="https://smartastro.app/calendar" target="_blank" class="popup-website-button">Go to Website</a>
+            <div class="popup-action-buttons">
+                <a href="https://smartastro.app/calendar" target="_blank" class="popup-website-button">Go to Calendar</a>
+                <button type="button" class="popup-close-secondary">Go to Website</button>
             </div>
         </div>
     </div>
@@ -1285,6 +1309,7 @@
         const closeBtn = document.getElementById('closePopup');
         const popupShownKey = 'electAerialsPopupShown';
         const websiteButton = document.querySelector('.popup-website-button');
+        const closeSecondaryBtn = document.querySelector('.popup-close-secondary');
         let touchStartY = null;
         
         // Check if popup should be shown
@@ -1340,6 +1365,9 @@
             websiteButton.addEventListener('click', () => {
                 // Keep popup open - no action needed here for closing
             });
+        }
+        if (closeSecondaryBtn) {
+            closeSecondaryBtn.addEventListener('click', closePopup);
         }
         
         function handleTouchStart(e) {
