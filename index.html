@@ -887,7 +887,7 @@
         position: absolute;
         right: 1rem;
         top: 1rem;
-        color: var(--text-light);
+        color: #c62828;
         font-size: 2rem;
         font-weight: 700;
         cursor: pointer;
@@ -896,7 +896,7 @@
     }
     
     .popup-close:hover {
-        color: var(--hard-green);
+        color: #b71c1c;
     }
     
     .popup-image {
@@ -966,6 +966,34 @@
         transform: translateY(0);
     }
     
+    .popup-website-button {
+        margin-top: 1.5rem;
+        background: var(--hard-green);
+        color: var(--white);
+        padding: 14px 28px;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 1.05rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 14px rgba(46, 125, 50, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .popup-website-button:hover {
+        background: #1b5e20;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(46, 125, 50, 0.35);
+        color: var(--white);
+        text-decoration: none;
+    }
+    
+    .popup-website-button:active {
+        transform: translateY(0);
+    }
+    
     @media (max-width: 600px) {
         .popup-modal-content {
             margin: 10% auto;
@@ -1018,6 +1046,9 @@
                     <span class="popup-slot-time">2pm - 3pm</span>
                     <a href="https://smartastro.app/calendar?class=687" target="_blank" class="popup-slot-button">Learn More</a>
                 </div>
+            </div>
+            <div style="text-align: center;">
+                <a href="https://smartastro.app/calendar" target="_blank" class="popup-website-button">Go to Website</a>
             </div>
         </div>
     </div>
@@ -1253,6 +1284,8 @@
         const popup = document.getElementById('electAerialsPopup');
         const closeBtn = document.getElementById('closePopup');
         const popupShownKey = 'electAerialsPopupShown';
+        const websiteButton = document.querySelector('.popup-website-button');
+        let touchStartY = null;
         
         // Check if popup should be shown
         function shouldShowPopup() {
@@ -1303,6 +1336,26 @@
         }
         
         closeBtn.addEventListener('click', closePopup);
+        if (websiteButton) {
+            websiteButton.addEventListener('click', () => {
+                // Keep popup open - no action needed here for closing
+            });
+        }
+        
+        function handleTouchStart(e) {
+            if (e.touches.length === 1) {
+                touchStartY = e.touches[0].clientY;
+            }
+        }
+        
+        function handleTouchEnd(e) {
+            if (touchStartY === null) return;
+            const touchEndY = e.changedTouches[0].clientY;
+            if (touchStartY - touchEndY > 50) {
+                closePopup();
+            }
+            touchStartY = null;
+        }
         
         // Close when clicking outside the modal
         popup.addEventListener('click', function(e) {
@@ -1310,6 +1363,9 @@
                 closePopup();
             }
         });
+        
+        popup.addEventListener('touchstart', handleTouchStart, { passive: true });
+        popup.addEventListener('touchend', handleTouchEnd, { passive: true });
         
         // Close on Escape key
         document.addEventListener('keydown', function(e) {
