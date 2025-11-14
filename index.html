@@ -1311,7 +1311,6 @@
         const popupShownKey = 'electAerialsPopupShown';
         const websiteButton = document.querySelector('.popup-website-button');
         const closeSecondaryBtn = document.querySelector('.popup-close-secondary');
-        let touchStartX = null;
         
         // Check if popup should be shown
         function shouldShowPopup() {
@@ -1371,21 +1370,6 @@
             closeSecondaryBtn.addEventListener('click', closePopup);
         }
         
-        function handleTouchStart(e) {
-            if (e.touches.length === 1) {
-                touchStartX = e.touches[0].clientX;
-            }
-        }
-        
-        function handleTouchEnd(e) {
-            if (touchStartX === null) return;
-            const touchEndX = e.changedTouches[0].clientX;
-            if (Math.abs(touchStartX - touchEndX) > 50) {
-                closePopup();
-            }
-            touchStartX = null;
-        }
-        
         // Close when clicking outside the modal
         popup.addEventListener('click', function(e) {
             if (e.target === popup) {
@@ -1393,8 +1377,6 @@
             }
         });
         
-        popup.addEventListener('touchstart', handleTouchStart, { passive: true });
-        popup.addEventListener('touchend', handleTouchEnd, { passive: true });
         
         // Close on Escape key
         document.addEventListener('keydown', function(e) {
