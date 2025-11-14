@@ -966,6 +966,21 @@
         transform: translateY(0);
     }
     
+    .popup-slot-button.disabled {
+        background: #bdbdbd;
+        color: #ffffff;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+    }
+    
+    .popup-slot-button.disabled:hover {
+        background: #bdbdbd;
+        color: #ffffff;
+        transform: none;
+        box-shadow: none;
+    }
+    
     .popup-action-buttons {
         display: flex;
         flex-direction: column;
@@ -1047,7 +1062,7 @@
             <div class="popup-slots">
                 <div class="popup-slot">
                     <span class="popup-slot-time">9am - 10am</span>
-                    <a href="https://smartastro.app/calendar?class=682" target="_blank" class="popup-slot-button">Learn More</a>
+                    <button type="button" class="popup-slot-button disabled" disabled>Full</button>
                 </div>
                 <div class="popup-slot">
                     <span class="popup-slot-time">10am - 11am</span>
