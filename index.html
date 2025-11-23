@@ -1566,27 +1566,23 @@
 
 
 
-    // Dropdown touch support for mobile/tablet
+    // Dropdown click/touch support for all screen sizes
     (function() {
         const dropdown = document.querySelector('.nav-dropdown');
         if (dropdown) {
             const dropdownLink = dropdown.querySelector('a');
             
-            // Handle click/tap on mobile/tablet
+            // Handle click/tap on all screen sizes
             dropdownLink.addEventListener('click', function(e) {
-                if (window.innerWidth <= 1024) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    dropdown.classList.toggle('active');
-                }
+                e.preventDefault();
+                e.stopPropagation();
+                dropdown.classList.toggle('active');
             });
             
-            // Close dropdown when clicking outside on touch devices
+            // Close dropdown when clicking outside on all screen sizes
             document.addEventListener('click', function(e) {
-                if (window.innerWidth <= 1024) {
-                    if (dropdown.classList.contains('active') && !dropdown.contains(e.target)) {
-                        dropdown.classList.remove('active');
-                    }
+                if (dropdown.classList.contains('active') && !dropdown.contains(e.target)) {
+                    dropdown.classList.remove('active');
                 }
             });
             
@@ -1594,11 +1590,9 @@
             const dropdownItems = dropdown.querySelectorAll('.nav-dropdown-menu a');
             dropdownItems.forEach(item => {
                 item.addEventListener('click', function() {
-                    if (window.innerWidth <= 1024) {
-                        setTimeout(() => {
-                            dropdown.classList.remove('active');
-                        }, 100);
-                    }
+                    setTimeout(() => {
+                        dropdown.classList.remove('active');
+                    }, 100);
                 });
             });
         }
