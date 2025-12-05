@@ -1050,6 +1050,59 @@
         color: #b71c1c;
     }
     
+    .popup-carousel {
+        position: relative;
+        width: 100%;
+    }
+    
+    .popup-carousel-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
+    
+    .popup-carousel-slide {
+        display: none;
+        width: 100%;
+    }
+    
+    .popup-carousel-slide.active {
+        display: block;
+    }
+    
+    .popup-carousel-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(46, 125, 50, 0.8);
+        color: var(--white);
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        cursor: pointer;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .popup-carousel-arrow:hover {
+        background: rgba(46, 125, 50, 1);
+        transform: translateY(-50%) scale(1.1);
+    }
+    
+    .popup-carousel-arrow-left {
+        left: -20px;
+    }
+    
+    .popup-carousel-arrow-right {
+        right: -20px;
+    }
+    
     .popup-image {
         width: 100%;
         height: auto;
@@ -1063,6 +1116,58 @@
         color: var(--text-dark);
         font-size: 1.1rem;
         margin-bottom: 1.5rem;
+    }
+    
+    .popup-dropdown-container {
+        margin-bottom: 1rem;
+    }
+    
+    .popup-dropdown-toggle {
+        width: 100%;
+        background: var(--hard-green);
+        color: var(--white);
+        padding: 14px 20px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(46, 125, 50, 0.2);
+    }
+    
+    .popup-dropdown-toggle:hover {
+        background: #1b5e20;
+        box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+    }
+    
+    .popup-dropdown-toggle.active {
+        background: #1b5e20;
+        border-radius: 10px 10px 0 0;
+    }
+    
+    .popup-dropdown-arrow {
+        transition: transform 0.3s ease;
+        font-size: 0.8rem;
+    }
+    
+    .popup-dropdown-toggle.active .popup-dropdown-arrow {
+        transform: rotate(180deg);
+    }
+    
+    .popup-dropdown-content {
+        display: none;
+        background: var(--gray);
+        border-radius: 0 0 10px 10px;
+        padding: 1rem;
+        border-top: 2px solid var(--hard-green);
+    }
+    
+    .popup-dropdown-content.active {
+        display: block;
     }
     
     .popup-slots {
@@ -1190,6 +1295,20 @@
             width: 95%;
         }
         
+        .popup-carousel-arrow {
+            width: 35px;
+            height: 35px;
+            font-size: 1.2rem;
+        }
+        
+        .popup-carousel-arrow-left {
+            left: -15px;
+        }
+        
+        .popup-carousel-arrow-right {
+            right: -15px;
+        }
+        
         .popup-slot {
             flex-direction: column;
             align-items: stretch;
@@ -1198,6 +1317,11 @@
         
         .popup-text {
             font-size: 1rem;
+        }
+        
+        .popup-dropdown-toggle {
+            font-size: 0.9rem;
+            padding: 12px 16px;
         }
     }
 
@@ -1208,37 +1332,126 @@
     <div id="electAerialsPopup" class="popup-modal">
         <div class="popup-modal-content">
             <span class="popup-close" id="closePopup">&times;</span>
-            <img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/aerial_photography_flyer.jpg" alt="Aerial Photography Sessions" class="popup-image">
-            <p class="popup-text">Want to learn more about the event?</p>
-            <div class="popup-slots">
-                <div class="popup-slot">
-                    <span class="popup-slot-time">9am - 10am</span>
-                    <button type="button" class="popup-slot-button disabled" disabled>Full</button>
+            <div class="popup-carousel">
+                <button class="popup-carousel-arrow popup-carousel-arrow-left" id="carouselPrev" aria-label="Previous slide">&larr;</button>
+                <div class="popup-carousel-container">
+                    <!-- Slide 1: Sleigh the Sky -->
+                    <div class="popup-carousel-slide active" data-slide="0">
+                        <img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/sleigh_the_sky_flyer.png" alt="Sleigh the Sky" class="popup-image">
+                        <p class="popup-text">Want to learn more about the event?</p>
+                        <div class="popup-dropdown-container">
+                            <button class="popup-dropdown-toggle" type="button">
+                                Sleigh the Sky Junior <span class="popup-dropdown-arrow">▼</span>
+                            </button>
+                            <div class="popup-dropdown-content">
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">December 19</span>
+                                    <a href="https://smartastro.app/calendar?class=846" target="_blank" class="popup-slot-button">6 spots left!</a>
+                                </div>
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">December 22</span>
+                                    <a href="https://smartastro.app/calendar?class=847" target="_blank" class="popup-slot-button">6 spots left!</a>
+                                </div>
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">December 23</span>
+                                    <a href="https://smartastro.app/calendar?class=848" target="_blank" class="popup-slot-button">6 spots left!</a>
+                                </div>
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">December 29</span>
+                                    <a href="https://smartastro.app/calendar?class=849" target="_blank" class="popup-slot-button">6 spots left!</a>
+                                </div>
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">December 30</span>
+                                    <a href="https://smartastro.app/calendar?class=850" target="_blank" class="popup-slot-button">6 spots left!</a>
+                                </div>
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">January 2</span>
+                                    <a href="https://smartastro.app/calendar?class=858" target="_blank" class="popup-slot-button">6 spots left!</a>
+                                </div>
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">January 5</span>
+                                    <a href="https://smartastro.app/calendar?class=851" target="_blank" class="popup-slot-button">6 spots left!</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="popup-dropdown-container">
+                            <button class="popup-dropdown-toggle" type="button">
+                                Sleigh the Sky <span class="popup-dropdown-arrow">▼</span>
+                            </button>
+                            <div class="popup-dropdown-content">
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">December 19</span>
+                                    <a href="https://smartastro.app/calendar?class=852" target="_blank" class="popup-slot-button">10 spots left!</a>
+                                </div>
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">December 22</span>
+                                    <a href="https://smartastro.app/calendar?class=860" target="_blank" class="popup-slot-button">10 spots left!</a>
+                                </div>
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">December 23</span>
+                                    <a href="https://smartastro.app/calendar?class=854" target="_blank" class="popup-slot-button">10 spots left!</a>
+                                </div>
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">December 29</span>
+                                    <a href="https://smartastro.app/calendar?class=855" target="_blank" class="popup-slot-button">10 spots left!</a>
+                                </div>
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">December 30</span>
+                                    <a href="https://smartastro.app/calendar?class=856" target="_blank" class="popup-slot-button">10 spots left!</a>
+                                </div>
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">January 2</span>
+                                    <a href="https://smartastro.app/calendar?class=859" target="_blank" class="popup-slot-button">10 spots left!</a>
+                                </div>
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">January 5</span>
+                                    <a href="https://smartastro.app/calendar?class=857" target="_blank" class="popup-slot-button">10 spots left!</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Slide 2: Aerial Photography -->
+                    <div class="popup-carousel-slide" data-slide="1">
+                        <img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/aerial_photography_flyer.jpg" alt="Aerial Photography Sessions" class="popup-image">
+                        <p class="popup-text">Want to learn more about the event?</p>
+                        <div class="popup-dropdown-container">
+                            <button class="popup-dropdown-toggle" type="button">
+                                Aerial Photography Time Slots <span class="popup-dropdown-arrow">▼</span>
+                            </button>
+                            <div class="popup-dropdown-content">
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">9am - 10am</span>
+                                    <button type="button" class="popup-slot-button disabled" disabled>Full</button>
+                                </div>
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">10am - 11am</span>
+                                    <button type="button" class="popup-slot-button disabled" disabled>Full</button>
+                                </div>
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">11am - 12pm</span>
+                                    <button type="button" class="popup-slot-button disabled" disabled>Full</button>
+                                </div>
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">12pm - 1pm</span>
+                                    <button type="button" class="popup-slot-button disabled" disabled>Full</button>
+                                </div>
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">1pm - 2pm</span>
+                                    <a href="https://smartastro.app/calendar?class=686" target="_blank" class="popup-slot-button">1 spot left!</a>
+                                </div>
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">2pm - 3pm</span>
+                                    <button type="button" class="popup-slot-button disabled" disabled>Full</button>
+                                </div>
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">3pm - 4pm</span>
+                                    <a href="https://smartastro.app/calendar?class=698" target="_blank" class="popup-slot-button">4 spots left!</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="popup-slot">
-                    <span class="popup-slot-time">10am - 11am</span>
-                    <button type="button" class="popup-slot-button disabled" disabled>Full</button>
-                </div>
-                <div class="popup-slot">
-                    <span class="popup-slot-time">11am - 12pm</span>
-                    <button type="button" class="popup-slot-button disabled" disabled>Full</button>
-                </div>
-                <div class="popup-slot">
-                    <span class="popup-slot-time">12pm - 1pm</span>
-                    <button type="button" class="popup-slot-button disabled" disabled>Full</button>
-                </div>
-                <div class="popup-slot">
-                    <span class="popup-slot-time">1pm - 2pm</span>
-                    <a href="https://smartastro.app/calendar?class=686" target="_blank" class="popup-slot-button">1 spot left!</a>
-                </div>
-                <div class="popup-slot">
-                    <span class="popup-slot-time">2pm - 3pm</span>
-                    <button type="button" class="popup-slot-button disabled" disabled>Full</button>
-                </div>
-                <div class="popup-slot">
-                    <span class="popup-slot-time">3pm - 4pm</span>
-                    <a href="https://smartastro.app/calendar?class=698" target="_blank" class="popup-slot-button">4 spots left!</a>
-                </div>
+                <button class="popup-carousel-arrow popup-carousel-arrow-right" id="carouselNext" aria-label="Next slide">&rarr;</button>
             </div>
             <div class="popup-action-buttons">
                 <a href="https://smartastro.app/calendar" target="_blank" class="popup-website-button">Go to Calendar</a>
@@ -1561,6 +1774,53 @@
             if (e.key === 'Escape' && popup.style.display === 'block') {
                 closePopup();
             }
+        });
+        
+        // Carousel functionality
+        const carouselPrev = document.getElementById('carouselPrev');
+        const carouselNext = document.getElementById('carouselNext');
+        const slides = document.querySelectorAll('.popup-carousel-slide');
+        let currentSlide = 0;
+        
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            currentSlide = index;
+        }
+        
+        if (carouselPrev && carouselNext) {
+            carouselPrev.addEventListener('click', function() {
+                const newIndex = currentSlide === 0 ? slides.length - 1 : currentSlide - 1;
+                showSlide(newIndex);
+            });
+            
+            carouselNext.addEventListener('click', function() {
+                const newIndex = currentSlide === slides.length - 1 ? 0 : currentSlide + 1;
+                showSlide(newIndex);
+            });
+        }
+        
+        // Dropdown toggle functionality
+        const dropdownToggles = document.querySelectorAll('.popup-dropdown-toggle');
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const container = this.closest('.popup-dropdown-container');
+                const content = container.querySelector('.popup-dropdown-content');
+                const isActive = this.classList.contains('active');
+                
+                // Close all dropdowns first
+                dropdownToggles.forEach(t => {
+                    t.classList.remove('active');
+                    t.closest('.popup-dropdown-container').querySelector('.popup-dropdown-content').classList.remove('active');
+                });
+                
+                // Toggle current dropdown
+                if (!isActive) {
+                    this.classList.add('active');
+                    content.classList.add('active');
+                }
+            });
         });
     })();
 
