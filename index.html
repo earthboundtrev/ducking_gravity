@@ -1410,46 +1410,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Slide 2: Aerial Photography -->
-                    <div class="popup-carousel-slide" data-slide="1">
-                        <img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/aerial_photography_flyer.jpg" alt="Aerial Photography Sessions" class="popup-image">
-                        <p class="popup-text">Want to learn more about the event?</p>
-                        <div class="popup-dropdown-container">
-                            <button class="popup-dropdown-toggle" type="button">
-                                Aerial Photography Time Slots <span class="popup-dropdown-arrow">▼</span>
-                            </button>
-                            <div class="popup-dropdown-content">
-                                <div class="popup-slot">
-                                    <span class="popup-slot-time">9am - 10am</span>
-                                    <button type="button" class="popup-slot-button disabled" disabled>Full</button>
-                                </div>
-                                <div class="popup-slot">
-                                    <span class="popup-slot-time">10am - 11am</span>
-                                    <button type="button" class="popup-slot-button disabled" disabled>Full</button>
-                                </div>
-                                <div class="popup-slot">
-                                    <span class="popup-slot-time">11am - 12pm</span>
-                                    <button type="button" class="popup-slot-button disabled" disabled>Full</button>
-                                </div>
-                                <div class="popup-slot">
-                                    <span class="popup-slot-time">12pm - 1pm</span>
-                                    <button type="button" class="popup-slot-button disabled" disabled>Full</button>
-                                </div>
-                                <div class="popup-slot">
-                                    <span class="popup-slot-time">1pm - 2pm</span>
-                                    <a href="https://smartastro.app/calendar?class=686" target="_blank" class="popup-slot-button">1 spot left!</a>
-                                </div>
-                                <div class="popup-slot">
-                                    <span class="popup-slot-time">2pm - 3pm</span>
-                                    <button type="button" class="popup-slot-button disabled" disabled>Full</button>
-                                </div>
-                                <div class="popup-slot">
-                                    <span class="popup-slot-time">3pm - 4pm</span>
-                                    <a href="https://smartastro.app/calendar?class=698" target="_blank" class="popup-slot-button">4 spots left!</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <button class="popup-carousel-arrow popup-carousel-arrow-right" id="carouselNext" aria-label="Next slide">&rarr;</button>
             </div>
@@ -1477,12 +1437,12 @@
                             <li class="nav-dropdown">
                                 <a href="#">Schedule</a>
                                 <ul class="nav-dropdown-menu">
-                                    <li><a href="https://smartastro.app/calendar" target="_blank">Calendar</a></li>
                                     <li><a href="events.html">Events</a></li>
+                                    <li><a href="https://smartastro.app/calendar" target="_blank">Calendar</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-mobile-item"><a href="https://smartastro.app/calendar" target="_blank">Calendar</a></li>
                             <li class="nav-mobile-item"><a href="events.html">Events</a></li>
+                            <li class="nav-mobile-item"><a href="https://smartastro.app/calendar" target="_blank">Calendar</a></li>
                             <li><a href="birthday.html">Birthday Parties</a></li>
                             <li><a href="memberships.html">Memberships</a></li>
                             <li><a href="https://buy.stripe.com/4gwdR52l0gGa1UsdQR" target="_blank" rel="noopener">Pay</a></li>
@@ -1789,7 +1749,11 @@
             currentSlide = index;
         }
         
-        if (carouselPrev && carouselNext) {
+        // Hide arrows if there's only one slide
+        if (slides.length <= 1) {
+            if (carouselPrev) carouselPrev.style.display = 'none';
+            if (carouselNext) carouselNext.style.display = 'none';
+        } else if (carouselPrev && carouselNext) {
             carouselPrev.addEventListener('click', function() {
                 const newIndex = currentSlide === 0 ? slides.length - 1 : currentSlide - 1;
                 showSlide(newIndex);
