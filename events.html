@@ -160,6 +160,15 @@
         .info-btn.disabled:hover, .info-btn.disabled:focus {
             background: #bdbdbd;
         }
+        .info-btn.closed {
+            background: #c62828;
+            cursor: not-allowed;
+            box-shadow: none;
+            pointer-events: none;
+        }
+        .info-btn.closed:hover, .info-btn.closed:focus {
+            background: #c62828;
+        }
         /* Footer */
         footer {
             background: var(--footer-blue);
@@ -267,9 +276,9 @@
             <div class="camp-title">Sleigh the Sky</div>
             <table class="camp-table">
                 <tr><th>Date</th><th>Time</th><th>Price</th><th>Info</th></tr>
-                <tr><td>December 19</td><td>9am - 3pm</td><td>$60</td><td><a href="https://smartastro.app/calendar?class=852" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
-                <tr><td>December 22</td><td>9am - 3pm</td><td>$60</td><td><a href="https://smartastro.app/calendar?class=860" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
-                <tr><td>December 23</td><td>9am - 3pm</td><td>$60</td><td><a href="https://smartastro.app/calendar?class=854" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
+                <tr><td>December 19</td><td>9am - 3pm</td><td>$60</td><td><span class="info-btn closed" data-mobile-label><span>Closed</span></span></td></tr>
+                <tr><td>December 22</td><td>9am - 3pm</td><td>$60</td><td><span class="info-btn closed" data-mobile-label><span>Closed</span></span></td></tr>
+                <tr><td>December 23</td><td>9am - 3pm</td><td>$60</td><td><span class="info-btn closed" data-mobile-label><span>Closed</span></span></td></tr>
                 <tr><td>December 29</td><td>9am - 3pm</td><td>$60</td><td><a href="https://smartastro.app/calendar?class=855" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
                 <tr><td>December 30</td><td>9am - 3pm</td><td>$60</td><td><a href="https://smartastro.app/calendar?class=856" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
                 <tr><td>January 2</td><td>9am - 3pm</td><td>$60</td><td><a href="https://smartastro.app/calendar?class=859" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
@@ -281,9 +290,9 @@
             <div class="camp-title">Sleigh the Sky Junior</div>
             <table class="camp-table">
                 <tr><th>Date</th><th>Time</th><th>Price</th><th>Info</th></tr>
-                <tr><td>December 19</td><td>9am - 12pm</td><td>$30</td><td><a href="https://smartastro.app/calendar?class=846" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
-                <tr><td>December 22</td><td>9am - 12pm</td><td>$30</td><td><a href="https://smartastro.app/calendar?class=847" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
-                <tr><td>December 23</td><td>9am - 12pm</td><td>$30</td><td><a href="https://smartastro.app/calendar?class=848" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
+                <tr><td>December 19</td><td>9am - 12pm</td><td>$30</td><td><span class="info-btn closed" data-mobile-label><span>Closed</span></span></td></tr>
+                <tr><td>December 22</td><td>9am - 12pm</td><td>$30</td><td><span class="info-btn closed" data-mobile-label><span>Closed</span></span></td></tr>
+                <tr><td>December 23</td><td>9am - 12pm</td><td>$30</td><td><span class="info-btn closed" data-mobile-label><span>Closed</span></span></td></tr>
                 <tr><td>December 29</td><td>9am - 12pm</td><td>$30</td><td><a href="https://smartastro.app/calendar?class=849" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
                 <tr><td>December 30</td><td>9am - 12pm</td><td>$30</td><td><a href="https://smartastro.app/calendar?class=850" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
                 <tr><td>January 2</td><td>9am - 12pm</td><td>$30</td><td><a href="https://smartastro.app/calendar?class=858" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
