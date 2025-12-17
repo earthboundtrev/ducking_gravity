@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Events | Ducking Gravity</title>
+    <title>Lyra Classes | Ducking Gravity</title>
     <link rel="icon" type="image/png" href="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-green.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -152,23 +152,6 @@
             outline: none;
             text-decoration: none;
         }
-        .info-btn.disabled {
-            background: #bdbdbd;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-        .info-btn.disabled:hover, .info-btn.disabled:focus {
-            background: #bdbdbd;
-        }
-        .info-btn.closed {
-            background: #c62828;
-            cursor: not-allowed;
-            box-shadow: none;
-            pointer-events: none;
-        }
-        .info-btn.closed:hover, .info-btn.closed:focus {
-            background: #c62828;
-        }
         /* Footer */
         footer {
             background: var(--footer-blue);
@@ -244,7 +227,7 @@
             font-size: 0.95em;
         }
         .camp-table .info-btn[data-mobile-label]::after {
-            content: 'Info!';
+            content: 'Sign Up!';
             display: inline;
         }
         .camp-table .info-btn[data-mobile-label] span {
@@ -269,60 +252,59 @@
         </div>
     </header>
     <div class="container">
-        <h1>Events</h1>
+        <h1>Lyra Classes</h1>
     </div>
     <div class="container">
         <div class="camp-section">
-            <div class="camp-title">Sleigh the Sky</div>
+            <div class="camp-title" id="lyra-workshop-section">Lyra Workshop
+                <button class="info-btn" onclick="document.getElementById('class-info').scrollIntoView({behavior: 'smooth'});" aria-label="More Info">Info</button>
+            </div>
             <table class="camp-table">
-                <tr><th>Date</th><th>Time</th><th>Price</th><th>Info</th></tr>
-                <tr><td>December 19</td><td>9am - 3pm</td><td>$60</td><td><span class="info-btn closed" data-mobile-label><span>Closed</span></span></td></tr>
-                <tr><td>December 22</td><td>9am - 3pm</td><td>$60</td><td><span class="info-btn closed" data-mobile-label><span>Closed</span></span></td></tr>
-                <tr><td>December 23</td><td>9am - 3pm</td><td>$60</td><td><span class="info-btn closed" data-mobile-label><span>Closed</span></span></td></tr>
-                <tr><td>December 29</td><td>9am - 3pm</td><td>$60</td><td><a href="https://smartastro.app/calendar?class=855" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
-                <tr><td>December 30</td><td>9am - 3pm</td><td>$60</td><td><a href="https://smartastro.app/calendar?class=856" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
-                <tr><td>January 2</td><td>9am - 3pm</td><td>$60</td><td><a href="https://smartastro.app/calendar?class=859" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
-                <tr><td>January 5</td><td>9am - 3pm</td><td>$60</td><td><a href="https://smartastro.app/calendar?class=857" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
-                <tr><td colspan="4" style="text-align: center; font-style: italic; color: var(--text-light);">Location: <a href="https://www.google.com/maps?q=15532E+Montanus+Dr,+Culpeper,+VA+22701" target="_blank" rel="noopener" style="color: var(--text-light); text-decoration: underline;">The Ducking Gravity Studio</a></td></tr>
+                <tr><th>Date</th><th>Time</th><th>Price</th><th>Sign up</th></tr>
+                <tr><td>December 29</td><td>5:30pm - 6:30pm</td><td>$15</td><td><a href="https://smartastro.app/calendar?class=873" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
             </table>
         </div>
         <div class="camp-section">
-            <div class="camp-title">Sleigh the Sky Junior</div>
+            <div class="camp-title" id="foundations-section">Foundations in Lyra
+                <button class="info-btn" onclick="document.getElementById('class-info').scrollIntoView({behavior: 'smooth'});" aria-label="More Info">Info</button>
+            </div>
             <table class="camp-table">
-                <tr><th>Date</th><th>Time</th><th>Price</th><th>Info</th></tr>
-                <tr><td>December 19</td><td>9am - 12pm</td><td>$30</td><td><span class="info-btn closed" data-mobile-label><span>Closed</span></span></td></tr>
-                <tr><td>December 22</td><td>9am - 12pm</td><td>$30</td><td><span class="info-btn closed" data-mobile-label><span>Closed</span></span></td></tr>
-                <tr><td>December 23</td><td>9am - 12pm</td><td>$30</td><td><span class="info-btn closed" data-mobile-label><span>Closed</span></span></td></tr>
-                <tr><td>December 29</td><td>9am - 12pm</td><td>$30</td><td><a href="https://smartastro.app/calendar?class=849" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
-                <tr><td>December 30</td><td>9am - 12pm</td><td>$30</td><td><a href="https://smartastro.app/calendar?class=850" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
-                <tr><td>January 2</td><td>9am - 12pm</td><td>$30</td><td><a href="https://smartastro.app/calendar?class=858" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
-                <tr><td>January 5</td><td>9am - 12pm</td><td>$30</td><td><a href="https://smartastro.app/calendar?class=851" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
-                <tr><td colspan="4" style="text-align: center; font-style: italic; color: var(--text-light);">Location: <a href="https://www.google.com/maps?q=15532E+Montanus+Dr,+Culpeper,+VA+22701" target="_blank" rel="noopener" style="color: var(--text-light); text-decoration: underline;">The Ducking Gravity Studio</a></td></tr>
+                <tr><th>Dates</th><th>Time</th><th>Price</th><th>Sign up</th></tr>
+                <tr><td>January 7</td><td>6:00pm - 7:00pm</td><td>$30</td><td><a href="https://smartastro.app/calendar?class=752" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
+                <tr><td>January 14</td><td>6:00pm - 7:00pm</td><td>$30</td><td><a href="https://smartastro.app/calendar?class=753" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
+                <tr><td>January 21</td><td>6:00pm - 7:00pm</td><td>$30</td><td><a href="https://smartastro.app/calendar?class=751" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
+                <tr><td>January 28</td><td>6:00pm - 7:00pm</td><td>$30</td><td><a href="https://smartastro.app/calendar?class=754" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
             </table>
         </div>
-        <div class="camp-section">
-            <div class="camp-title">Lyra Workshop</div>
-            <table class="camp-table">
-                <tr><th>Date</th><th>Time</th><th>Price</th><th>Info</th></tr>
-                <tr><td>December 29</td><td>5:30pm - 6:30pm</td><td>$10 members / $15 non-members</td><td><a href="https://smartastro.app/calendar?class=873" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
-                <tr><td colspan="4" style="text-align: center; font-style: italic; color: var(--text-light);">Location: <a href="https://www.google.com/maps?q=15532E+Montanus+Dr,+Culpeper,+VA+22701" target="_blank" rel="noopener" style="color: var(--text-light); text-decoration: underline;">The Ducking Gravity Studio</a></td></tr>
-            </table>
-        </div>
-        <div class="camp-section">
-            <div class="camp-title">ACT! Holiday Party!</div>
-            <table class="camp-table">
-                <tr><th>Date</th><th>Time</th><th>Price</th><th>Info</th></tr>
-                <tr><td>December 29</td><td>6:45pm - 8:15pm</td><td>For prospective and current ACT members</td><td><a href="https://smartastro.app/calendar?class=874" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
-                <tr><td colspan="4" style="text-align: center; font-style: italic; color: var(--text-light);">Location: <a href="https://www.google.com/maps?q=15532E+Montanus+Dr,+Culpeper,+VA+22701" target="_blank" rel="noopener" style="color: var(--text-light); text-decoration: underline;">The Ducking Gravity Studio</a></td></tr>
-            </table>
-        </div>
-        <div class="camp-section">
-            <div class="camp-title">Snooze the Blues, Soups and Stews</div>
-            <table class="camp-table">
-                <tr><th>Date</th><th>Time</th><th>Price</th><th>Info</th></tr>
-                <tr><td>January 10</td><td>4:00pm - 7:00pm</td><td>$5</td><td><a href="https://smartastro.app/calendar?class=872" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
-                <tr><td colspan="4" style="text-align: center; font-style: italic; color: var(--text-light);">Location: <a href="https://www.google.com/maps?q=15532E+Montanus+Dr,+Culpeper,+VA+22701" target="_blank" rel="noopener" style="color: var(--text-light); text-decoration: underline;">The Ducking Gravity Studio</a></td></tr>
-            </table>
+        <div class="camp-section" id="class-info">
+            <div class="section-title">About Our Lyra Classes</div>
+            <div style="white-space: pre-line; color: var(--text-dark); font-size: 1.08rem;">
+Lyra, also known as aerial hoop, is a beautiful and challenging aerial art form performed on a circular apparatus suspended from the ceiling. Our Lyra classes are designed to help you build strength, flexibility, and grace while learning this captivating discipline.
+
+🎪 What to Expect
+• Learn fundamental Lyra techniques and movements
+• Build upper body and core strength
+• Develop flexibility and body awareness
+• Progress at your own pace in a supportive environment
+• No prior experience necessary
+
+🎪 What to Bring
+• Comfortable, form-fitting clothing (avoid zippers and buttons)
+• Water bottle to stay hydrated
+• Hair tie if you have long hair
+
+👕 What to Wear
+• Leggings or athletic pants that cover the backs of your knees
+• Form-fitting top or tank top
+• Bare feet or socks
+• Avoid jewelry that could catch on the apparatus
+
+Please note: The Lyra can be challenging on the hands and body, so be prepared for some initial discomfort as you build strength and calluses.
+
+<div style="margin-top: 1.5rem; text-align: center;">
+  <a href="#lyra-workshop-section" class="info-btn">Go to Class Schedule</a>
+</div>
+            </div>
         </div>
     </div>
     <footer>
@@ -365,3 +347,4 @@
     </footer>
 </body>
 </html>
+
