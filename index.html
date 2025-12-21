@@ -1253,6 +1253,22 @@
         box-shadow: none;
     }
     
+    .popup-slot-button.full {
+        background: #bdbdbd;
+        color: #ffffff;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+        pointer-events: none;
+    }
+    
+    .popup-slot-button.full:hover {
+        background: #bdbdbd;
+        color: #ffffff;
+        transform: none;
+        box-shadow: none;
+    }
+    
     .popup-action-buttons {
         display: flex;
         flex-direction: column;
@@ -1409,7 +1425,7 @@
                                 </div>
                                 <div class="popup-slot">
                                     <span class="popup-slot-time">December 29</span>
-                                    <a href="https://smartastro.app/calendar?class=855" target="_blank" class="popup-slot-button">1 spot left!</a>
+                                    <span class="popup-slot-button full">Full</span>
                                 </div>
                                 <div class="popup-slot">
                                     <span class="popup-slot-time">December 30</span>
