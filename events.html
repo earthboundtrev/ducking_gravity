@@ -17,25 +17,38 @@
             --light-blue: #e0ebed;
             --footer-blue: #bcd4d7;
             --hard-green: #2e7d32;
-            --text-dark: #2c3e50;
-            --text-light: #6b8c85;
+            --text-dark: #1a1a1a;
+            --text-light: #5a6c65;
             --white: #ffffff;
-            --shadow: rgba(0, 0, 0, 0.1);
+            --shadow: rgba(0, 0, 0, 0.08);
+            --shadow-lg: rgba(0, 0, 0, 0.12);
+            --shadow-xl: rgba(0, 0, 0, 0.16);
+            --accent-green: #22c55e;
+            --accent-green-dark: #16a34a;
+            --bg-gradient-start: #f0f9ff;
+            --bg-gradient-end: #e0f2fe;
+            --card-bg: #ffffff;
+            --border-light: rgba(0, 0, 0, 0.06);
         }
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--gray);
+            background: #fafbfc;
             color: var(--text-dark);
             margin: 0;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         .container {
-            max-width: 900px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 24px;
         }
         header {
-            background: var(--white);
-            box-shadow: 0 2px 10px var(--shadow);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px var(--shadow), 0 1px 2px rgba(0, 0, 0, 0.06);
+            border-bottom: 1px solid var(--border-light);
             padding: 1.5rem 0 1rem 0;
             text-align: center;
         }
@@ -58,23 +71,31 @@
             color: var(--teal);
         }
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.75rem;
             font-weight: 700;
-            margin: 1.5rem 0 0.5rem 0;
+            margin: 2rem 0 1rem 0;
             text-align: center;
+            letter-spacing: -0.02em;
+            color: var(--text-dark);
         }
         .camp-section {
-            background: var(--white);
+            background: var(--card-bg);
             border-radius: 16px;
-            box-shadow: 0 4px 16px var(--shadow);
-            margin: 2rem 0;
-            padding: 2rem 1.5rem;
+            box-shadow: 0 4px 20px var(--shadow), 0 1px 3px rgba(0, 0, 0, 0.08);
+            margin: 2.5rem 0;
+            padding: 2.5rem;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+        .camp-section:hover {
+            box-shadow: 0 8px 32px var(--shadow-xl), 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         .camp-title {
-            font-size: 1.5rem;
-            font-weight: 600;
+            font-size: 1.75rem;
+            font-weight: 700;
             color: var(--hard-green);
             margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
         }
         .camp-table {
             width: 100%;
@@ -87,18 +108,21 @@
         }
         .camp-table th {
             color: var(--text-dark);
-            font-weight: 600;
-            border-bottom: 2px solid var(--teal);
+            font-weight: 700;
+            border-bottom: 3px solid var(--hard-green);
+            padding: 1rem 0.5rem;
         }
         .camp-table td {
             color: var(--text-light);
-            border-bottom: 1px solid var(--light-blue);
+            border-bottom: 1px solid var(--border-light);
+            padding: 0.9rem 0.5rem;
         }
         .section-title {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             color: var(--hard-green);
-            font-weight: 600;
-            margin: 2.5rem 0 1rem 0;
+            font-weight: 700;
+            margin: 2.5rem 0 1.5rem 0;
+            letter-spacing: -0.01em;
         }
         ul.camp-list {
             margin: 0 0 1.5rem 1.5rem;
@@ -116,10 +140,11 @@
         .note {
             background: var(--mint);
             border-left: 4px solid var(--hard-green);
-            padding: 1rem;
-            border-radius: 8px;
+            padding: 1.25rem;
+            border-radius: 12px;
             margin: 1.5rem 0;
             color: var(--text-dark);
+            box-shadow: 0 2px 8px var(--shadow);
         }
         @media (max-width: 600px) {
             h1 {
@@ -133,22 +158,39 @@
             }
         }
         .info-btn {
-            background: var(--hard-green);
+            background: linear-gradient(135deg, var(--hard-green) 0%, var(--accent-green-dark) 100%);
             color: #fff;
             border: none;
-            border-radius: 6px;
-            padding: 0.25em 0.9em;
+            border-radius: 10px;
+            padding: 0.4em 1em;
             font-size: 0.95em;
             font-weight: 600;
             margin-left: 0.7em;
             cursor: pointer;
-            transition: background 0.2s, box-shadow 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             vertical-align: middle;
-            box-shadow: 0 2px 6px var(--shadow);
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
             text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .info-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        .info-btn:hover::before {
+            left: 100%;
         }
         .info-btn:hover, .info-btn:focus {
-            background: #176b22;
+            background: linear-gradient(135deg, #1b5e20 0%, var(--hard-green) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(46, 125, 50, 0.35);
             outline: none;
             text-decoration: none;
         }
@@ -180,56 +222,65 @@
         }
         /* Footer */
         footer {
-            background: var(--footer-blue);
-            padding: 3rem 0 2rem;
+            background: linear-gradient(135deg, var(--footer-blue) 0%, #a8c9cd 100%);
+            padding: 4rem 0 2.5rem;
             text-align: center;
+            border-top: 1px solid var(--border-light);
         }
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
+            gap: 3rem;
+            margin-bottom: 2.5rem;
         }
         .footer-section h4 {
             color: var(--text-dark);
-            margin-bottom: 1rem;
-            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: -0.01em;
         }
         .footer-section p,
         .footer-section a {
             color: var(--text-light);
             text-decoration: none;
-            line-height: 1.6;
+            line-height: 1.8;
+            font-size: 1rem;
+            transition: color 0.3s ease;
         }
         .footer-section a:hover {
             color: var(--hard-green);
+            font-weight: 500;
         }
         .social-links {
             display: flex;
             justify-content: center;
             gap: 1rem;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
         }
         .social-links a {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             background: var(--white);
             border-radius: 50%;
             color: var(--text-light);
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px var(--shadow);
         }
         .social-links a:hover {
-            background: var(--hard-green);
+            background: linear-gradient(135deg, var(--hard-green), var(--accent-green));
             color: var(--white);
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 6px 16px rgba(46, 125, 50, 0.3);
         }
         .footer-bottom {
-            border-top: 1px solid var(--aqua);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
             padding-top: 2rem;
             color: var(--text-light);
+            font-size: 0.95rem;
         }
         .camp-hero-img-wrapper {
             width: 100%;
@@ -282,19 +333,27 @@
     </div>
     <div class="container">
         <div class="camp-section">
-            <div class="camp-title">ACT! Holiday Party!</div>
-            <table class="camp-table">
-                <tr><th>Date</th><th>Time</th><th>Price</th><th>Info</th></tr>
-                <tr><td>December 29</td><td>6:45pm - 8:15pm</td><td>For prospective and current ACT members</td><td><a href="https://smartastro.app/calendar?class=874" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
-                <tr><td colspan="4" style="text-align: center; font-style: italic; color: var(--text-light);">Location: <a href="https://maps.app.goo.gl/Zp8X8bxQ6kraxSC1A" target="_blank" rel="noopener" style="color: var(--text-light); text-decoration: underline;">The Ducking Gravity Studio</a></td></tr>
-            </table>
-        </div>
-        <div class="camp-section">
             <div class="camp-title">Snooze the Blues, Soups and Stews</div>
             <table class="camp-table">
                 <tr><th>Date</th><th>Time</th><th>Price</th><th>Info</th></tr>
                 <tr><td>January 10</td><td>4:00pm - 7:00pm</td><td>$5</td><td><a href="https://smartastro.app/calendar?class=872" class="info-btn" target="_blank" data-mobile-label><span>Info</span></a></td></tr>
                 <tr><td colspan="4" style="text-align: center; font-style: italic; color: var(--text-light);">Location: <a href="https://maps.app.goo.gl/Zp8X8bxQ6kraxSC1A" target="_blank" rel="noopener" style="color: var(--text-light); text-decoration: underline;">The Ducking Gravity Studio</a></td></tr>
+            </table>
+        </div>
+        <div class="camp-section">
+            <div class="camp-title">Classes & Workshops</div>
+            <table class="camp-table">
+                <tr><th>Class</th><th>Description</th><th>Learn More</th></tr>
+                <tr>
+                    <td><strong>Lyra Classes</strong></td>
+                    <td>Experience the artistry of aerial hoop! Build strength, flexibility, and grace while learning this beautiful aerial discipline.</td>
+                    <td><a href="lyra.html" class="info-btn" data-mobile-label><span>View Classes</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>Yoga Classes</strong></td>
+                    <td>Energizing Morning Vinyasa practice that combines breath with movement to support your aerial training and overall well-being.</td>
+                    <td><a href="yoga.html" class="info-btn" data-mobile-label><span>View Classes</span></a></td>
+                </tr>
             </table>
         </div>
     </div>
