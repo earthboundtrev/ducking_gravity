@@ -56,11 +56,12 @@
             height: 300px;
             width: auto;
             max-width: 100%;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.35rem;
+            margin-top: 15px;
         }
         .back-link {
             display: inline-block;
-            margin-top: 0.5rem;
+            margin-top: 0.35rem;
             color: var(--hard-green);
             text-decoration: none;
             font-weight: 500;
@@ -154,6 +155,17 @@
             }
             .container {
                 padding: 0 5px;
+            }
+            .logo {
+                transform: translateX(8%);
+            }
+            .back-link {
+                margin-top: -5%;
+            }
+        }
+        @media (min-width: 601px) and (max-width: 1024px) {
+            .logo {
+                transform: translateX(8%);
             }
         }
         .info-btn {
@@ -296,7 +308,7 @@
 </head>
 <body>
     <header>
-        <a href="index.html"><img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking_gravity_new_logo.jpg" alt="Ducking Gravity Logo" class="logo"></a>
+        <a href="index.html"><img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking_gravity_new_logo.png" alt="Ducking Gravity Logo" class="logo"></a>
         <div>
             <a href="index.html" class="back-link">&larr; Back to Main Site</a>
         </div>
