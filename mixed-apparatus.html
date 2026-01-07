@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juniors Classes | Ducking Gravity</title>
+    <title>Mixed Apparatus Classes | Ducking Gravity</title>
     <link rel="icon" type="image/png" href="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-green.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -207,6 +207,44 @@
             outline: none;
             text-decoration: none;
         }
+        .info-btn.disabled {
+            background: #9e9e9e;
+            color: #ffffff;
+            cursor: not-allowed;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        .info-btn.disabled:hover {
+            background: #9e9e9e;
+            transform: none;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
+        }
+        .back-to-top {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            margin-bottom: 0;
+        }
+        .back-to-top-btn {
+            background: linear-gradient(135deg, var(--hard-green) 0%, var(--accent-green-dark) 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 0.6em 1.5em;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
+            text-decoration: none;
+            display: inline-block;
+        }
+        .back-to-top-btn:hover {
+            background: linear-gradient(135deg, #1b5e20 0%, var(--hard-green) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(46, 125, 50, 0.35);
+            text-decoration: none;
+        }
         /* Footer */
         footer {
             background: linear-gradient(135deg, var(--footer-blue) 0%, #a8c9cd 100%);
@@ -316,48 +354,39 @@
         </div>
     </header>
     <div class="container">
-        <h1>Juniors Classes</h1>
+        <h1>Mixed Apparatus Classes</h1>
     </div>
     <div class="container">
         <div class="camp-section">
-            <div class="camp-title" id="juniors-section">Junior Aerial Classes
-                <button class="info-btn" onclick="document.getElementById('class-info').scrollIntoView({behavior: 'smooth'});" aria-label="More Info">Info</button>
-            </div>
-            <table class="camp-table">
-                <tr><th>Dates</th><th>Time</th><th>Price</th><th>Info</th></tr>
-                <tr><td>January 5</td><td>5:00pm - 5:45pm</td><td>Junior membership or $75/month</td><td><a href="https://smartastro.app/calendar?class=832" class="info-btn" target="_blank">Info!</a></td></tr>
-                <tr><td>January 12</td><td>5:00pm - 5:45pm</td><td>Junior membership or $75/month</td><td><a href="https://smartastro.app/calendar?class=831" class="info-btn" target="_blank">Info!</a></td></tr>
-                <tr><td>January 19</td><td>5:00pm - 5:45pm</td><td>Junior membership or $75/month</td><td><a href="https://smartastro.app/calendar?class=833" class="info-btn" target="_blank">Info!</a></td></tr>
-                <tr><td>January 26</td><td>5:00pm - 5:45pm</td><td>Junior membership or $75/month</td><td><a href="https://smartastro.app/calendar?class=830" class="info-btn" target="_blank">Info!</a></td></tr>
-            </table>
-        </div>
-        <div class="camp-section">
-            <div class="camp-title" id="spin-swing-section">Spin and Swing Classes
+            <div class="camp-title" id="aerial-jam-section">Aerial Jam Session
                 <button class="info-btn" onclick="document.getElementById('class-info').scrollIntoView({behavior: 'smooth'});" aria-label="More Info">Info</button>
             </div>
             <table class="camp-table">
                 <tr><th>Dates</th><th>Time</th><th>Price</th><th>Sign up</th></tr>
-                <tr><td>January 7</td><td>5:00pm - 5:45pm</td><td>$60/month or $15/class<br>Non-members $20</td><td><a href="https://smartastro.app/calendar?class=750" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
-                <tr><td>January 14</td><td>5:00pm - 5:45pm</td><td>$60/month or $15/class<br>Non-members $20</td><td><a href="https://smartastro.app/calendar?class=748" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
-                <tr><td>January 21</td><td>5:00pm - 5:45pm</td><td>$60/month or $15/class<br>Non-members $20</td><td><a href="https://smartastro.app/calendar?class=749" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
-                <tr><td>January 28</td><td>5:00pm - 5:45pm</td><td>$60/month or $15/class<br>Non-members $20</td><td><a href="https://smartastro.app/calendar?class=747" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
+                <tr><td>January 2</td><td>7:30am - 8:30am</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="https://smartastro.app/calendar?class=877" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
+                <tr><td>January 2</td><td>9:30am - 10:30am</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="https://smartastro.app/calendar?class=880" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
+                <tr><td>January 9</td><td>7:30am - 8:30am</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="https://smartastro.app/calendar?class=876" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
+                <tr><td>January 9</td><td>9:30am - 10:30am</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="https://smartastro.app/calendar?class=883" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
+                <tr><td>January 16</td><td>7:30am - 8:30am</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="https://smartastro.app/calendar?class=878" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
+                <tr><td>January 16</td><td>9:30am - 10:30am</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="https://smartastro.app/calendar?class=881" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
+                <tr><td>January 23</td><td>7:30am - 8:30am</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="https://smartastro.app/calendar?class=879" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
+                <tr><td>January 23</td><td>9:30am - 10:30am</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="https://smartastro.app/calendar?class=882" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
             </table>
+            <div class="back-to-top">
+                <a href="#" class="back-to-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">↑ Back to Top</a>
+            </div>
         </div>
         <div class="camp-section" id="class-info">
-            <div class="section-title">About Our Juniors Classes</div>
+            <div class="section-title">About Our Aerial Jam Session</div>
             <div style="white-space: pre-line; color: var(--text-dark); font-size: 1.08rem;">
-Our Juniors classes are designed specifically for young aerialists who are ready to take their skills to the next level! These classes provide a fun, supportive environment where kids can build strength, flexibility, and confidence while learning exciting aerial techniques.
-
-We offer two types of classes:
-• <strong>Junior Aerial Classes:</strong> Traditional aerial classes for young aerialists. Pricing: Junior membership or $75/month.
-• <strong>Spin and Swing Classes:</strong> Fun, dynamic classes that run every Wednesday from 5:00pm - 5:45pm. Pricing: $60/month or $15/class, Non-members $20/class.
+This class is for students ages 9+. Guided by a coach, you'll move between lyra, silks, and ground conditioning, learning new moves and shapes at your own pace in a low-pressure, creative environment. More structured than Open Aerial, lighter than Foundations, it's the perfect middle ground.
 
 🎪 What to Expect
-• Age-appropriate aerial skills and progressions
-• Building strength and coordination
-• Learning proper technique and safety
-• Fun, engaging activities that keep kids motivated
-• Supportive community atmosphere
+• Move between lyra, silks, and ground conditioning
+• Learn new moves and shapes at your own pace
+• Low-pressure, creative environment
+• Guided by a coach but with flexibility to explore
+• More structured than Open Aerial, lighter than Foundations
 
 🎪 What to Bring
 • Comfortable, form-fitting clothing (avoid zippers and buttons)
@@ -370,10 +399,13 @@ We offer two types of classes:
 • Bare feet or socks
 • Avoid jewelry that could catch on the apparatus
 
-Please note: These classes are currently full, but we may expand capacity based on demand. Click the "Info!" button for each class date to learn more and join the waitlist if available.
+📋 Class Requirements
+• <strong>Aerial Jam Session:</strong> For students ages 9+. Runs Tuesdays at 7:30am - 8:30am and 9:30am - 10:30am. Pricing: Members $25 per class or $100/month, Non-members $30 per class.
+
+Please note: This class is designed to be a perfect middle ground between open practice and structured foundations classes, giving you the freedom to explore while still having guidance from a coach.
 
 <div style="margin-top: 1.5rem; text-align: center;">
-  <a href="#juniors-section" class="info-btn">Go to Class Schedule</a>
+  <a href="#" class="back-to-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">↑ Back to Top</a>
 </div>
             </div>
         </div>
@@ -394,26 +426,24 @@ Please note: These classes are currently full, but we may expand capacity based 
                     </div>
                 </div>
                 <div class="footer-section">
-                    <h4>Contact Info</h4>
-                    <p>Email: duckinggravity@gmail.com</p>
-                    <p>Address: 15532E Montanus Dr, Culpeper, VA 22701</p>
-                </div>
-                <div class="footer-section">
                     <h4>Quick Links</h4>
-                    <p><a href="index.html#about">About Us</a></p>
-                    <p><a href="index.html#services">Programs</a></p>
+                    <p><a href="index.html">Home</a></p>
+                    <p><a href="silks.html">Silks</a></p>
+                    <p><a href="lyra.html">Lyra (Aerial Hoop)</a></p>
+                    <p><a href="mixed-apparatus.html">Mixed Apparatus</a></p>
+                    <p><a href="yoga.html">Yoga</a></p>
+                    <p><a href="juniors.html">Junior Aerials</a></p>
                     <p><a href="memberships.html">Memberships</a></p>
                     <p><a href="birthday.html">Birthday Parties</a></p>
-                    <p><a href="https://smartastro.app/calendar" target="_blank">Calendar</a></p>
-                    <p><a href="silks.html">Silks</a></p>
-                    <p><a href="juniors.html">Juniors</a></p>
-                    <p><a href="yoga.html">Yoga</a></p>
-                    <p><a href="lyra.html">Lyra</a></p>
-                    <p><a href="events.html">Events</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: <a href="mailto:duckinggravity@gmail.com">duckinggravity@gmail.com</a></p>
+                    <p>Location: <a href="https://maps.app.goo.gl/Zp8X8bxQ6kraxSC1A" target="_blank" rel="noopener">The Ducking Gravity Studio</a></p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Ducking Gravity. All rights reserved.</p>
+                <p>&copy; 2026 Ducking Gravity. All rights reserved.</p>
             </div>
         </div>
     </footer>
