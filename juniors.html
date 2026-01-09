@@ -306,6 +306,32 @@
                 display: inline;
             }
         }
+        .back-to-top {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            margin-bottom: 0;
+        }
+        .back-to-top-btn {
+            background: linear-gradient(135deg, var(--hard-green) 0%, var(--accent-green-dark) 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 0.6em 1.5em;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
+            text-decoration: none;
+            display: inline-block;
+        }
+        .back-to-top-btn:hover {
+            background: linear-gradient(135deg, #1b5e20 0%, var(--hard-green) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(46, 125, 50, 0.35);
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -342,6 +368,21 @@
                 <tr><td>January 21</td><td>5:00pm - 5:45pm</td><td>$60/month or $15/class<br>Non-members $20</td><td><a href="https://smartastro.app/calendar?class=749" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
                 <tr><td>January 28</td><td>5:00pm - 5:45pm</td><td>$60/month or $15/class<br>Non-members $20</td><td><a href="https://smartastro.app/calendar?class=747" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
             </table>
+        </div>
+        <div class="camp-section">
+            <div class="camp-title" id="open-aerials-section">Open Aerials
+                <button class="info-btn" onclick="document.getElementById('class-info').scrollIntoView({behavior: 'smooth'});" aria-label="More Info">Info</button>
+            </div>
+            <table class="camp-table">
+                <tr><th>Dates</th><th>Time</th><th>Price</th><th>Sign up</th></tr>
+                <tr><td>January 7</td><td>7:00pm - 8:00pm</td><td>Free for members<br>Non-members $10</td><td><a href="https://smartastro.app/calendar?class=756" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
+                <tr><td>January 14</td><td>7:00pm - 8:00pm</td><td>Free for members<br>Non-members $10</td><td><a href="https://smartastro.app/calendar?class=755" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
+                <tr><td>January 21</td><td>7:00pm - 8:00pm</td><td>Free for members<br>Non-members $10</td><td><a href="https://smartastro.app/calendar?class=757" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
+                <tr><td>January 28</td><td>7:00pm - 8:00pm</td><td>Free for members<br>Non-members $10</td><td><a href="https://smartastro.app/calendar?class=758" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
+            </table>
+            <div class="back-to-top">
+                <a href="#" class="back-to-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">↑ Back to Top</a>
+            </div>
         </div>
         <div class="camp-section" id="class-info">
             <div class="section-title">About Our Juniors Classes</div>
