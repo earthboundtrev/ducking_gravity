@@ -1,0 +1,10 @@
+# Custom 404 Error Page
+ErrorDocument 404 /404.html
+
+# Enable Rewrite Engine
+RewriteEngine On
+
+# If the requested file or directory doesn't exist, show 404
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /404.html [L]

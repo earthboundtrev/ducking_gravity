@@ -2,6 +2,8 @@
   command = "node inject-env.js"
   publish = "."
 
+# Netlify automatically uses 404.html for 404 errors
+# This catch-all is for SPA routing - it only applies if no file matches
 [[redirects]]
   from = "/*"
   to = "/index.html"

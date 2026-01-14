@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | Ducking Gravity</title>
+    <link rel="icon" type="image/png" href="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-green.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --teal: #b1d2cc;
+            --hyperlink-color: #208b0b;
+            --sky: #d5e3e5;
+            --aqua: #bfd2d6;
+            --mint: #dff0f1;
+            --gray: #f5f8f8;
+            --light-blue: #e0ebed;
+            --footer-blue: #bcd4d7;
+            --hard-green: #2e7d32;
+            --text-dark: #1a1a1a;
+            --text-light: #5a6c65;
+            --white: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --shadow-lg: rgba(0, 0, 0, 0.12);
+            --shadow-xl: rgba(0, 0, 0, 0.16);
+            --accent-green: #22c55e;
+            --accent-green-dark: #16a34a;
+            --bg-gradient-start: #f0f9ff;
+            --bg-gradient-end: #e0f2fe;
+            --card-bg: #ffffff;
+            --border-light: rgba(0, 0, 0, 0.06);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fafbfc;
+            color: var(--text-dark);
+            margin: 0;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px var(--shadow), 0 1px 2px rgba(0, 0, 0, 0.06);
+            border-bottom: 1px solid var(--border-light);
+            padding: 1.5rem 0 1rem 0;
+            text-align: center;
+        }
+        .logo {
+            height: 300px;
+            width: auto;
+            max-width: 100%;
+            margin-bottom: 0.35rem;
+            margin-top: 15px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 0.35rem;
+            color: var(--hard-green);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+        }
+        .back-link:hover {
+            color: var(--teal);
+        }
+        h1 {
+            font-size: 2.75rem;
+            font-weight: 700;
+            margin: 2rem 0 1rem 0;
+            text-align: center;
+            letter-spacing: -0.02em;
+            color: var(--text-dark);
+        }
+        .error-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px var(--shadow), 0 1px 3px rgba(0, 0, 0, 0.08);
+            margin: 2.5rem 0;
+            padding: 3rem 2.5rem;
+            border: 1px solid var(--border-light);
+            text-align: center;
+        }
+        .error-code {
+            font-size: 6rem;
+            font-weight: 700;
+            color: var(--hard-green);
+            margin: 1rem 0;
+            line-height: 1;
+        }
+        .error-message {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin: 2rem 0;
+            font-weight: 500;
+        }
+        .cute-message {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin: 2rem 0;
+            line-height: 1.8;
+            font-style: italic;
+        }
+        .home-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--hard-green) 0%, var(--accent-green-dark) 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 0.8em 2em;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
+            text-decoration: none;
+            margin-top: 2rem;
+        }
+        .home-button:hover {
+            background: linear-gradient(135deg, #1b5e20 0%, var(--hard-green) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(46, 125, 50, 0.35);
+            text-decoration: none;
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            .error-section {
+                padding: 2rem 1.5rem;
+            }
+            .container {
+                padding: 0 5px;
+            }
+            .logo {
+                transform: translateX(8%);
+            }
+            .back-link {
+                margin-top: -5%;
+            }
+            .error-code {
+                font-size: 4rem;
+            }
+            .error-message {
+                font-size: 1.2rem;
+            }
+            .cute-message {
+                font-size: 1rem;
+            }
+        }
+        @media (min-width: 601px) and (max-width: 1024px) {
+            .logo {
+                transform: translateX(8%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html"><img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking_gravity_new_logo.png" alt="Ducking Gravity Logo" class="logo"></a>
+        <div>
+            <a href="index.html" class="back-link">&larr; Back to Main Site</a>
+        </div>
+    </header>
+    <div class="container">
+        <div class="error-section">
+            <div class="error-code">404</div>
+            <div class="error-message">Oops! Looks like you're in the wrong place.</div>
+            <div class="cute-message">
+                🦆 It seems like gravity got the better of this page and it's floating somewhere we can't reach!<br>
+                Don't worry though - let's get you back on solid ground.
+            </div>
+            <a href="index.html" class="home-button">Take Me Home</a>
+        </div>
+    </div>
+</body>
+</html>
