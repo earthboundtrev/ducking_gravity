@@ -205,6 +205,18 @@
             outline: none;
             text-decoration: none;
         }
+        .info-btn.disabled {
+            background: #9e9e9e;
+            color: #ffffff;
+            cursor: not-allowed;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        .info-btn.disabled:hover {
+            background: #9e9e9e;
+            transform: none;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
+        }
         /* Footer */
         footer {
             background: linear-gradient(135deg, var(--footer-blue) 0%, #a8c9cd 100%);
@@ -295,13 +307,27 @@
         .camp-table .info-btn[data-mobile-label] span {
             display: none;
         }
+        .camp-table .info-btn.disabled[data-mobile-label]::after {
+            content: 'Full';
+            display: inline;
+        }
+        .camp-table td span[style*="#d32f2f"] {
+            display: none;
+        }
         @media (min-width: 601px) {
+            .camp-table td span[style*="#d32f2f"] {
+                display: inline;
+            }
             .camp-table .info-btn[data-mobile-label]::after {
                 content: '';
                 display: none;
             }
             .camp-table .info-btn[data-mobile-label] span {
                 display: inline;
+            }
+            .camp-table .info-btn.disabled[data-mobile-label]::after {
+                content: '';
+                display: none;
             }
         }
     </style>
@@ -328,7 +354,7 @@
                 <tr><th>Dates</th><th>Time</th><th>Price</th><th>Sign up</th></tr>
                 <tr><td>January 4</td><td>9:30am - 10:30am</td><td>Members $10<br>Non-members $15</td><td><a href="https://smartastro.app/calendar?class=774" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
                 <tr><td>January 11</td><td>9:30am - 10:30am</td><td>Members $10<br>Non-members $15</td><td><a href="https://smartastro.app/calendar?class=773" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
-                <tr><td>January 18</td><td>9:30am - 10:30am</td><td>Members $10<br>Non-members $15</td><td><a href="https://smartastro.app/calendar?class=772" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
+                <tr><td>January 18</td><td>9:30am - 10:30am</td><td>Members $10<br>Non-members $15</td><td><a href="#" class="info-btn disabled" data-mobile-label><span>Class Full</span></a> <span style="color: #d32f2f; font-weight: 600; margin-left: 0.5rem;">(FULL)</span></td></tr>
                 <tr><td>January 25</td><td>9:30am - 10:30am</td><td>Members $10<br>Non-members $15</td><td><a href="https://smartastro.app/calendar?class=771" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
             </table>
         </div>
