@@ -217,6 +217,39 @@
             transform: none;
             box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
         }
+        .camp-table .info-btn {
+            font-size: 0.95em;
+        }
+        /* Mobile: short "Info!" for small screens */
+        .camp-table .info-btn[data-mobile-label]::after {
+            content: 'Info!';
+            display: inline;
+        }
+        .camp-table .info-btn[data-mobile-label] span {
+            display: none;
+        }
+        /* Tablet: "Sign Up!" to avoid wrapping */
+        @media (min-width: 601px) and (max-width: 1024px) {
+            .camp-table .info-btn[data-mobile-label]::after {
+                content: 'Sign Up!';
+                display: inline;
+            }
+            .camp-table .info-btn[data-mobile-label] span {
+                display: none;
+            }
+            .camp-table .info-btn {
+                white-space: nowrap;
+            }
+        }
+        @media (min-width: 1025px) {
+            .camp-table .info-btn[data-mobile-label]::after {
+                content: '';
+                display: none;
+            }
+            .camp-table .info-btn[data-mobile-label] span {
+                display: inline;
+            }
+        }
         /* Footer */
         footer {
             background: linear-gradient(135deg, var(--footer-blue) 0%, #a8c9cd 100%);

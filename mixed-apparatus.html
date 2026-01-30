@@ -328,6 +328,7 @@
         .camp-table .info-btn {
             font-size: 0.95em;
         }
+        /* Mobile: short "Info!" for small screens */
         .camp-table .info-btn[data-mobile-label]::after {
             content: 'Info!';
             display: inline;
@@ -335,7 +336,21 @@
         .camp-table .info-btn[data-mobile-label] span {
             display: none;
         }
-        @media (min-width: 601px) {
+        /* Tablet: "Sign Up!" to avoid wrapping */
+        @media (min-width: 601px) and (max-width: 1024px) {
+            .camp-table .info-btn[data-mobile-label]::after {
+                content: 'Sign Up!';
+                display: inline;
+            }
+            .camp-table .info-btn[data-mobile-label] span {
+                display: none;
+            }
+            .camp-table .info-btn {
+                white-space: nowrap;
+            }
+        }
+        /* Desktop: full button text */
+        @media (min-width: 1025px) {
             .camp-table .info-btn[data-mobile-label]::after {
                 content: '';
                 display: none;
