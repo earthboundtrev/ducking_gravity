@@ -98,10 +98,15 @@
             margin-bottom: 0.5rem;
             letter-spacing: -0.01em;
         }
+        .camp-table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
         .camp-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 1.5rem;
         }
         .camp-table th, .camp-table td {
             padding: 0.7rem 0.5rem;
@@ -346,6 +351,7 @@
     <div class="container">
         <div class="camp-section">
             <div class="camp-title">Classes & Workshops</div>
+            <div class="camp-table-wrapper">
             <table class="camp-table">
                 <tr><th>Class</th><th>Description</th><th>Learn More</th></tr>
                 <tr>
@@ -379,6 +385,7 @@
                     <td><a href="juniors.html" class="info-btn">Info!</a></td>
                 </tr>
             </table>
+            </div>
         </div>
     </div>
     <footer>

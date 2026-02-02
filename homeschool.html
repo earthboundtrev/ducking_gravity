@@ -98,10 +98,15 @@
             margin-bottom: 0.5rem;
             letter-spacing: -0.01em;
         }
+        .camp-table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
         .camp-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 1.5rem;
         }
         .camp-table th, .camp-table td {
             padding: 0.7rem 0.5rem;
@@ -321,6 +326,7 @@
             <div class="camp-title" id="homeschool-section">Homeschool Class
                 <button class="info-btn" onclick="document.getElementById('class-info').scrollIntoView({behavior: 'smooth'});" aria-label="More Info">Info</button>
             </div>
+            <div class="camp-table-wrapper">
             <table class="camp-table">
                 <tr><th>Dates</th><th>Time</th><th>Price</th><th>Sign up</th></tr>
                 <tr><td>January 7</td><td>1:00pm - 2:00pm</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="https://smartastro.app/calendar?class=888" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
@@ -328,6 +334,7 @@
                 <tr><td>January 21</td><td>1:00pm - 2:00pm</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="https://smartastro.app/calendar?class=886" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
                 <tr><td>January 28</td><td>1:00pm - 2:00pm</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="https://smartastro.app/calendar?class=887" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
             </table>
+            </div>
         </div>
         <div class="camp-section" id="class-info">
             <div class="section-title">About Our Homeschool Classes</div>

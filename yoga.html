@@ -98,10 +98,15 @@
             margin-bottom: 0.5rem;
             letter-spacing: -0.01em;
         }
+        .camp-table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
         .camp-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 1.5rem;
         }
         .camp-table th, .camp-table td {
             padding: 0.7rem 0.5rem;
@@ -383,6 +388,7 @@
             <div class="camp-title" id="morning-vinyasa-section">Yoga
                 <button class="info-btn" onclick="document.getElementById('class-info').scrollIntoView({behavior: 'smooth'});" aria-label="More Info">Info</button>
             </div>
+            <div class="camp-table-wrapper">
             <table class="camp-table">
                 <tr><th>Dates</th><th>Time</th><th>Price</th><th>Sign up</th></tr>
                 <tr><td>February 1</td><td>9:30am - 10:30am</td><td>Members $10<br>Non-members $15</td><td><a href="https://smartastro.app/calendar?class=1182" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
@@ -390,6 +396,7 @@
                 <tr><td>February 15</td><td>9:30am - 10:30am</td><td>Members $10<br>Non-members $15</td><td><a href="https://smartastro.app/calendar?class=1131" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
                 <tr><td>February 22</td><td>9:30am - 10:30am</td><td>Members $10<br>Non-members $15</td><td><a href="https://smartastro.app/calendar?class=1137" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
             </table>
+            </div>
         </div>
         <div class="camp-section" id="class-info">
             <div class="section-title">About Our Yoga Class</div>

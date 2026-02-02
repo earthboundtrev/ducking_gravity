@@ -98,10 +98,15 @@
             margin-bottom: 0.5rem;
             letter-spacing: -0.01em;
         }
+        .camp-table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
         .camp-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 1.5rem;
         }
         .camp-table th, .camp-table td {
             padding: 0.7rem 0.5rem;
@@ -376,6 +381,7 @@
             <div class="camp-title" id="aerial-jam-section">Mixed Apparatus Foundations
                 <button class="info-btn" onclick="document.getElementById('class-info').scrollIntoView({behavior: 'smooth'});" aria-label="More Info">Info</button>
             </div>
+            <div class="camp-table-wrapper">
             <table class="camp-table">
                 <tr><th>Dates</th><th>Time</th><th>Price</th><th>Sign up</th></tr>
                 <tr><td>February 3</td><td>7:30am - 8:30am</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="https://smartastro.app/calendar?class=1215" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
@@ -387,6 +393,7 @@
                 <tr><td>February 24</td><td>7:30am - 8:30am</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="https://smartastro.app/calendar?class=1218" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
                 <tr><td>February 24</td><td>9:30am - 10:30am</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="https://smartastro.app/calendar?class=1235" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
             </table>
+            </div>
             <div class="back-to-top">
                 <a href="#" class="back-to-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">↑ Back to Top</a>
             </div>

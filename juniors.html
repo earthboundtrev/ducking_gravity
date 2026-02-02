@@ -98,10 +98,15 @@
             margin-bottom: 0.5rem;
             letter-spacing: -0.01em;
         }
+        .camp-table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
         .camp-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 1.5rem;
         }
         .camp-table th, .camp-table td {
             padding: 0.7rem 0.5rem;
@@ -408,6 +413,7 @@
             <div class="camp-title" id="juniors-section">Junior Aerial Classes
                 <button class="info-btn" onclick="document.getElementById('class-info').scrollIntoView({behavior: 'smooth'});" aria-label="More Info">Info</button>
             </div>
+            <div class="camp-table-wrapper">
             <table class="camp-table">
                 <tr><th>Dates</th><th>Time</th><th>Price</th><th>Sign up</th></tr>
                 <tr><td>February 2</td><td>5:00pm - 5:45pm</td><td>Junior membership or $75/month</td><td><a href="#" class="info-btn disabled" data-mobile-label><span>Class Full</span></a> <span style="color: #d32f2f; font-weight: 600; margin-left: 0.5rem;">(FULL)</span></td></tr>
@@ -420,6 +426,7 @@
             <div class="camp-title" id="spin-swing-section">Spin and Swing Classes
                 <button class="info-btn" onclick="document.getElementById('class-info').scrollIntoView({behavior: 'smooth'});" aria-label="More Info">Info</button>
             </div>
+            <div class="camp-table-wrapper">
             <table class="camp-table">
                 <tr><th>Dates</th><th>Time</th><th>Price</th><th>Sign up</th></tr>
                 <tr><td>February 4</td><td>5:00pm - 5:45pm</td><td>$60/month or $15/class<br>Non-members $20</td><td><a href="https://smartastro.app/calendar?class=1030" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
@@ -427,11 +434,13 @@
                 <tr><td>February 18</td><td>5:00pm - 5:45pm</td><td>$60/month or $15/class<br>Non-members $20</td><td><a href="https://smartastro.app/calendar?class=1034" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
                 <tr><td>February 25</td><td>5:00pm - 5:45pm</td><td>$60/month or $15/class<br>Non-members $20</td><td><a href="https://smartastro.app/calendar?class=1033" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
             </table>
+            </div>
         </div>
         <div class="camp-section">
             <div class="camp-title" id="open-aerials-section">Open Aerials
                 <button class="info-btn" onclick="document.getElementById('class-info').scrollIntoView({behavior: 'smooth'});" aria-label="More Info">Info</button>
             </div>
+            <div class="camp-table-wrapper">
             <table class="camp-table">
                 <tr><th>Dates</th><th>Time</th><th>Price</th><th>Sign up</th></tr>
                 <tr><td>February 4</td><td>7:00pm - 8:00pm</td><td>Free for members<br>Non-members $10</td><td><a href="https://smartastro.app/calendar?class=1064" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
@@ -439,6 +448,7 @@
                 <tr><td>February 18</td><td>7:00pm - 8:00pm</td><td>Free for members<br>Non-members $10</td><td><a href="https://smartastro.app/calendar?class=1066" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
                 <tr><td>February 25</td><td>7:00pm - 8:00pm</td><td>Free for members<br>Non-members $10</td><td><a href="https://smartastro.app/calendar?class=1075" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
             </table>
+            </div>
             <div class="back-to-top">
                 <a href="#" class="back-to-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">↑ Back to Top</a>
             </div>
