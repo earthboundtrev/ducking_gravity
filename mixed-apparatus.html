@@ -224,6 +224,17 @@
             transform: none;
             box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
         }
+        .info-btn.cancelled {
+            background: #c62828;
+            color: #fff;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .info-btn.cancelled:hover {
+            background: #c62828;
+            transform: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
         .back-to-top {
             display: block;
             text-align: center;
@@ -403,7 +414,7 @@
             <div class="camp-table-wrapper">
             <table class="camp-table">
                 <tr><th>Dates</th><th>Time</th><th>Price</th><th>Sign up</th></tr>
-                <tr><td>February 3</td><td>7:30am - 8:30am</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="#" class="info-btn disabled cancelled" data-mobile-label><span>Cancelled</span></a> <span class="cancelled-label">(CANCELLED)</span></td></tr>
+                <tr><td>February 3</td><td>7:30am - 8:30am</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="#" class="info-btn cancelled" data-mobile-label><span>Cancelled</span></a></td></tr>
                 <tr><td>February 3</td><td>9:30am - 10:30am</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="https://smartastro.app/calendar?class=1232" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
                 <tr><td>February 10</td><td>7:30am - 8:30am</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="https://smartastro.app/calendar?class=1216" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
                 <tr><td>February 10</td><td>9:30am - 10:30am</td><td>Members $25 or $100/month<br>Non-members $30</td><td><a href="https://smartastro.app/calendar?class=1233" class="info-btn" target="_blank" data-mobile-label><span>Sign up for this class!</span></a></td></tr>
