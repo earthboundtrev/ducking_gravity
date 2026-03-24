@@ -9,6 +9,8 @@
   to = "/index.html"
   status = 200
 
+# Prefer Site settings → Environment variables in Netlify UI so values are not committed.
+# These keys match what inject-env.js / dotenv expect during the build.
 [build.environment]
   EMAILJS_PUBLIC_KEY = ""
   EMAILJS_SERVICE_ID = ""
