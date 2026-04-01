@@ -394,12 +394,13 @@
             transform: scale(1.08);
         }
 
-        /* Services Section */
+        /* Services Section — equal height per row at all breakpoints */
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2.5rem;
             margin-top: 3rem;
+            align-items: stretch;
         }
 
         .service-card {
@@ -411,6 +412,12 @@
             border: 1px solid var(--border-light);
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 0;
+            row-gap: 1.25rem;
+            box-sizing: border-box;
         }
 
         .service-card::before {
@@ -439,15 +446,25 @@
         .service-card h3 {
             color: var(--text-dark);
             font-size: 1.5rem;
-            margin-bottom: 1.25rem;
+            margin: 0;
             font-weight: 700;
             letter-spacing: -0.01em;
+            flex-shrink: 0;
         }
 
         .service-card p {
             color: var(--text-light);
-      line-height: 1.75;
+            line-height: 1.75;
             font-size: 1.05rem;
+            margin: 0;
+            flex: 1 1 auto;
+            min-height: 0;
+        }
+
+        .service-card .cta-button {
+            margin: 0;
+            align-self: flex-start;
+            flex-shrink: 0;
         }
 
         /* Pricing Section */
@@ -782,6 +799,13 @@
                 text-align: center;
                 width: fit-content;
             }
+
+            .service-card .cta-button {
+                display: inline-block;
+                margin-left: auto;
+                margin-right: auto;
+                align-self: center;
+            }
         }
 
         @media (max-width: 480px) {
@@ -824,6 +848,13 @@
                 margin: 1.5rem auto 0 auto;
                 text-align: center;
                 width: fit-content;
+            }
+
+            .service-card .cta-button {
+                display: inline-block;
+                margin-left: auto;
+                margin-right: auto;
+                align-self: center;
             }
         }
 
@@ -1745,47 +1776,57 @@
                     <div class="service-card" style="cursor:pointer;" onclick="window.location.href='silks.html'">
                         <h3>Aerial Classes</h3>
                         <p>Experience the beauty and strength of aerial arts! Our aerial classes are designed for ages 3-8 on a membership basis, and ages 9-Adult on a membership or drop-in basis. Mixed level classes designed to meet you where you are, whether you're just starting out or looking to advance your skills. Build strength, flexibility, and confidence while learning fundamental silks techniques in a supportive, inclusive environment.</p>
-                        <a href="silks.html" class="cta-button" style="margin-top:1.2rem;">Learn More</a>
+                        <a href="silks.html" class="cta-button">Learn More</a>
       </div>
                     <div class="service-card" style="cursor:pointer;" onclick="window.location.href='silks.html#open-aerials-section'">
                         <h3>Open Aerials</h3>
                         <p>Open Aerials is dedicated practice time for anyone in our community who wants to work on their skills in a supportive environment. It's perfect for refining techniques and building confidence on the silks. New to aerials? You're welcome too! This is a great time to try silks and meet the Ducking Gravity community. Open Aerials runs Wednesdays from 7:00pm to 8:00pm.</p>
-                        <a href="silks.html#open-aerials-section" class="cta-button" style="margin-top:1.2rem;">Learn More</a>
+                        <a href="silks.html#open-aerials-section" class="cta-button">Learn More</a>
     </div>
                     <div class="service-card" style="cursor:pointer;" onclick="window.location.href='juniors.html'">
                         <h3>Junior Aerial Classes</h3>
-                        <p>Designed specifically for young aerialists who are ready to take their skills to the next level! These classes provide a fun, supportive environment where kids can build strength, flexibility, and confidence while learning exciting aerial techniques.</p>
-                        <a href="juniors.html" class="cta-button" style="margin-top:1.2rem;">Learn More</a>
+                        <p>Designed specifically for young aerialists who are ready to take their skills to the next level! These classes provide a fun, supportive environment where kids can build strength, flexibility, and confidence while learning exciting aerial techniques. Evening sessions run on a junior membership basis (with Spin and Swing on Wednesdays), and our coaches help families with placement so every child is in the right fit.</p>
+                        <a href="juniors.html" class="cta-button">Learn More</a>
       </div>
                     <div class="service-card" style="cursor:pointer;" onclick="window.location.href='homeschool.html'">
                         <h3>Homeschool Classes</h3>
                         <p>Designed specifically for homeschool students! Learn fundamental silks techniques and movements while building strength, flexibility, and grace in a supportive, age-appropriate environment. Connect with other homeschool students in a fun, active setting. Runs Tuesdays from 1:00pm - 2:00pm.</p>
-                        <a href="homeschool.html" class="cta-button" style="margin-top:1.2rem;">Learn More</a>
+                        <a href="homeschool.html" class="cta-button">Learn More</a>
+        </div>
+                    <div class="service-card" style="cursor:pointer;" onclick="window.location.href='events.html'">
+                        <h3>Camps &amp; Events</h3>
+                        <p>Seasonal camps, holiday programs, and one-off events gathered in one place. See flyers, dates, and prices for offerings like Spring Break camps, then jump straight to our calendar to register for the day that fits your family. Perfect when you want structured aerial fun without a long-term class commitment.</p>
+                        <a href="events.html" class="cta-button">Learn More</a>
+        </div>
+                    <div class="service-card" style="cursor:pointer;" onclick="window.location.href='summercamps.html'">
+                        <h3>Summer Camps</h3>
+                        <p>Weekly aerial arts camps for kids through the summer: junior and full-day options, with a mix of silks, games, creativity, and outdoor time Ducking Gravity style. Each week is booked separately through the calendar so you can pick one session or several. Packing lists and full schedules live on the summer camps page.</p>
+                        <a href="summercamps.html" class="cta-button">Learn More</a>
         </div>
                     <div class="service-card" style="cursor:pointer;" onclick="window.location.href='yoga.html'">
                         <h3>Yoga Classes</h3>
-                        <p>Join us for Yoga! This energizing practice combines breath with movement to support your aerial training and overall well-being.</p>
-                        <a href="yoga.html" class="cta-button" style="margin-top:1.2rem;">Learn More</a>
+                        <p>Join us for Yoga! This energizing practice combines breath with movement to support your aerial training and overall well-being. Classes are relaxed and welcoming—follow a guided session with your own mat or one of ours. No prior yoga experience required.</p>
+                        <a href="yoga.html" class="cta-button">Learn More</a>
         </div>
                     <div class="service-card" style="cursor:pointer;" onclick="window.location.href='lyra.html'">
                         <h3>Lyra Classes</h3>
-                        <p>Experience the artistry of aerial hoop! Our Lyra classes help you build strength, flexibility, and grace while learning this beautiful aerial discipline. Perfect for all skill levels.</p>
-                        <a href="lyra.html" class="cta-button" style="margin-top:1.2rem;">Learn More</a>
+                        <p>Experience the artistry of aerial hoop! Our Lyra classes help you build strength, flexibility, and grace while learning this beautiful aerial discipline. Perfect for all skill levels. Lyra Foundations is for ages 9 and up—learn mounts, poses, and transitions in a supportive, mixed-level environment.</p>
+                        <a href="lyra.html" class="cta-button">Learn More</a>
         </div>
                     <div class="service-card" style="cursor:pointer;" onclick="window.location.href='mixed-apparatus.html'">
                         <h3>Mixed Apparatus</h3>
                         <p>Move between lyra, silks, and ground conditioning in this perfect middle ground class. Learn new moves and shapes at your own pace in a low-pressure, creative environment. Guided by a coach, this class is more structured than Open Aerial and lighter than Foundations.</p>
-                        <a href="mixed-apparatus.html" class="cta-button" style="margin-top:1.2rem;">Learn More</a>
+                        <a href="mixed-apparatus.html" class="cta-button">Learn More</a>
         </div>
                     <div class="service-card" style="cursor:pointer;" onclick="window.location.href='birthday.html'">
                         <h3>Birthday Parties</h3>
-                        <p>Celebrate your special day with a unique aerial arts experience! Professional instruction tailored to all skill levels, safe activities for kids and adults, and memories that will last a lifetime.</p>
-                        <a href="birthday.html" class="cta-button" style="margin-top:1.2rem;">Learn More</a>
+                        <p>Celebrate your special day with a unique aerial arts experience! Professional instruction tailored to all skill levels, safe activities for kids and adults, and memories that will last a lifetime. Send a request through the birthday page so we can match your date, guest count, and ages to the right format—then we work with you on timing and details before the big day.</p>
+                        <a href="birthday.html" class="cta-button">Learn More</a>
         </div>
                     <div class="service-card" style="cursor:pointer;" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">
                         <h3>Special Events</h3>
-                        <p>Make your occasion unforgettable with a unique aerial arts experience! Perfect for corporate events, team building, bachelorette parties, and celebrations of all kinds with professional instruction and memories that will last a lifetime.</p>
-                        <a href="#contact" class="cta-button" style="margin-top:1.2rem;">Contact Us</a>
+                        <p>Make your occasion unforgettable with a unique aerial arts experience! Perfect for corporate events, team building, bachelorette parties, and celebrations of all kinds with professional instruction and memories that will last a lifetime. Tell us your group size, vibe, and any must-haves—we will work with you to shape something safe, fun, and truly one-of-a-kind for your guests.</p>
+                        <a href="#contact" class="cta-button">Contact Us</a>
         </div>
     </div>
   </section>
