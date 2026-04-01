@@ -4,6 +4,9 @@ ErrorDocument 404 /404.html
 # Enable Rewrite Engine
 RewriteEngine On
 
+# Clean URL for summer camps page
+RewriteRule ^summercamps/?$ /summercamps.html [L]
+
 # If the requested file or directory doesn't exist, show 404
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

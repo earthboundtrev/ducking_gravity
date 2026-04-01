@@ -3,6 +3,12 @@
   publish = "."
 
 # Netlify automatically uses 404.html for 404 errors
+# Pretty URL for summer camps (static file is summercamps.html)
+[[redirects]]
+  from = "/summercamps"
+  to = "/summercamps.html"
+  status = 200
+
 # This catch-all is for SPA routing - it only applies if no file matches
 [[redirects]]
   from = "/*"
