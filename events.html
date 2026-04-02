@@ -327,6 +327,10 @@
         .camp-table .info-btn[data-mobile-label] span {
             display: none;
         }
+        .camp-table .info-btn.disabled[data-mobile-label]::after {
+            content: 'Full';
+            display: inline;
+        }
         @media (min-width: 601px) {
             .camp-table .info-btn[data-mobile-label]::after {
                 content: '';
@@ -334,6 +338,10 @@
             }
             .camp-table .info-btn[data-mobile-label] span {
                 display: inline;
+            }
+            .camp-table .info-btn.disabled[data-mobile-label]::after {
+                content: '';
+                display: none;
             }
         }
     </style>
@@ -371,7 +379,7 @@
                     <td>Thursday, April 9, 2026</td>
                     <td>9:00 AM &ndash; 3:00 PM</td>
                     <td>$60</td>
-                    <td><a href="https://smartastro.app/calendar?class=1255" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td>
+                    <td><a href="#" class="info-btn disabled" data-mobile-label><span>Class Full</span></a></td>
                 </tr>
                 <tr>
                     <td>Friday, April 10, 2026</td>
@@ -396,7 +404,7 @@
                     <td>Thursday, April 9, 2026</td>
                     <td>9:00 AM &ndash; 12:00 PM</td>
                     <td>$30</td>
-                    <td><a href="https://smartastro.app/calendar?class=1258" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td>
+                    <td><a href="#" class="info-btn disabled" data-mobile-label><span>Class Full</span></a></td>
                 </tr>
                 <tr>
                     <td>Friday, April 10, 2026</td>

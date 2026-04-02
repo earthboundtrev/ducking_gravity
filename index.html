@@ -1388,6 +1388,8 @@
         cursor: not-allowed;
         box-shadow: none;
         transform: none;
+        pointer-events: none;
+        text-decoration: none;
     }
     
     .popup-slot-button.disabled:hover {
@@ -1546,7 +1548,7 @@
                                 </div>
                                 <div class="popup-slot">
                                     <span class="popup-slot-time">Thu Apr 9 &middot; 9am&ndash;3pm</span>
-                                    <a href="https://smartastro.app/calendar?class=1255" target="_blank" class="popup-slot-button">Sign up!</a>
+                                    <span class="popup-slot-button disabled" role="status">Class Full</span>
                                 </div>
                                 <div class="popup-slot">
                                     <span class="popup-slot-time">Fri Apr 10 &middot; 9am&ndash;3pm</span>
@@ -1565,7 +1567,7 @@
                                 </div>
                                 <div class="popup-slot">
                                     <span class="popup-slot-time">Thu Apr 9 &middot; 9am&ndash;12pm</span>
-                                    <a href="https://smartastro.app/calendar?class=1258" target="_blank" class="popup-slot-button">Sign up!</a>
+                                    <span class="popup-slot-button disabled" role="status">Class Full</span>
                                 </div>
                                 <div class="popup-slot">
                                     <span class="popup-slot-time">Fri Apr 10 &middot; 9am&ndash;12pm</span>
