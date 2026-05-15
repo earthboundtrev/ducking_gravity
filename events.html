@@ -229,13 +229,22 @@
             background: #c62828;
         }
         .info-btn.full {
-            background: #bdbdbd;
+            background: #c62828;
+            color: #fff;
             cursor: not-allowed;
             box-shadow: none;
             pointer-events: none;
         }
+        .info-btn.full::before {
+            display: none;
+        }
         .info-btn.full:hover, .info-btn.full:focus {
-            background: #bdbdbd;
+            background: #c62828;
+            transform: none;
+            box-shadow: none;
+        }
+        .camp-table .info-btn.full[data-mobile-label]::after {
+            content: 'Full';
         }
         /* Footer */
         footer {
@@ -343,6 +352,10 @@
                 content: '';
                 display: none;
             }
+            .camp-table .info-btn.full[data-mobile-label]::after {
+                content: '';
+                display: none;
+            }
         }
     </style>
 </head>
@@ -399,14 +412,14 @@
                     <td>Tuesday, May 26, 2026</td>
                     <td>9:00 AM &ndash; 12:00 PM</td>
                     <td>$180</td>
-                    <td><a href="https://smartastro.app/calendar?class=1302" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td>
+                    <td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td>
                 </tr>
                 <tr>
                     <td>2</td>
                     <td>Monday, June 1, 2026</td>
                     <td>9:00 AM &ndash; 12:00 PM</td>
                     <td>$180</td>
-                    <td><a href="https://smartastro.app/calendar?class=1306" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td>
+                    <td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td>
                 </tr>
                 <tr>
                     <td>3</td>
@@ -427,14 +440,14 @@
                     <td>Monday, June 22, 2026</td>
                     <td>9:00 AM &ndash; 12:00 PM</td>
                     <td>$180</td>
-                    <td><a href="https://smartastro.app/calendar?class=1321" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td>
+                    <td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td>
                 </tr>
                 <tr>
                     <td>6</td>
                     <td>Monday, June 29, 2026</td>
                     <td>9:00 AM &ndash; 12:00 PM</td>
                     <td>$180</td>
-                    <td><a href="https://smartastro.app/calendar?class=1326" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td>
+                    <td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td>
                 </tr>
                 <tr>
                     <td>7</td>
@@ -448,7 +461,7 @@
                     <td>Monday, July 13, 2026</td>
                     <td>9:00 AM &ndash; 12:00 PM</td>
                     <td>$180</td>
-                    <td><a href="https://smartastro.app/calendar?class=1336" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td>
+                    <td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td>
                 </tr>
             </table>
             </div>
@@ -463,14 +476,14 @@
                     <td>Tuesday, May 26, 2026</td>
                     <td>12:00 PM &ndash; 3:00 PM</td>
                     <td>$225</td>
-                    <td><a href="https://smartastro.app/calendar?class=1382" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td>
+                    <td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td>
                 </tr>
                 <tr>
                     <td>2</td>
                     <td>Monday, June 1, 2026</td>
                     <td>12:00 PM &ndash; 3:00 PM</td>
                     <td>$225</td>
-                    <td><a href="https://smartastro.app/calendar?class=1347" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td>
+                    <td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td>
                 </tr>
                 <tr>
                     <td>3</td>
@@ -491,14 +504,14 @@
                     <td>Monday, June 22, 2026</td>
                     <td>12:00 PM &ndash; 3:00 PM</td>
                     <td>$225</td>
-                    <td><a href="https://smartastro.app/calendar?class=1362" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td>
+                    <td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td>
                 </tr>
                 <tr>
                     <td>6</td>
                     <td>Monday, June 29, 2026</td>
                     <td>12:00 PM &ndash; 3:00 PM</td>
                     <td>$225</td>
-                    <td><a href="https://smartastro.app/calendar?class=1367" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td>
+                    <td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td>
                 </tr>
                 <tr>
                     <td>7</td>
@@ -512,7 +525,7 @@
                     <td>Monday, July 13, 2026</td>
                     <td>12:00 PM &ndash; 3:00 PM</td>
                     <td>$225</td>
-                    <td><a href="https://smartastro.app/calendar?class=1377" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td>
+                    <td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td>
                 </tr>
             </table>
             </div>
@@ -527,14 +540,14 @@
                     <td>Tuesday, May 26, 2026</td>
                     <td>9:00 AM &ndash; 3:00 PM</td>
                     <td>$375</td>
-                    <td><a href="https://smartastro.app/calendar?class=1263" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td>
+                    <td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td>
                 </tr>
                 <tr>
                     <td>2</td>
                     <td>Monday, June 1, 2026</td>
                     <td>9:00 AM &ndash; 3:00 PM</td>
                     <td>$375</td>
-                    <td><a href="https://smartastro.app/calendar?class=1267" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td>
+                    <td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td>
                 </tr>
                 <tr>
                     <td>3</td>
@@ -555,14 +568,14 @@
                     <td>Monday, June 22, 2026</td>
                     <td>9:00 AM &ndash; 3:00 PM</td>
                     <td>$375</td>
-                    <td><a href="https://smartastro.app/calendar?class=1282" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td>
+                    <td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td>
                 </tr>
                 <tr>
                     <td>6</td>
                     <td>Monday, June 29, 2026</td>
                     <td>9:00 AM &ndash; 3:00 PM</td>
                     <td>$375</td>
-                    <td><a href="https://smartastro.app/calendar?class=1287" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td>
+                    <td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td>
                 </tr>
                 <tr>
                     <td>7</td>
@@ -576,7 +589,7 @@
                     <td>Monday, July 13, 2026</td>
                     <td>9:00 AM &ndash; 3:00 PM</td>
                     <td>$375</td>
-                    <td><a href="https://smartastro.app/calendar?class=1297" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td>
+                    <td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td>
                 </tr>
             </table>
             </div>
@@ -586,10 +599,10 @@
             <div class="camp-table-wrapper">
             <table class="camp-table">
                 <tr><th>Week</th><th>First session</th><th>Time</th><th>Price</th><th>Sign up</th></tr>
-                <tr><td>2</td><td>Monday, June 1, 2026</td><td>8:00 AM &ndash; 9:00 AM</td><td>$30</td><td><a href="https://smartastro.app/calendar?class=1383" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td></tr>
+                <tr><td>2</td><td>Monday, June 1, 2026</td><td>8:00 AM &ndash; 9:00 AM</td><td>$30</td><td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td></tr>
                 <tr><td>3</td><td>Monday, June 8, 2026</td><td>8:00 AM &ndash; 9:00 AM</td><td>$30</td><td><a href="https://smartastro.app/calendar?class=1388" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td></tr>
                 <tr><td>4</td><td>Monday, June 15, 2026</td><td>8:00 AM &ndash; 9:00 AM</td><td>$30</td><td><a href="https://smartastro.app/calendar?class=1393" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td></tr>
-                <tr><td>5</td><td>Monday, June 22, 2026</td><td>8:00 AM &ndash; 9:00 AM</td><td>$30</td><td><a href="https://smartastro.app/calendar?class=1398" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td></tr>
+                <tr><td>5</td><td>Monday, June 22, 2026</td><td>8:00 AM &ndash; 9:00 AM</td><td>$30</td><td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td></tr>
             </table>
             </div>
 
@@ -598,10 +611,10 @@
             <div class="camp-table-wrapper">
             <table class="camp-table">
                 <tr><th>Week</th><th>First session</th><th>Time</th><th>Price</th><th>Sign up</th></tr>
-                <tr><td>2</td><td>Monday, June 1, 2026</td><td>3:00 PM &ndash; 5:30 PM</td><td>$65</td><td><a href="https://smartastro.app/calendar?class=1403" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td></tr>
+                <tr><td>2</td><td>Monday, June 1, 2026</td><td>3:00 PM &ndash; 5:30 PM</td><td>$65</td><td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td></tr>
                 <tr><td>3</td><td>Monday, June 8, 2026</td><td>3:00 PM &ndash; 5:30 PM</td><td>$65</td><td><a href="https://smartastro.app/calendar?class=1408" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td></tr>
                 <tr><td>4</td><td>Monday, June 15, 2026</td><td>3:00 PM &ndash; 5:30 PM</td><td>$65</td><td><a href="https://smartastro.app/calendar?class=1413" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td></tr>
-                <tr><td>5</td><td>Monday, June 22, 2026</td><td>3:00 PM &ndash; 5:30 PM</td><td>$65</td><td><a href="https://smartastro.app/calendar?class=1418" class="info-btn" target="_blank" data-mobile-label><span>Sign up</span></a></td></tr>
+                <tr><td>5</td><td>Monday, June 22, 2026</td><td>3:00 PM &ndash; 5:30 PM</td><td>$65</td><td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td></tr>
             </table>
             </div>
 
