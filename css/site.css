@@ -1025,21 +1025,50 @@ footer {
     touch-action: auto;
   }
 
-  /* Portaled to body in JS — full-width panel below compact header */
-  .nav-dropdown-menu--portaled {
+  /* Portaled to body in JS — matches desktop dropdown panel styling */
+  .nav-dropdown-menu.nav-dropdown-menu--portaled {
     display: block;
+    list-style: none;
+    margin: 0;
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
-    transform: none !important;
     max-height: min(60vh, 360px);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    background: var(--white);
     box-shadow: 0 12px 40px var(--shadow-lg);
     border-radius: var(--radius-md);
     border: 1px solid var(--border-light);
-    background: var(--white);
     padding: 0.35rem 0;
+  }
+
+  .nav-dropdown-menu--portaled li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-dropdown-menu--portaled a {
+    display: block;
+    padding: 0.55rem 1.1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .nav-dropdown-menu--portaled a:hover,
+  .nav-dropdown-menu--portaled a:focus {
+    background: var(--mint);
+    color: var(--hard-green);
+  }
+
+  .site-header.is-compact .nav-dropdown.active > a,
+  .page-header.is-compact .nav-dropdown.active > a {
+    color: var(--hard-green);
   }
 
   .site-header.is-compact .nav-scroll-outer::-webkit-scrollbar,
