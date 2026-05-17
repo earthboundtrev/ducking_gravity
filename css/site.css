@@ -23,8 +23,8 @@
   --logo-height-sticky-mobile: 52px;
   --logo-height-compact: 128px;
   --logo-height-tablet: 188px;
-  --logo-height-mobile: 156px;
-  --logo-height-mobile-sm: 140px;
+  --logo-height-mobile: 268px;
+  --logo-height-mobile-sm: 288px;
   --header-transition: 0.28s ease;
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -153,21 +153,16 @@ body {
   }
 }
 
-/* Touch phones in landscape can exceed 768px — apply mobile header rules */
-@media (hover: none) and (pointer: coarse) and (max-width: 1024px) {
-  .site-header-inner,
-  .page-header-inner {
-    flex-wrap: wrap;
-  }
-
-  .site-header.is-compact .site-header-inner,
-  .page-header.is-compact .page-header-inner {
-    flex-wrap: nowrap;
-  }
-
+/* Touch phones in landscape (wider than 768px): keep scroll-based compact shrink */
+@media (hover: none) and (pointer: coarse) and (min-width: 769px) and (max-width: 1024px) {
   .site-header.is-compact .brand,
   .page-header.is-compact .brand {
     height: var(--logo-height-sticky-mobile);
+  }
+
+  .site-header.is-compact .logo-mark,
+  .page-header.is-compact .logo-mark {
+    max-width: min(176px, 44vw);
   }
 }
 
@@ -943,7 +938,7 @@ footer {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    padding: 0.65rem 0;
+    padding: 0.75rem 0;
   }
 
   .brand {
@@ -956,13 +951,20 @@ footer {
 
   .logo-mark {
     height: 100%;
-    max-width: min(420px, 96vw);
+    max-width: min(540px, 98vw);
+  }
+
+  .site-header.is-compact,
+  .page-header.is-compact {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.98);
   }
 
   .site-header.is-compact .site-header-inner,
   .page-header.is-compact .page-header-inner {
     flex-wrap: nowrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     padding: 0.35rem 0;
     gap: 0.35rem 0.5rem;
@@ -985,17 +987,43 @@ footer {
     order: 3;
     flex: 0 0 100%;
     width: 100%;
-    overflow-x: visible;
+    overflow: visible;
   }
 
   .site-header.is-compact .site-nav,
   .page-header.is-compact .site-nav {
     order: unset;
-    flex: 1 1 auto;
+    flex: 1 1 0;
     width: auto;
     min-width: 0;
+    max-width: 100%;
+    overflow: visible;
+  }
+
+  .site-header.is-compact .nav-scroll-outer,
+  .page-header.is-compact .nav-scroll-outer {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
     overflow-x: auto;
+    overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.25) transparent;
+    transform: translateZ(0);
+  }
+
+  .site-header.is-compact .nav-scroll-outer::-webkit-scrollbar,
+  .page-header.is-compact .nav-scroll-outer::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .site-header.is-compact .nav-scroll-outer::-webkit-scrollbar-thumb,
+  .page-header.is-compact .nav-scroll-outer::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
   }
 
   .nav-menu {
@@ -1004,15 +1032,26 @@ footer {
     gap: 0.5rem 1rem;
   }
 
-  .site-header.is-compact .nav-menu,
-  .page-header.is-compact .nav-menu {
+  .site-header.is-compact .nav-scroll-outer .nav-menu,
+  .page-header.is-compact .nav-scroll-outer .nav-menu {
+    display: inline-flex;
+    flex-direction: row;
     flex-wrap: nowrap;
-    justify-content: flex-end;
-    gap: 0.35rem 0.65rem;
+    align-items: center;
+    width: max-content;
+    max-width: none;
+    justify-content: flex-start;
+    gap: 0.35rem 0.75rem;
+    padding: 0 0 4px;
   }
 
-  .site-header.is-compact .nav-menu a,
-  .page-header.is-compact .nav-menu a {
+  .site-header.is-compact .nav-scroll-outer .nav-menu > li,
+  .page-header.is-compact .nav-scroll-outer .nav-menu > li {
+    flex: 0 0 auto;
+  }
+
+  .site-header.is-compact .nav-scroll-outer .nav-menu a,
+  .page-header.is-compact .nav-scroll-outer .nav-menu a {
     font-size: 0.75rem;
     white-space: nowrap;
   }
@@ -1034,6 +1073,7 @@ footer {
   .site-header.is-compact .nav-cta,
   .page-header.is-compact .nav-cta {
     order: unset;
+    flex: 0 0 auto;
     margin: 0;
     padding: 8px 14px !important;
     font-size: 0.8rem !important;
@@ -1080,7 +1120,7 @@ footer {
 
   .site-header:not(.is-compact) .site-header-inner,
   .page-header:not(.is-compact) .page-header-inner {
-    padding: 0.85rem 0;
+    padding: 1.15rem 0;
   }
 
   .site-header:not(.is-compact) .logo-mark,

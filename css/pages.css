@@ -113,6 +113,20 @@
     justify-content: center;
     gap: 0.5rem 1rem;
   }
+
+  .page-header.is-compact .page-header-inner {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    padding: 0.35rem 0;
+  }
+
+  .page-header.is-compact .back-link {
+    order: unset;
+    flex: 0 0 auto;
+    margin: 0;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
 }
 
 .page-hero {
