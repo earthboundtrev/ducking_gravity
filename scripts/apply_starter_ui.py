@@ -70,7 +70,7 @@ INDEX_HERO = """<!-- Site header -->
             <div class="hero-copy">
                 <p class="hero-eyebrow">Inclusive aerial community</p>
                 <h1>Take flight with confidence</h1>
-                <p class="hero-lead">Whether you are brand new to aerials or refining advanced skills, Ducking Gravity meets you where you are—with expert coaching and a supportive studio in Culpeper.</p>
+                <p class="hero-lead">Whether you are brand new to aerials or refining advanced skills, Ducking Gravity meets you where you are, with expert coaching and a supportive studio in Culpeper.</p>
                 <div class="hero-actions">
                     <a href="https://smartastro.app/calendar" target="_blank" class="cta-button">View calendar</a>
                     <a href="#services" class="btn-secondary">Explore programs</a>
