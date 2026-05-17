@@ -749,33 +749,6 @@
 
 
 
-    // Dropdown click/touch support for all screen sizes
-    (function() {
-        document.querySelectorAll('.nav-dropdown').forEach(function(dropdown) {
-        const dropdownLink = dropdown.querySelector(':scope > a');
-            if (!dropdownLink) return;
-            dropdownLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                var willOpen = !dropdown.classList.contains('active');
-                document.querySelectorAll('.nav-dropdown.active').forEach(function(other) {
-                    if (other !== dropdown) other.classList.remove('active');
-                });
-                dropdown.classList.toggle('active', willOpen);
-            });
-            document.addEventListener('click', function(e) {
-                if (dropdown.classList.contains('active') && !dropdown.contains(e.target)) {
-                    dropdown.classList.remove('active');
-                }
-            });
-            dropdown.querySelectorAll('.nav-dropdown-menu a').forEach(item => {
-                item.addEventListener('click', function() {
-                    setTimeout(() => dropdown.classList.remove('active'), 100);
-                });
-            });
-        });
-    })();
-
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -960,6 +933,7 @@
 
 
   </script>
+  <script src="js/subpage-nav.js"></script>
   <script src="js/about-carousel.js"></script>
   <script src="js/compact-header.js"></script>
   </body>
