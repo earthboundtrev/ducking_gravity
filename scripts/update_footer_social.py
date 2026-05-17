@@ -8,17 +8,8 @@ ROOT = Path(__file__).resolve().parent.parent
 PARTIAL = ROOT / "partials" / "footer-social-links.html"
 SNIPPET = PARTIAL.read_text(encoding="utf-8").strip()
 
-OLD_PATTERN = re.compile(
-    r'<div class="social-links">\s*'
-    r'<a href="https://www\.facebook\.com/profile\.php\?id=61557121516331"[^>]*>.*?</a>\s*'
-    r'<a href="https://instagram\.com/duckinggravity"[^>]*>.*?</a>\s*'
-    r'</div>',
-    re.DOTALL | re.IGNORECASE,
-)
-
-# Also match broken index.html closing
-OLD_PATTERN_LOOSE = re.compile(
-    r'<div class="social-links">.*?</div>\s*(?:</a>\s*</motion.div>|</div>)',
+SOCIAL_BLOCK = re.compile(
+    r'\s*<div class="social-links">.*?</div>',
     re.DOTALL | re.IGNORECASE,
 )
 
@@ -29,9 +20,7 @@ def main() -> None:
         text = path.read_text(encoding="utf-8")
         if "social-links" not in text:
             continue
-        new_text, n = OLD_PATTERN.subn(SNIPPET, text, count=1)
-        if n == 0:
-            new_text, n = OLD_PATTERN_LOOSE.subn(SNIPPET, text, count=1)
+        new_text, n = SOCIAL_BLOCK.subn("\n" + SNIPPET, text, count=1)
         if n:
             path.write_text(new_text, encoding="utf-8")
             updated += 1
