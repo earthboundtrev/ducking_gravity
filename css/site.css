@@ -1018,7 +1018,6 @@ footer {
     touch-action: pan-x;
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 0, 0, 0.25) transparent;
-    transform: translateZ(0);
   }
 
   .site-header.is-compact .nav-scroll-outer:has(.nav-dropdown.active),
@@ -1026,15 +1025,21 @@ footer {
     touch-action: auto;
   }
 
-  /* Menus escape the horizontal scroll clip when compact (position set in JS) */
-  .site-header.is-compact .nav-dropdown.active .nav-dropdown-menu,
-  .page-header.is-compact .nav-dropdown.active .nav-dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
+  /* Portaled to body in JS — full-width panel below compact header */
+  .nav-dropdown-menu--portaled {
+    display: block;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
     max-height: min(60vh, 360px);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    box-shadow: 0 12px 40px var(--shadow-lg);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-light);
+    background: var(--white);
+    padding: 0.35rem 0;
   }
 
   .site-header.is-compact .nav-scroll-outer::-webkit-scrollbar,
