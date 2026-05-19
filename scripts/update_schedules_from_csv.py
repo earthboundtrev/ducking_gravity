@@ -18,7 +18,7 @@ SECTION_MAP = {
     "Adult Aerials": "Adult Aerials",
     "Open Aerials": "Open Aerials",
     "Homeschool Class": "Homeschool Class",
-    "ACT! Classes": None,  # special: Session 1 / Session 2
+    "ACT! Classes": None,  # special: Session 1 only
     "Lyra Foundations": "Lyra Foundations",
     "Yoga": "Yoga",
     "Junior Aerial Classes": "Junior Aerials",
@@ -32,7 +32,6 @@ PRICE_BY_CLASS = {
     "Open Aerials": "Free for members<br>Non-members $10",
     "Homeschool Class": "Members $25 or $100/month<br>Non-members $30",
     "ACT! Session 1": "$115/month with ACT membership",
-    "ACT! Session 2": "$115/month with ACT membership",
     "Lyra Foundations": "$30",
     "Yoga": "Members $10<br>Non-members $15",
     "Junior Aerials": "Junior membership or $75/month",
@@ -122,18 +121,20 @@ def build_standard_rows(class_name: str, sessions: list, use_full_red: bool = Fa
     return "".join(lines)
 
 
-def build_act_rows(sessions: list) -> str:
+def build_act_rows(sessions: list, use_full_red: bool = True) -> str:
     lines = ['                <tr><th>Session</th><th>Dates</th><th>Time</th><th>Price</th><th>Sign up</th></tr>\n']
+    price = PRICE_BY_CLASS["ACT! Session 1"]
     for row in sorted(sessions, key=sort_key):
-        name = row["Class Name"]
-        session = "Session 1" if "Session 1" in name else "Session 2"
         d = datetime.strptime(row["Date"], "%Y-%m-%d")
-        date_s = fmt_date(d)
+        month_names = [
+            "Jan", "Feb", "Mar", "Apr", "May", "June",
+            "July", "Aug", "Sept", "Oct", "Nov", "Dec",
+        ]
+        date_s = f"{month_names[d.month - 1]} {d.day}"
         time_s = fmt_time_range(row["Start Time"], row["End Time"])
-        price = PRICE_BY_CLASS[name]
-        btn = btn_cell(row).replace("<td>", "", 1).replace("</td>", "", 1)
+        btn = btn_cell(row, use_full_red).replace("<td>", "", 1).replace("</td>", "", 1)
         lines.append(
-            f'                <tr><td>{session}</td><td>{date_s}</td><td>{time_s}</td><td>{price}</td><td>{btn}</td></tr>\n'
+            f'                <tr><td>Session 1</td><td>{date_s}</td><td>{time_s}</td><td>{price}</td><td>{btn}</td></tr>\n'
         )
     return "".join(lines)
 
@@ -186,8 +187,8 @@ def main():
     # silks.html ACT
     path = PROJECT / "silks.html"
     html = path.read_text(encoding="utf-8")
-    act_rows = by_class.get("ACT! Session 1", []) + by_class.get("ACT! Session 2", [])
-    new_rows = build_act_rows(act_rows)
+    act_rows = by_class.get("ACT! Session 1", [])
+    new_rows = build_act_rows(act_rows, use_full_red=True)
     html = replace_table_after_title(html, "ACT! Classes", new_rows)
     path.write_text(html, encoding="utf-8", newline="\n")
     print(f"Updated silks.html ACT: {len(act_rows)} sessions")
