@@ -26,3 +26,7 @@ dist-ssr
 *.sln
 *.sw?
 .qodo
+
+# Local calendar exports used by scripts/update_schedules_from_csv.py
+scripts/_calendar_export_staged.xlsx
+scripts/calendar-export-temp.xlsx

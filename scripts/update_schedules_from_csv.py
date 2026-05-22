@@ -1,30 +1,23 @@
 #!/usr/bin/env python3
-"""Update class schedule tables from SmartAstro calendar CSV export."""
+"""Update class schedule tables from SmartAstro calendar CSV or XLSX export."""
 import csv
 import re
+import shutil
+import sys
+import zipfile
 from datetime import datetime
 from pathlib import Path
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs, urlparse
+from xml.etree import ElementTree as ET
 
 PROJECT = Path(__file__).resolve().parent.parent
-CSV_PATH = Path(r"c:\Users\THOMP\Downloads\calendar-export-2026-05-15-to-2026-06-30.csv")
-CUTOFF = datetime(2026, 5, 15).date()
-# Only drop past dates before today; keep future sessions beyond export end.
+DEFAULT_EXPORT = Path(
+    r"c:\Users\THOMP\Downloads\calendar-export-2026-05-22-to-2026-06-30.xlsx"
+)
+CUTOFF = datetime(2026, 5, 22).date()
 END = datetime(2099, 12, 31).date()
 
-# Website section title substring -> CSV Class Name (or list for multi-match)
-SECTION_MAP = {
-    "Silks Foundations": "Silks Foundations",
-    "Adult Aerials": "Adult Aerials",
-    "Open Aerials": "Open Aerials",
-    "Homeschool Class": "Homeschool Class",
-    "ACT! Classes": None,  # special: Session 1 only
-    "Lyra Foundations": "Lyra Foundations",
-    "Yoga": "Yoga",
-    "Junior Aerial Classes": "Junior Aerials",
-    "Spin and Swing Classes": "Spin and Swing",
-    "Mixed Apparatus Foundations": "Mixed Apparatus Foundations",
-}
+SKIP_CLASSES = {"Studio Closed", "Kids and Family Expo"}
 
 PRICE_BY_CLASS = {
     "Silks Foundations": "Members $25 or $100/month<br>Non-members $30",
@@ -43,7 +36,11 @@ SIGNUP_LABEL = "Sign up for this class!"
 
 
 def parse_time(t: str) -> str:
-    h, m = map(int, t.split(":"))
+    t = str(t).strip()
+    if not t:
+        return ""
+    parts = t.split(":")
+    h, m = int(parts[0]), int(parts[1]) if len(parts) > 1 else 0
     suffix = "am" if h < 12 else "pm"
     h12 = h % 12 or 12
     return f"{h12}:{m:02d}{suffix}"
@@ -61,17 +58,23 @@ def fmt_date(d: datetime) -> str:
     return f"{months[d.month - 1]} {d.day}"
 
 
+def is_full(row: dict) -> bool:
+    val = row.get("Is Full")
+    if val is None:
+        return False
+    return str(val).strip().lower() in ("yes", "true", "1")
+
+
 def schedule_id_from_link(link: str) -> str:
     if not link:
         return ""
-    q = parse_qs(urlparse(link).query)
+    q = parse_qs(urlparse(str(link)).query)
     return q.get("class", [""])[0]
 
 
 def btn_cell(row: dict, use_full_red: bool = False) -> str:
-    is_full = (row.get("Is Full") or "").strip().lower() == "yes"
     sid = schedule_id_from_link(row.get("Link", ""))
-    if is_full:
+    if is_full(row):
         if use_full_red:
             return '<td><span class="info-btn full" data-mobile-label><span>Class Full</span></span></td>'
         return '<td><a href="#" class="info-btn disabled" data-mobile-label><span>Class Full</span></a></td>'
@@ -81,24 +84,132 @@ def btn_cell(row: dict, use_full_red: bool = False) -> str:
     )
 
 
-def load_csv():
-    rows = []
-    with open(CSV_PATH, newline="", encoding="utf-8") as f:
+def _xlsx_sheet_path(z: zipfile.ZipFile, sheet_name: str = "Calendar Data") -> str:
+    NS_MAIN = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
+    NS_PKG = {"r": "http://schemas.openxmlformats.org/package/2006/relationships"}
+    RID = "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id"
+    wb = ET.fromstring(z.read("xl/workbook.xml"))
+    rid = None
+    for sheet in wb.findall("m:sheets/m:sheet", NS_MAIN):
+        if sheet.get("name") == sheet_name:
+            rid = sheet.get(RID)
+            break
+    if not rid:
+        raise ValueError(f"Sheet not found: {sheet_name}")
+    rels = ET.fromstring(z.read("xl/_rels/workbook.xml.rels"))
+    target = None
+    for rel in rels.findall("r:Relationship", NS_PKG):
+        if rel.get("Id") == rid:
+            target = rel.get("Target")
+            break
+    if not target:
+        raise ValueError(f"No relationship for {rid}")
+    return "xl/" + target.lstrip("/")
+
+
+def _col_index(ref: str) -> int:
+    n = 0
+    for ch in ref:
+        n = n * 26 + (ord(ch) - 64)
+    return n - 1
+
+
+def load_xlsx(path: Path) -> list[dict]:
+    NS = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
+    with zipfile.ZipFile(path) as z:
+        shared: list[str] = []
+        if "xl/sharedStrings.xml" in z.namelist():
+            sroot = ET.fromstring(z.read("xl/sharedStrings.xml"))
+            for si in sroot.findall("m:si", NS):
+                shared.append("".join((n.text or "") for n in si.iter()))
+
+        sheet_xml = _xlsx_sheet_path(z)
+        sheet = ET.fromstring(z.read(sheet_xml))
+        raw_rows: list[dict[int, str]] = []
+        for row_el in sheet.findall("m:sheetData/m:row", NS):
+            cells: dict[int, str] = {}
+            for cell in row_el.findall("m:c", NS):
+                m = re.match(r"([A-Z]+)", cell.get("r", ""))
+                if not m:
+                    continue
+                v = cell.find("m:v", NS)
+                if v is None or v.text is None:
+                    continue
+                val = v.text
+                if cell.get("t") == "s":
+                    val = shared[int(val)]
+                cells[_col_index(m.group(1))] = val
+            if cells:
+                raw_rows.append(cells)
+
+    if not raw_rows:
+        return []
+    headers = {i: raw_rows[0][i] for i in raw_rows[0]}
+    out = []
+    for cells in raw_rows[1:]:
+        row = {headers[i]: cells.get(i, "") for i in headers}
+        if not _keep_row(row):
+            continue
+        out.append(_normalize_row(row))
+    return out
+
+
+def stage_export(path: Path) -> Path:
+    """Copy Downloads export locally so reads are reliable (OneDrive paths can hang)."""
+    staged = PROJECT / "scripts" / "_calendar_export_staged.xlsx"
+    if path.suffix.lower() in (".xlsx", ".xlsm"):
+        shutil.copy2(path, staged)
+        return staged
+    return path
+
+
+def load_csv(path: Path) -> list[dict]:
+    out = []
+    with open(path, newline="", encoding="utf-8") as f:
         for row in csv.DictReader(f):
-            raw_date = (row.get("Date") or "").strip()
-            if not raw_date or not re.match(r"^\d{4}-\d{2}-\d{2}$", raw_date):
+            if not _keep_row(row):
                 continue
-            try:
-                d = datetime.strptime(raw_date, "%Y-%m-%d").date()
-            except ValueError:
-                continue
-            if d < CUTOFF or d > END:
-                continue
-            name = (row.get("Class Name") or "").strip()
-            if name in ("Studio Closed",):
-                continue
-            rows.append(row)
-    return rows
+            out.append(_normalize_row(row))
+    return out
+
+
+def _normalize_row(row: dict) -> dict:
+    """Ensure string fields and consistent Is Full / Link."""
+    normalized = {}
+    for k, v in row.items():
+        if v is None:
+            normalized[k] = ""
+        elif isinstance(v, datetime):
+            normalized[k] = v.strftime("%Y-%m-%d")
+        else:
+            normalized[k] = str(v).strip() if isinstance(v, (int, float)) else str(v).strip()
+    if normalized.get("Is Full", "").lower() in ("false", "no", "0"):
+        normalized["Is Full"] = "No"
+    elif normalized.get("Is Full", "").lower() in ("true", "yes", "1"):
+        normalized["Is Full"] = "Yes"
+    return normalized
+
+
+def _keep_row(row: dict) -> bool:
+    raw_date = (row.get("Date") or "").strip()
+    if not raw_date or not re.match(r"^\d{4}-\d{2}-\d{2}$", raw_date):
+        return False
+    try:
+        d = datetime.strptime(raw_date, "%Y-%m-%d").date()
+    except ValueError:
+        return False
+    if d < CUTOFF or d > END:
+        return False
+    name = (row.get("Class Name") or "").strip()
+    if name in SKIP_CLASSES:
+        return False
+    return True
+
+
+def load_export(path: Path) -> list[dict]:
+    if path.suffix.lower() in (".xlsx", ".xlsm"):
+        return load_xlsx(path)
+    return load_csv(path)
 
 
 def sort_key(row):
@@ -126,11 +237,7 @@ def build_act_rows(sessions: list, use_full_red: bool = True) -> str:
     price = PRICE_BY_CLASS["ACT! Session 1"]
     for row in sorted(sessions, key=sort_key):
         d = datetime.strptime(row["Date"], "%Y-%m-%d")
-        month_names = [
-            "Jan", "Feb", "Mar", "Apr", "May", "June",
-            "July", "Aug", "Sept", "Oct", "Nov", "Dec",
-        ]
-        date_s = f"{month_names[d.month - 1]} {d.day}"
+        date_s = fmt_date(d)
         time_s = fmt_time_range(row["Start Time"], row["End Time"])
         btn = btn_cell(row, use_full_red).replace("<td>", "", 1).replace("</td>", "", 1)
         lines.append(
@@ -140,32 +247,41 @@ def build_act_rows(sessions: list, use_full_red: bool = True) -> str:
 
 
 def replace_table_after_title(html: str, title_marker: str, new_rows: str) -> str:
-    """Find camp-title containing title_marker, then replace table content."""
     idx = html.find(title_marker)
     if idx == -1:
         raise ValueError(f"Section not found: {title_marker}")
     table_start = html.find('<table class="camp-table">', idx)
     if table_start == -1:
         raise ValueError(f"Table not found after {title_marker}")
-    header_end = html.find("</tr>", table_start) + len("</tr>")
-    # include newline after header
-    if html[header_end:header_end + 1] == "\n":
-        header_end += 1
     table_end = html.find("</table>", table_start)
-    return html[:table_start] + "<table class=\"camp-table\">\n" + new_rows + "            </table>" + html[table_end + len("</table>"):]
+    return (
+        html[:table_start]
+        + '<table class="camp-table">\n'
+        + new_rows
+        + "            </table>"
+        + html[table_end + len("</table>") :]
+    )
 
 
 def main():
-    all_rows = load_csv()
-    by_class = {}
+    export_path = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_EXPORT
+    if not export_path.exists():
+        print(f"Export not found: {export_path}")
+        sys.exit(1)
+
+    load_path = stage_export(export_path) if export_path.suffix.lower() in (".xlsx", ".xlsm") else export_path
+    print(f"Loading {export_path} (dates on or after {CUTOFF})")
+    all_rows = load_export(load_path)
+    by_class: dict[str, list] = {}
     for row in all_rows:
         by_class.setdefault(row["Class Name"], []).append(row)
 
+    # (file, section marker, csv class name, use_full_red for Class Full styling)
     updates = [
-        ("silks.html", "Silks Foundations", "Silks Foundations", False),
-        ("silks.html", "Adult Aerials", "Adult Aerials", False),
-        ("silks.html", "Open Aerials", "Open Aerials", False),
-        ("silks.html", "Homeschool Class", "Homeschool Class", False),
+        ("silks.html", "Silks Foundations", "Silks Foundations", True),
+        ("silks.html", "Adult Aerials", "Adult Aerials", True),
+        ("silks.html", "Open Aerials", "Open Aerials", True),
+        ("silks.html", "Homeschool Class", "Homeschool Class", True),
         ("lyra.html", "Lyra Foundations", "Lyra Foundations", False),
         ("yoga.html", "Yoga", "Yoga", False),
         ("juniors.html", "Junior Aerial Classes", "Junior Aerials", False),
@@ -175,16 +291,15 @@ def main():
         ("homeschool.html", "Homeschool Class", "Homeschool Class", False),
     ]
 
-    for fname, marker, csv_name, _ in updates:
+    for fname, marker, csv_name, use_full_red in updates:
         path = PROJECT / fname
         html = path.read_text(encoding="utf-8")
         sessions = by_class.get(csv_name, [])
-        new_rows = build_standard_rows(csv_name, sessions)
+        new_rows = build_standard_rows(csv_name, sessions, use_full_red)
         html = replace_table_after_title(html, marker, new_rows)
         path.write_text(html, encoding="utf-8", newline="\n")
         print(f"Updated {fname} / {marker}: {len(sessions)} sessions")
 
-    # silks.html ACT
     path = PROJECT / "silks.html"
     html = path.read_text(encoding="utf-8")
     act_rows = by_class.get("ACT! Session 1", [])
@@ -193,14 +308,12 @@ def main():
     path.write_text(html, encoding="utf-8", newline="\n")
     print(f"Updated silks.html ACT: {len(act_rows)} sessions")
 
-    # silks.html also has homeschool/open in same file - already done
-
-    # Report classes with no page
+    camp_skip = ("Soar", "Stay", "Directed", "Before", "After", "Parents", "Baskets")
     for name in sorted(by_class):
         if name not in PRICE_BY_CLASS and not name.startswith("ACT"):
-            if any(x in name for x in ["Soar", "Stay", "Directed", "Before", "After", "Parents"]):
+            if any(x in name for x in camp_skip):
                 continue
-            print(f"Note: {name} has {len(by_class[name])} sessions (may be camp/event only)")
+            print(f"Note: {name} has {len(by_class[name])} sessions (not mapped to a schedule page)")
 
 
 if __name__ == "__main__":
