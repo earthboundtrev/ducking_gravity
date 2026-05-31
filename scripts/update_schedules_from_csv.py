@@ -12,10 +12,10 @@ from xml.etree import ElementTree as ET
 
 PROJECT = Path(__file__).resolve().parent.parent
 DEFAULT_EXPORT = Path(
-    r"c:\Users\THOMP\Downloads\calendar-export-2026-05-22-to-2026-06-30.xlsx"
+    r"c:\Users\THOMP\Downloads\calendar-export-2026-05-31-to-2026-07-12.csv"
 )
-CUTOFF = datetime(2026, 5, 22).date()
-END = datetime(2099, 12, 31).date()
+CUTOFF = datetime(2026, 6, 1).date()
+END = datetime(2026, 7, 14).date()
 
 SKIP_CLASSES = {"Studio Closed", "Kids and Family Expo"}
 
@@ -23,7 +23,6 @@ PRICE_BY_CLASS = {
     "Silks Foundations": "Members $25 or $100/month<br>Non-members $30",
     "Adult Aerials": "Members $25 or $100/month<br>Non-members $30",
     "Open Aerials": "Free for members<br>Non-members $10",
-    "Homeschool Class": "Members $25 or $100/month<br>Non-members $30",
     "ACT! Session 1": "$115/month with ACT membership",
     "Lyra Foundations": "$30",
     "Yoga": "Members $10<br>Non-members $15",
@@ -281,14 +280,12 @@ def main():
         ("silks.html", "Silks Foundations", "Silks Foundations", True),
         ("silks.html", "Adult Aerials", "Adult Aerials", True),
         ("silks.html", "Open Aerials", "Open Aerials", True),
-        ("silks.html", "Homeschool Class", "Homeschool Class", True),
         ("lyra.html", "Lyra Foundations", "Lyra Foundations", False),
         ("yoga.html", "Yoga", "Yoga", False),
         ("juniors.html", "Junior Aerial Classes", "Junior Aerials", False),
         ("juniors.html", "Spin and Swing Classes", "Spin and Swing", False),
         ("juniors.html", "Open Aerials", "Open Aerials", False),
         ("mixed-apparatus.html", "Mixed Apparatus Foundations", "Mixed Apparatus Foundations", False),
-        ("homeschool.html", "Homeschool Class", "Homeschool Class", False),
     ]
 
     for fname, marker, csv_name, use_full_red in updates:
