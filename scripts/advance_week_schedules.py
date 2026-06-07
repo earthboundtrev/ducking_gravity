@@ -150,6 +150,17 @@ SLIDE2 = """                    <!-- Slide 2: All classes for the week of 6/8 --
                         </div>
                         <div class="popup-dropdown-container">
                             <button class="popup-dropdown-toggle" type="button">
+                                Lyra Foundations <span class="popup-dropdown-arrow">▼</span>
+                            </button>
+                            <div class="popup-dropdown-content">
+                                <div class="popup-slot">
+                                    <span class="popup-slot-time">Wed Jun 10 &middot; 6:00&ndash;7:00pm</span>
+                                    <a href="https://smartastro.app/calendar?class=1491" target="_blank" class="popup-slot-button">Sign up!</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="popup-dropdown-container">
+                            <button class="popup-dropdown-toggle" type="button">
                                 Adult Aerials <span class="popup-dropdown-arrow">▼</span>
                             </button>
                             <div class="popup-dropdown-content">
