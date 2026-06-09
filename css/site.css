@@ -694,6 +694,20 @@ body {
   border: 1px solid var(--border-light);
 }
 
+.contact-form-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.contact-form-lead {
+  color: var(--text-light);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 1.25rem;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
