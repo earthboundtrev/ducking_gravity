@@ -108,9 +108,6 @@ SLIDE2 = """                    <!-- Slide 2: All classes for the week of 6/8 --
                                     <img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/birthday_party_ducking_gravity.jpg" alt="Birthday party aerial celebration at Ducking Gravity">
                                 </div>
                                 <div class="popup-image-carousel-slide">
-                                    <img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/yoga_ducking_gravity.jpg" alt="Yoga class at Ducking Gravity studio">
-                                </div>
-                                <div class="popup-image-carousel-slide">
                                     <img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/lyra_image_popup.jpg" alt="Lyra aerial hoop class at Ducking Gravity">
                                 </div>
                                 <div class="popup-image-carousel-slide">
@@ -118,10 +115,9 @@ SLIDE2 = """                    <!-- Slide 2: All classes for the week of 6/8 --
                                 </div>
                             </div>
                             <div class="popup-image-carousel-dots" role="tablist" aria-label="Class images">
-                                <button type="button" class="popup-image-carousel-dot is-active" role="tab" aria-selected="true" aria-label="Image 1 of 4"></button>
-                                <button type="button" class="popup-image-carousel-dot" role="tab" aria-selected="false" aria-label="Image 2 of 4"></button>
-                                <button type="button" class="popup-image-carousel-dot" role="tab" aria-selected="false" aria-label="Image 3 of 4"></button>
-                                <button type="button" class="popup-image-carousel-dot" role="tab" aria-selected="false" aria-label="Image 4 of 4"></button>
+                                <button type="button" class="popup-image-carousel-dot is-active" role="tab" aria-selected="true" aria-label="Image 1 of 3"></button>
+                                <button type="button" class="popup-image-carousel-dot" role="tab" aria-selected="false" aria-label="Image 2 of 3"></button>
+                                <button type="button" class="popup-image-carousel-dot" role="tab" aria-selected="false" aria-label="Image 3 of 3"></button>
                             </div>
                         </div>
                         <p class="popup-text"><strong>All classes this week</strong> &mdash; Mon Jun 8 through Sun Jun 14, 2026. Open a menu below to see times and sign up.</p>
@@ -225,17 +221,6 @@ SLIDE2 = """                    <!-- Slide 2: All classes for the week of 6/8 --
                                 </div>
                             </div>
                         </div>
-                        <div class="popup-dropdown-container">
-                            <button class="popup-dropdown-toggle" type="button">
-                                Yoga <span class="popup-dropdown-arrow">▼</span>
-                            </button>
-                            <div class="popup-dropdown-content">
-                                <div class="popup-slot">
-                                    <span class="popup-slot-time">Sun Jun 14 &middot; 9:30&ndash;10:30am</span>
-                                    <a href="https://smartastro.app/calendar?class=1429" target="_blank" class="popup-slot-button">Sign up!</a>
-                                </div>
-                            </div>
-                        </div>
                     </div>"""
 
 SLIDE3 = """                    <!-- Slide 3: All silks-related classes for the week of 6/8 -->
@@ -325,8 +310,8 @@ def update_index(path: Path) -> None:
         flags=re.DOTALL,
     )
     html = re.sub(
-        r"<!-- Slide 3: All silks-related classes for the week of 6/8 -->.*?<!-- Slide 4: Yoga classes",
-        SLIDE3 + "\n                    <!-- Slide 4: Yoga classes",
+        r"<!-- Slide 3: All silks-related classes for the week of 6/8 -->.*?<!-- Slide 4: Lyra",
+        SLIDE3 + "\n                    <!-- Slide 4: Lyra",
         html,
         count=1,
         flags=re.DOTALL,
@@ -368,7 +353,7 @@ def update_csv_script() -> None:
 
 def main():
     update_index(PROJECT / "index.html")
-    for name in ("silks.html", "yoga.html", "juniors.html", "mixed-apparatus.html", "lyra.html"):
+    for name in ("silks.html", "juniors.html", "mixed-apparatus.html", "lyra.html"):
         update_schedule_page(PROJECT / name)
     for name in ("events.html", "summercamps.html"):
         update_camp_page(PROJECT / name)

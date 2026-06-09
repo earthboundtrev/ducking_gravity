@@ -27,7 +27,6 @@ INDEX_HERO = """<!-- Site header -->
                                     <li><a href="mixed-apparatus.html">Mixed Apparatus</a></li>
                                     <li><a href="homeschool.html">Homeschool</a></li>
                                     <li><a href="juniors.html">Junior Aerials</a></li>
-                                    <li><a href="yoga.html">Yoga</a></li>
                                 </ul>
                             </li>
                             <li class="nav-mobile-item"><a href="silks.html">Silks</a></li>
@@ -35,7 +34,6 @@ INDEX_HERO = """<!-- Site header -->
                             <li class="nav-mobile-item"><a href="mixed-apparatus.html">Mixed Apparatus</a></li>
                             <li class="nav-mobile-item"><a href="homeschool.html">Homeschool</a></li>
                             <li class="nav-mobile-item"><a href="juniors.html">Junior Aerials</a></li>
-                            <li class="nav-mobile-item"><a href="yoga.html">Yoga</a></li>
                             <li class="nav-dropdown">
                                 <a href="#">Schedule</a>
                                 <ul class="nav-dropdown-menu">
@@ -60,7 +58,7 @@ INDEX_HERO = """<!-- Site header -->
         <div class="container trust-strip-inner">
             <span><strong>Culpeper, VA</strong> aerial arts studio</span>
             <span>Ages 3+ welcome</span>
-            <span>Silks · Lyra · Yoga · Camps</span>
+            <span>Silks · Lyra · Camps</span>
         </div>
     </section>
 
@@ -235,7 +233,6 @@ def main():
         "mixed-apparatus.html",
         "homeschool.html",
         "juniors.html",
-        "yoga.html",
         "events.html",
         "summercamps.html",
         "summer-camps.html",

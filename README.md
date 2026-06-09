@@ -4,7 +4,7 @@
 
 This site was **built for a client** and is **in active use** by **Ducking Gravity — An Aerial Arts Studio**, a real studio in **Culpeper, Virginia** (15532E Montanus Dr, Culpeper, VA 22701). The copy on the live pages describes the business as an **inclusive aerial arts community in Culpeper, VA** that celebrates movement while **promoting physical and emotional well-being**, with mixed-level classes and coaching that meet people where they are—from first-timers to experienced aerialists.
 
-Program pages mirror what the studio offers on the site: silks and open aerials, lyra, yoga, mixed apparatus, junior aerials, summer camps, birthday parties, events, memberships, homeschool programming, and more, plus imagery and contact paths so visitors can get in touch.
+Program pages mirror what the studio offers on the site: silks and open aerials, lyra, mixed apparatus, junior aerials, summer camps, birthday parties, events, memberships, homeschool programming, and more, plus imagery and contact paths so visitors can get in touch.
 
 ## What’s in the repo
 

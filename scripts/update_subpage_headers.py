@@ -20,7 +20,6 @@ PAGES = [
     "mixed-apparatus.html",
     "homeschool.html",
     "juniors.html",
-    "yoga.html",
     "events.html",
     "summercamps.html",
     "memberships.html",
