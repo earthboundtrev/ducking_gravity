@@ -12,10 +12,10 @@ from xml.etree import ElementTree as ET
 
 PROJECT = Path(__file__).resolve().parent.parent
 DEFAULT_EXPORT = Path(
-    r"c:\Users\THOMP\Downloads\calendar-export-2026-05-31-to-2026-07-12.csv"
+    r"c:\Users\THOMP\Downloads\calendar-export-2026-06-08-to-2026-07-31.csv"
 )
 CUTOFF = datetime(2026, 6, 8).date()
-END = datetime(2026, 7, 14).date()
+END = datetime(2026, 7, 31).date()
 
 SKIP_CLASSES = {"Studio Closed", "Kids and Family Expo"}
 
