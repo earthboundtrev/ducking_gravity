@@ -12,12 +12,16 @@ from xml.etree import ElementTree as ET
 
 PROJECT = Path(__file__).resolve().parent.parent
 DEFAULT_EXPORT = Path(
-    r"c:\Users\THOMP\Downloads\calendar-export-2026-06-08-to-2026-07-31.csv"
+    r"c:\Users\THOMP\Downloads\calendar-export-2026-06-17-to-2026-07-31.xlsx"
 )
-CUTOFF = datetime(2026, 6, 14).date()
+CUTOFF = datetime(2026, 6, 17).date()
 END = datetime(2026, 7, 31).date()
 
 SKIP_CLASSES = {"Studio Closed", "Kids and Family Expo"}
+STUDIO_CLOSED_DATES = {
+    datetime(2026, 6, 22).date(),
+    datetime(2026, 6, 23).date(),
+}
 
 PRICE_BY_CLASS = {
     "Silks Foundations": "Members $25 or $100/month<br>Non-members $30",
@@ -197,6 +201,8 @@ def _keep_row(row: dict) -> bool:
     except ValueError:
         return False
     if d < CUTOFF or d > END:
+        return False
+    if d in STUDIO_CLOSED_DATES:
         return False
     name = (row.get("Class Name") or "").strip()
     if name in SKIP_CLASSES:
