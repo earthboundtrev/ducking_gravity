@@ -14,7 +14,7 @@ PROJECT = Path(__file__).resolve().parent.parent
 DEFAULT_EXPORT = Path(
     r"c:\Users\THOMP\Downloads\calendar-export-2026-06-17-to-2026-07-31.xlsx"
 )
-CUTOFF = datetime(2026, 6, 17).date()
+CUTOFF = datetime(2026, 6, 27).date()
 END = datetime(2026, 7, 31).date()
 
 SKIP_CLASSES = {"Studio Closed", "Kids and Family Expo"}
