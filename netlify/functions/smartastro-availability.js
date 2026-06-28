@@ -171,29 +171,50 @@ exports.handler = async function smartAstroAvailability(event) {
 
     const existingPopupState = await readPopupState(store);
     const managedState = await readManagedState(store);
-    const { state: popupState, summary } = mergeReplaceWeek(existingPopupState, payload);
-    await store.setJSON(POPUP_STATE_KEY, popupState);
+    let popupState;
+    let summary;
+    try {
+      ({ state: popupState, summary } = mergeReplaceWeek(existingPopupState, payload));
+    } catch (err) {
+      return json(400, { error: err.message });
+    }
 
-    const knownScheduleIds = resolveKnownScheduleIds(popupState, managedState);
-    const rolloverAvailabilityPayload = buildAvailabilityPayloadFromRolloverSlots(
-      payload.slots,
-      payload.generatedAt,
-    );
-    const { state: mergedAvailabilityState, summary: availabilitySummary } = mergeSlotState(
-      existingState,
-      rolloverAvailabilityPayload,
-      { knownScheduleIds },
-    );
+    if (!summary.preservedPreviousWeek) {
+      await store.setJSON(POPUP_STATE_KEY, popupState);
+
+      const knownScheduleIds = resolveKnownScheduleIds(popupState, managedState);
+      const rolloverAvailabilityPayload = buildAvailabilityPayloadFromRolloverSlots(
+        payload.slots,
+        payload.generatedAt,
+      );
+      const { state: mergedAvailabilityState, summary: availabilitySummary } = mergeSlotState(
+        existingState,
+        rolloverAvailabilityPayload,
+        { knownScheduleIds },
+      );
+      await store.setJSON(
+        STATE_KEY,
+        rememberIdempotencyKey(mergedAvailabilityState, idempotencyKey),
+      );
+
+      return json(200, {
+        ok: true,
+        action: "replaceWeek",
+        ...summary,
+        availabilityUpdated: availabilitySummary.updated,
+      });
+    }
+
     await store.setJSON(
       STATE_KEY,
-      rememberIdempotencyKey(mergedAvailabilityState, idempotencyKey),
+      rememberIdempotencyKey(existingState, idempotencyKey),
     );
 
     return json(200, {
       ok: true,
       action: "replaceWeek",
       ...summary,
-      availabilityUpdated: availabilitySummary.updated,
+      availabilityUpdated: 0,
     });
   }
 

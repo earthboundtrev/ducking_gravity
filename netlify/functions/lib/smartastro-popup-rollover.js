@@ -185,6 +185,25 @@ function mergeReplaceWeek(existingState, payload) {
     ...(existingState && existingState.destinations ? existingState.destinations : {}),
   };
 
+  const previous = destinations[payload.destinationKey];
+
+  // #229: never wipe a populated popup with an empty replaceWeek payload.
+  if (payload.slots.length === 0) {
+    if (previous && Array.isArray(previous.slots) && previous.slots.length > 0) {
+      return {
+        state: existingState || emptyPopupState(),
+        summary: {
+          destinationKey: payload.destinationKey,
+          preservedPreviousWeek: true,
+          slotsReplaced: 0,
+          windowStart: previous.windowStart,
+          windowEnd: previous.windowEnd,
+        },
+      };
+    }
+    throw new Error("Cannot apply empty replaceWeek without a prior populated week");
+  }
+
   destinations[payload.destinationKey] = {
     destinationKey: payload.destinationKey,
     windowStart: payload.windowStart,
@@ -206,6 +225,7 @@ function mergeReplaceWeek(existingState, payload) {
     state,
     summary: {
       destinationKey: payload.destinationKey,
+      preservedPreviousWeek: false,
       slotsReplaced: payload.slots.length,
       windowStart: payload.windowStart,
       windowEnd: payload.windowEnd,

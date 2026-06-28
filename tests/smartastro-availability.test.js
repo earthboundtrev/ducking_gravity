@@ -147,6 +147,74 @@ test("replaceWeek performs whole-week slot replacement per destination", () => {
   assert.equal(destination.slots.length, 1);
   assert.equal(destination.slots[0].scheduleId, 1600);
   assert.deepEqual(afterSecond.manifest.byDestination["homepage-all-classes-week"], [1600]);
+  assert.ok(!afterSecond.manifest.byDestination["homepage-all-classes-week"].includes(1468));
+});
+
+test("replaceWeek removes prior-week schedule ids only via whole-week swap", () => {
+  const first = parseReplaceWeekPayload(fs.readFileSync(ALL_CLASSES_FIXTURE, "utf8"));
+  const second = parseReplaceWeekPayload(fs.readFileSync(NEXT_WEEK_FIXTURE, "utf8"));
+
+  const { state: afterFirst } = mergeReplaceWeek(emptyPopupState(), first);
+  assert.deepEqual(afterFirst.manifest.scheduleIds.sort((a, b) => a - b), [1468, 1518]);
+
+  const { state: afterSecond } = mergeReplaceWeek(afterFirst, second);
+  assert.deepEqual(afterSecond.manifest.scheduleIds, [1600]);
+});
+
+test("replaceWeek is idempotent when the same payload is re-applied", () => {
+  const payload = parseReplaceWeekPayload(fs.readFileSync(NEXT_WEEK_FIXTURE, "utf8"));
+  const { state: once } = mergeReplaceWeek(emptyPopupState(), payload);
+  const { state: twice, summary } = mergeReplaceWeek(once, payload);
+
+  assert.equal(summary.preservedPreviousWeek, false);
+  assert.equal(twice.destinations["homepage-all-classes-week"].slots.length, 1);
+  assert.deepEqual(
+    twice.destinations["homepage-all-classes-week"].slots,
+    once.destinations["homepage-all-classes-week"].slots,
+  );
+});
+
+test("empty replaceWeek preserves the last populated week (#229)", () => {
+  const populated = parseReplaceWeekPayload(fs.readFileSync(ALL_CLASSES_FIXTURE, "utf8"));
+  const { state: afterPopulated } = mergeReplaceWeek(emptyPopupState(), populated);
+
+  const emptyBody = fs.readFileSync(
+    path.join(PROJECT_ROOT, "tests/fixtures/replace-week-empty.json"),
+    "utf8",
+  );
+  const emptyPayload = parseReplaceWeekPayload(emptyBody);
+  const { state: afterEmpty, summary } = mergeReplaceWeek(afterPopulated, emptyPayload);
+
+  assert.equal(summary.preservedPreviousWeek, true);
+  assert.deepEqual(
+    afterEmpty.destinations["homepage-all-classes-week"].slots,
+    afterPopulated.destinations["homepage-all-classes-week"].slots,
+  );
+  assert.deepEqual(afterEmpty.manifest.scheduleIds.sort((a, b) => a - b), [1468, 1518]);
+});
+
+test("weekend next-week replaceWeek payload replaces the published window", () => {
+  const currentWeek = parseReplaceWeekPayload(fs.readFileSync(ALL_CLASSES_FIXTURE, "utf8"));
+  const nextWeek = parseReplaceWeekPayload(fs.readFileSync(NEXT_WEEK_FIXTURE, "utf8"));
+
+  assert.equal(currentWeek.windowStart, "2026-06-29");
+  assert.equal(nextWeek.windowStart, "2026-07-06");
+  assert.ok(nextWeek.slots.length > 0, "weekend payload should stay populated");
+
+  const { state } = mergeReplaceWeek(
+    mergeReplaceWeek(emptyPopupState(), currentWeek).state,
+    nextWeek,
+  );
+  const destination = state.destinations["homepage-all-classes-week"];
+  assert.equal(destination.windowStart, "2026-07-06");
+  assert.ok(destination.slots.length > 0);
+});
+
+test("managed popup render markers keep static fallback when API slots are empty", () => {
+  const html = fs.readFileSync(path.join(PROJECT_ROOT, "index.html"), "utf8");
+  assert.match(html, /data-smartastro-popup-slot-root/);
+  assert.match(html, /data-smartastro-popup-heading/);
+  assert.match(html, /data-smartastro-schedule-id="\d+"/);
 });
 
 test("manifest includes popup-linked schedule IDs for sync discovery", () => {

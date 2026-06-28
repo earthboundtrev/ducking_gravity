@@ -1,0 +1,10 @@
+{
+  "action": "replaceWeek",
+  "source": "smartastro",
+  "generatedAt": "2026-07-05T10:00:00.000Z",
+  "destinationKey": "homepage-all-classes-week",
+  "windowStart": "2026-07-06",
+  "windowEnd": "2026-07-10",
+  "heading": "All classes this week — Mon Jul 6 through Fri Jul 10, 2026",
+  "slots": []
+}

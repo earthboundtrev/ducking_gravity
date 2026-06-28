@@ -170,6 +170,7 @@
   }
 
   function renderPopupDestination(slide, destination, availabilitySlots) {
+    // #229: keep static fallback markup when SmartAstro sends no slots for a destination.
     if (!destination || !Array.isArray(destination.slots) || destination.slots.length === 0) {
       return;
     }
