@@ -4,10 +4,15 @@ const SIGNATURE_PREFIX = "sha256=";
 const MAX_TIMESTAMP_AGE_MS = 5 * 60 * 1000;
 const DEFAULT_CALENDAR_BASE_URL = "https://smartastro.app/calendar";
 
-const KNOWN_SCHEDULE_IDS = new Set([
+const STATIC_KNOWN_SCHEDULE_IDS = new Set([
   1292, 1331, 1372, 1440, 1453, 1459, 1468, 1478, 1487, 1494, 1503, 1508, 1518,
   1495, 1496, 1497, 1526, 1537, 1543,
 ]);
+
+function resolveKnownScheduleIds(popupState) {
+  const { mergeKnownScheduleIds } = require("./smartastro-popup-rollover");
+  return mergeKnownScheduleIds(STATIC_KNOWN_SCHEDULE_IDS, popupState);
+}
 
 function json(statusCode, body) {
   return {
@@ -64,10 +69,10 @@ function parsePayload(body) {
   return payload;
 }
 
-function normalizeUpdate(update, calendarBaseUrl) {
+function normalizeUpdate(update, calendarBaseUrl, knownScheduleIds = STATIC_KNOWN_SCHEDULE_IDS) {
   const scheduleId = Number(update && update.scheduleId);
   if (!Number.isInteger(scheduleId) || scheduleId <= 0) return null;
-  if (!KNOWN_SCHEDULE_IDS.has(scheduleId)) return { scheduleId, unknown: true };
+  if (!knownScheduleIds.has(scheduleId)) return { scheduleId, unknown: true };
 
   const availableSpots = Math.max(0, Number(update.availableSpots) || 0);
   return {
@@ -80,8 +85,9 @@ function normalizeUpdate(update, calendarBaseUrl) {
   };
 }
 
-function mergeSlotState(existingState, payload) {
+function mergeSlotState(existingState, payload, options = {}) {
   const baseCalendarUrl = payload.baseCalendarUrl || DEFAULT_CALENDAR_BASE_URL;
+  const knownScheduleIds = options.knownScheduleIds || STATIC_KNOWN_SCHEDULE_IDS;
   const slots = { ...(existingState && existingState.slots ? existingState.slots : {}) };
   const summary = {
     updated: 0,
@@ -90,7 +96,7 @@ function mergeSlotState(existingState, payload) {
   };
 
   for (const rawUpdate of payload.updates) {
-    const update = normalizeUpdate(rawUpdate, baseCalendarUrl);
+    const update = normalizeUpdate(rawUpdate, baseCalendarUrl, knownScheduleIds);
     if (!update) {
       summary.skippedInvalid += 1;
       continue;
@@ -115,18 +121,24 @@ function mergeSlotState(existingState, payload) {
   };
 }
 
-function publicState(state) {
+function publicState(state, popupState) {
+  const { publicPopupState } = require("./smartastro-popup-rollover");
+  const popups = publicPopupState(popupState);
   return {
     source: "smartastro",
     updatedAt: state && state.updatedAt ? state.updatedAt : null,
     generatedAt: state && state.generatedAt ? state.generatedAt : null,
     slots: state && state.slots ? state.slots : {},
+    popups,
+    manifest: popups.manifest,
   };
 }
 
 module.exports = {
   DEFAULT_CALENDAR_BASE_URL,
-  KNOWN_SCHEDULE_IDS,
+  KNOWN_SCHEDULE_IDS: STATIC_KNOWN_SCHEDULE_IDS,
+  STATIC_KNOWN_SCHEDULE_IDS,
+  resolveKnownScheduleIds,
   createSignature,
   json,
   mergeSlotState,

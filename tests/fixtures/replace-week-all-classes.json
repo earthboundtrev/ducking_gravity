@@ -1,0 +1,31 @@
+{
+  "action": "replaceWeek",
+  "source": "smartastro",
+  "generatedAt": "2026-06-28T10:00:00.000Z",
+  "destinationKey": "homepage-all-classes-week",
+  "windowStart": "2026-06-29",
+  "windowEnd": "2026-07-03",
+  "heading": "All classes this week — Mon Jun 29 through Fri Jul 3, 2026",
+  "slots": [
+    {
+      "scheduleId": 1468,
+      "groupKey": "silks-foundations",
+      "groupLabel": "Silks Foundations",
+      "displayTime": "Tue Jun 30 · 5:30–6:30pm",
+      "isFull": false,
+      "availableSpots": 3,
+      "isClosed": false,
+      "signUpUrl": "https://smartastro.app/calendar?class=1468"
+    },
+    {
+      "scheduleId": 1518,
+      "groupKey": "adult-aerials",
+      "groupLabel": "Adult Aerials",
+      "displayTime": "Thu Jul 2 · 8:00–9:00pm",
+      "isFull": true,
+      "availableSpots": 0,
+      "isClosed": false,
+      "signUpUrl": "https://smartastro.app/calendar?class=1518"
+    }
+  ]
+}

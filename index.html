@@ -59,7 +59,7 @@
                         </div>
                     </div>
                                         <!-- Slide 2: All classes for the week of 6/29 -->
-                    <div class="popup-carousel-slide" data-slide="1">
+                    <div class="popup-carousel-slide" data-slide="1" data-smartastro-popup-destination="homepage-all-classes-week">
                         <div class="popup-image-carousel" data-popup-image-carousel>
                             <div class="popup-image-carousel-viewport">
                                 <div class="popup-image-carousel-slide is-active">
@@ -78,7 +78,8 @@
                                 <button type="button" class="popup-image-carousel-dot" role="tab" aria-selected="false" aria-label="Image 3 of 3"></button>
                             </div>
                         </div>
-                        <p class="popup-text"><strong>All classes this week</strong> &mdash; Mon Jun 29 through Fri Jul 3, 2026. Open a menu below to see times and sign up.</p>
+                        <p class="popup-text" data-smartastro-popup-heading><strong>All classes this week</strong> &mdash; Mon Jun 29 through Fri Jul 3, 2026<span data-smartastro-popup-heading-suffix>. Open a menu below to see times and sign up.</span></p>
+                        <div data-smartastro-popup-slot-root>
                         <div class="popup-dropdown-container">
                             <button class="popup-dropdown-toggle" type="button">
                                 Silks Foundations <span class="popup-dropdown-arrow">▼</span>
@@ -183,9 +184,10 @@
                                 </div>
                             </div>
                         </div>
+                        </div>
                     </div>
                                         <!-- Slide 3: All silks-related classes for the week of 6/29 -->
-                    <div class="popup-carousel-slide" data-slide="2">
+                    <div class="popup-carousel-slide" data-slide="2" data-smartastro-popup-destination="homepage-silks-week">
                         <div class="popup-image-carousel" data-popup-image-carousel>
                             <div class="popup-image-carousel-viewport">
                                 <div class="popup-image-carousel-slide is-active">
@@ -200,7 +202,8 @@
                                 <button type="button" class="popup-image-carousel-dot" role="tab" aria-selected="false" aria-label="Image 2 of 2"></button>
                             </div>
                         </div>
-                        <p class="popup-text"><strong>Silks classes this week</strong> &mdash; Mon Jun 29 through Fri Jul 3, 2026. All classes below take place on the aerial silks. Open a menu to see times and sign up. <a href="silks.html" style="color: var(--hyperlink-color); font-weight: 600;">More about silks</a>.</p>
+                        <p class="popup-text" data-smartastro-popup-heading><strong>Silks classes this week</strong> &mdash; Mon Jun 29 through Fri Jul 3, 2026<span data-smartastro-popup-heading-suffix>. All classes below take place on the aerial silks. Open a menu to see times and sign up. <a href="silks.html" style="color: var(--hyperlink-color); font-weight: 600;">More about silks</a>.</span></p>
+                        <div data-smartastro-popup-slot-root>
                         <div class="popup-dropdown-container">
                             <button class="popup-dropdown-toggle" type="button">
                                 Silks Foundations <span class="popup-dropdown-arrow">▼</span>
@@ -257,11 +260,13 @@
                                 </div>
                             </div>
                         </div>
+                        </div>
                     </div>
                     <!-- Slide 4: Lyra -->
-                    <div class="popup-carousel-slide" data-slide="3">
+                    <div class="popup-carousel-slide" data-slide="3" data-smartastro-popup-destination="homepage-lyra">
                         <img src="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/lyra_image_popup.jpg" alt="Lyra Classes" class="popup-image">
-                        <p class="popup-text"><strong>Lyra Foundations</strong> &mdash; Wednesdays, 6:00&ndash;7:00 PM. Mixed-level classes for ages 9 and up. Open the menu below to view dates and sign up. <a href="lyra.html" style="color: var(--hyperlink-color); font-weight: 600;">More about lyra</a>.</p>
+                        <p class="popup-text" data-smartastro-popup-heading><strong>Lyra Foundations</strong> &mdash; Wednesdays, 6:00&ndash;7:00 PM<span data-smartastro-popup-heading-suffix>. Mixed-level classes for ages 9 and up. Open the menu below to view dates and sign up. <a href="lyra.html" style="color: var(--hyperlink-color); font-weight: 600;">More about lyra</a>.</span></p>
+                        <div data-smartastro-popup-slot-root>
                         <div class="popup-dropdown-container">
                             <button class="popup-dropdown-toggle" type="button">
                                 Lyra Foundations Wednesdays 6&ndash;7pm <span class="popup-dropdown-arrow">▼</span>
@@ -288,6 +293,7 @@
                                     <a href="https://smartastro.app/calendar?class=1537" target="_blank" class="popup-slot-button">Sign up!</a>
                                 </div>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -760,27 +766,29 @@
             });
         }
         
-        // Dropdown toggle functionality
-        const dropdownToggles = document.querySelectorAll('.popup-dropdown-toggle');
-        dropdownToggles.forEach(toggle => {
-            toggle.addEventListener('click', function() {
-                const container = this.closest('.popup-dropdown-container');
+        // Dropdown toggle functionality (delegated so SmartAstro-rendered slots work too)
+        const popupModal = document.getElementById('electAerialsPopup');
+        if (popupModal) {
+            popupModal.addEventListener('click', function(event) {
+                const toggle = event.target.closest('.popup-dropdown-toggle');
+                if (!toggle || !popupModal.contains(toggle)) return;
+
+                const container = toggle.closest('.popup-dropdown-container');
                 const content = container.querySelector('.popup-dropdown-content');
-                const isActive = this.classList.contains('active');
-                
-                // Close all dropdowns first
-                dropdownToggles.forEach(t => {
+                const isActive = toggle.classList.contains('active');
+
+                popupModal.querySelectorAll('.popup-dropdown-toggle').forEach((t) => {
                     t.classList.remove('active');
-                    t.closest('.popup-dropdown-container').querySelector('.popup-dropdown-content').classList.remove('active');
+                    const dropdownContent = t.closest('.popup-dropdown-container').querySelector('.popup-dropdown-content');
+                    if (dropdownContent) dropdownContent.classList.remove('active');
                 });
-                
-                // Toggle current dropdown
+
                 if (!isActive) {
-                    this.classList.add('active');
+                    toggle.classList.add('active');
                     content.classList.add('active');
                 }
             });
-        });
+        }
 
         // Image sub-carousel inside individual popup slides
         const imageCarousels = document.querySelectorAll('[data-popup-image-carousel]');

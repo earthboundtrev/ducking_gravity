@@ -1,0 +1,21 @@
+{
+  "action": "replaceWeek",
+  "source": "smartastro",
+  "generatedAt": "2026-07-04T10:00:00.000Z",
+  "destinationKey": "homepage-all-classes-week",
+  "windowStart": "2026-07-06",
+  "windowEnd": "2026-07-10",
+  "heading": "All classes this week — Mon Jul 6 through Fri Jul 10, 2026",
+  "slots": [
+    {
+      "scheduleId": 1600,
+      "groupKey": "silks-foundations",
+      "groupLabel": "Silks Foundations",
+      "displayTime": "Mon Jul 6 · 3:45–4:45pm",
+      "isFull": false,
+      "availableSpots": 5,
+      "isClosed": false,
+      "signUpUrl": "https://smartastro.app/calendar?class=1600"
+    }
+  ]
+}

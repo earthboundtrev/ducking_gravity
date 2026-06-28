@@ -4,12 +4,21 @@ const {
   mergeSlotState,
   parsePayload,
   publicState,
+  resolveKnownScheduleIds,
   validateTimestamp,
   verifySignature,
 } = require("./lib/smartastro-availability");
+const {
+  availabilityUpdatesFromSlots,
+  detectPayloadAction,
+  emptyPopupState,
+  mergeReplaceWeek,
+  parseReplaceWeekPayload,
+} = require("./lib/smartastro-popup-rollover");
 
 const STORE_NAME = "smartastro-availability";
 const STATE_KEY = "class-slots";
+const POPUP_STATE_KEY = "homepage-popups";
 const MAX_BODY_BYTES = 1024 * 1024;
 const MAX_UPDATES = 500;
 const MAX_IDEMPOTENCY_KEYS = 100;
@@ -32,6 +41,11 @@ async function readState(store) {
     slots: {},
     idempotencyKeys: [],
   };
+}
+
+async function readPopupState(store) {
+  const state = await store.get(POPUP_STATE_KEY, { type: "json" });
+  return state || emptyPopupState();
 }
 
 function hasSeenIdempotencyKey(state, key) {
@@ -59,12 +73,20 @@ function rememberIdempotencyKey(state, key) {
   };
 }
 
+function buildAvailabilityPayloadFromRolloverSlots(slots, generatedAt) {
+  return {
+    source: "smartastro",
+    generatedAt,
+    updates: availabilityUpdatesFromSlots(slots, generatedAt),
+  };
+}
+
 exports.handler = async function smartAstroAvailability(event) {
   const store = getStore(STORE_NAME);
 
   if (event.httpMethod === "GET") {
-    const state = await readState(store);
-    return json(200, publicState(state));
+    const [state, popupState] = await Promise.all([readState(store), readPopupState(store)]);
+    return json(200, publicState(state, popupState));
   }
 
   if (event.httpMethod !== "POST") {
@@ -108,6 +130,48 @@ exports.handler = async function smartAstroAvailability(event) {
     });
   }
 
+  let action;
+  try {
+    action = detectPayloadAction(body);
+  } catch (err) {
+    return json(400, { error: err.message });
+  }
+
+  if (action === "replaceWeek") {
+    let payload;
+    try {
+      payload = parseReplaceWeekPayload(body);
+    } catch (err) {
+      return json(400, { error: err.message });
+    }
+
+    const existingPopupState = await readPopupState(store);
+    const { state: popupState, summary } = mergeReplaceWeek(existingPopupState, payload);
+    await store.setJSON(POPUP_STATE_KEY, popupState);
+
+    const knownScheduleIds = resolveKnownScheduleIds(popupState);
+    const rolloverAvailabilityPayload = buildAvailabilityPayloadFromRolloverSlots(
+      payload.slots,
+      payload.generatedAt,
+    );
+    const { state: mergedAvailabilityState, summary: availabilitySummary } = mergeSlotState(
+      existingState,
+      rolloverAvailabilityPayload,
+      { knownScheduleIds },
+    );
+    await store.setJSON(
+      STATE_KEY,
+      rememberIdempotencyKey(mergedAvailabilityState, idempotencyKey),
+    );
+
+    return json(200, {
+      ok: true,
+      action: "replaceWeek",
+      ...summary,
+      availabilityUpdated: availabilitySummary.updated,
+    });
+  }
+
   let payload;
   try {
     payload = parsePayload(body);
@@ -119,7 +183,9 @@ exports.handler = async function smartAstroAvailability(event) {
     return json(413, { error: "SmartAstro sync payload has too many updates" });
   }
 
-  const { state, summary } = mergeSlotState(existingState, payload);
+  const popupState = await readPopupState(store);
+  const knownScheduleIds = resolveKnownScheduleIds(popupState);
+  const { state, summary } = mergeSlotState(existingState, payload, { knownScheduleIds });
   await store.setJSON(STATE_KEY, rememberIdempotencyKey(state, idempotencyKey));
 
   return json(200, {
