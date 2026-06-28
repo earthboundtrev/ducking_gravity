@@ -21,6 +21,10 @@ const {
   parseUpsertSlotPayload,
   upsertManagedSlot,
 } = require("./lib/smartastro-managed-destinations");
+const {
+  hasSeenIdempotencyKey,
+  rememberIdempotencyKey,
+} = require("./lib/smartastro-replay-protection");
 
 const STORE_NAME = "smartastro-availability";
 const STATE_KEY = "class-slots";
@@ -28,8 +32,6 @@ const POPUP_STATE_KEY = "homepage-popups";
 const MANAGED_STATE_KEY = "managed-slots";
 const MAX_BODY_BYTES = 1024 * 1024;
 const MAX_UPDATES = 500;
-const MAX_IDEMPOTENCY_KEYS = 100;
-const IDEMPOTENCY_RETENTION_MS = 24 * 60 * 60 * 1000;
 
 function methodNotAllowed() {
   return {
@@ -58,31 +60,6 @@ async function readPopupState(store) {
 async function readManagedState(store) {
   const state = await store.get(MANAGED_STATE_KEY, { type: "json" });
   return state || emptyManagedState();
-}
-
-function hasSeenIdempotencyKey(state, key) {
-  if (!key || !Array.isArray(state.idempotencyKeys)) return false;
-  return state.idempotencyKeys.some((entry) => entry && entry.key === key);
-}
-
-function rememberIdempotencyKey(state, key) {
-  if (!key) return state;
-
-  const now = Date.now();
-  const retained = Array.isArray(state.idempotencyKeys)
-    ? state.idempotencyKeys.filter((entry) => {
-        const seenAt = Date.parse(entry && entry.seenAt);
-        return Number.isFinite(seenAt) && now - seenAt <= IDEMPOTENCY_RETENTION_MS;
-      })
-    : [];
-
-  return {
-    ...state,
-    idempotencyKeys: [
-      ...retained,
-      { key, seenAt: new Date(now).toISOString() },
-    ].slice(-MAX_IDEMPOTENCY_KEYS),
-  };
 }
 
 function buildAvailabilityPayloadFromRolloverSlots(slots, generatedAt) {
