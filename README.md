@@ -66,6 +66,18 @@ Configured in SmartAstro Admin → Scheduled Jobs → **Marketing site sync** (s
 
 GET on that endpoint returns the current sync manifest (popup and managed destination schedule IDs) for discovery and verification.
 
+### Replay protection (#233)
+
+The receiver **fail-closes** on bad auth and enforces replay resistance before applying payloads:
+
+| Check | Behavior |
+|-------|----------|
+| `X-SmartAstro-Timestamp` | Reject if missing or outside ±5 minutes of server time → **401** |
+| `X-SmartAstro-Signature` | HMAC-SHA256 over `{timestamp}.{rawBody}`; constant-time compare → **401** on mismatch |
+| `X-SmartAstro-Idempotency-Key` | Dedupe within a **24-hour** retention window (up to 100 keys stored); repeats return **200** with `{ duplicate: true }` and do not re-apply the payload |
+
+Unit tests in `tests/smartastro-availability.test.js` cover timestamp windows and idempotency dedupe. SmartAstro integration docs: [marketing-site-sync.md](https://gitlab.com/earthboundtrev/astro/-/blob/main/docs/integrations/marketing-site-sync.md) in the astro repo.
+
 ---
 
 ## Note on secrets

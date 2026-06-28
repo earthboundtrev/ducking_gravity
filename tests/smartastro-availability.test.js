@@ -63,6 +63,44 @@ test("rejects stale timestamps", () => {
   );
 });
 
+test("rejects future timestamps outside the allowed clock window", () => {
+  assert.equal(
+    validateTimestamp("2026-06-27T15:04:59.000Z", Date.parse("2026-06-27T15:00:00.000Z")),
+    true,
+  );
+  assert.equal(
+    validateTimestamp("2026-06-27T15:05:01.000Z", Date.parse("2026-06-27T15:00:00.000Z")),
+    false,
+  );
+  assert.equal(validateTimestamp("not-a-date"), false);
+});
+
+const {
+  hasSeenIdempotencyKey,
+  rememberIdempotencyKey,
+  IDEMPOTENCY_RETENTION_MS,
+} = require("../netlify/functions/lib/smartastro-replay-protection");
+
+test("dedupes repeated idempotency keys within the retention window", () => {
+  const state = { idempotencyKeys: [] };
+  assert.equal(hasSeenIdempotencyKey(state, "run-1"), false);
+
+  const afterFirst = rememberIdempotencyKey(state, "run-1");
+  assert.equal(hasSeenIdempotencyKey(afterFirst, "run-1"), true);
+  assert.equal(hasSeenIdempotencyKey(afterFirst, "run-2"), false);
+});
+
+test("expires idempotency keys after the retention window", () => {
+  const staleSeenAt = new Date(Date.now() - IDEMPOTENCY_RETENTION_MS - 1000).toISOString();
+  const state = {
+    idempotencyKeys: [{ key: "old-run", seenAt: staleSeenAt }],
+  };
+
+  const refreshed = rememberIdempotencyKey(state, "new-run");
+  assert.equal(hasSeenIdempotencyKey(refreshed, "old-run"), false);
+  assert.equal(hasSeenIdempotencyKey(refreshed, "new-run"), true);
+});
+
 test("updates known slots and skips unknown schedule IDs", () => {
   const payload = parsePayload(
     JSON.stringify({
