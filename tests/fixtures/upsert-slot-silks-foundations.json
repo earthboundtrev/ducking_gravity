@@ -1,0 +1,19 @@
+{
+  "action": "upsertSlot",
+  "source": "smartastro",
+  "generatedAt": "2026-06-28T12:00:00.000Z",
+  "destinationKey": "silks-foundations",
+  "windowStart": "2026-06-29",
+  "windowEnd": "2026-08-09",
+  "scheduleId": 1600,
+  "className": "Silks Foundations",
+  "startsAt": "2026-07-07T21:30:00.000Z",
+  "endsAt": "2026-07-07T22:30:00.000Z",
+  "displayDate": "July 7",
+  "displayTime": "5:30pm - 6:30pm",
+  "displayPrice": "Members $25 or $100/month\nNon-members $30",
+  "isFull": false,
+  "availableSpots": 4,
+  "isClosed": false,
+  "signUpUrl": "https://smartastro.app/calendar?class=1600"
+}

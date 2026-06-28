@@ -270,6 +270,10 @@ function detectPayloadAction(body) {
     return "replaceWeek";
   }
 
+  if (isPlainObject(payload) && payload.action === "upsertSlot") {
+    return "upsertSlot";
+  }
+
   return "availability";
 }
 

@@ -21,6 +21,12 @@ const {
   mergeReplaceWeek,
   parseReplaceWeekPayload,
 } = require("../netlify/functions/lib/smartastro-popup-rollover");
+const {
+  emptyManagedState,
+  parseUpsertSlotPayload,
+  upsertManagedSlot,
+  VALID_MANAGED_DESTINATION_KEYS,
+} = require("../netlify/functions/lib/smartastro-managed-destinations");
 
 const PROJECT_ROOT = path.resolve(__dirname, "..");
 const ALL_CLASSES_FIXTURE = path.join(
@@ -30,6 +36,10 @@ const ALL_CLASSES_FIXTURE = path.join(
 const NEXT_WEEK_FIXTURE = path.join(
   PROJECT_ROOT,
   "tests/fixtures/replace-week-next-week.json",
+);
+const UPSERT_FIXTURE = path.join(
+  PROJECT_ROOT,
+  "tests/fixtures/upsert-slot-silks-foundations.json",
 );
 
 test("verifies SmartAstro HMAC signatures over timestamp and raw body", () => {
@@ -151,7 +161,7 @@ test("manifest includes popup-linked schedule IDs for sync discovery", () => {
 test("availability sync accepts popup manifest schedule IDs", () => {
   const nextWeek = parseReplaceWeekPayload(fs.readFileSync(NEXT_WEEK_FIXTURE, "utf8"));
   const { state: popupState } = mergeReplaceWeek(emptyPopupState(), nextWeek);
-  const knownScheduleIds = resolveKnownScheduleIds(popupState);
+  const knownScheduleIds = resolveKnownScheduleIds(popupState, emptyManagedState());
 
   const availabilityPayload = parsePayload(
     JSON.stringify({
@@ -172,14 +182,18 @@ test("availability sync accepts popup manifest schedule IDs", () => {
 test("public state exposes popup destinations and manifest", () => {
   const popupPayload = parseReplaceWeekPayload(fs.readFileSync(ALL_CLASSES_FIXTURE, "utf8"));
   const { state: popupState } = mergeReplaceWeek(emptyPopupState(), popupPayload);
-  const response = publicState({ slots: {}, updatedAt: null, generatedAt: null }, popupState);
+  const response = publicState(
+    { slots: {}, updatedAt: null, generatedAt: null },
+    popupState,
+    emptyManagedState(),
+  );
 
   assert.ok(response.popups.destinations["homepage-all-classes-week"]);
   assert.deepEqual(response.manifest.scheduleIds, [1468, 1518]);
 });
 
 test("static homepage schedule IDs remain registered without popup state", () => {
-  const known = resolveKnownScheduleIds(emptyPopupState());
+  const known = resolveKnownScheduleIds(emptyPopupState(), emptyManagedState());
   for (const id of STATIC_KNOWN_SCHEDULE_IDS) {
     assert.ok(known.has(id));
   }
@@ -207,4 +221,84 @@ test("mergeKnownScheduleIds unions static and popup ids", () => {
   const merged = mergeKnownScheduleIds(STATIC_KNOWN_SCHEDULE_IDS, popupState);
   assert.ok(merged.has(42));
   assert.ok(merged.has(1440));
+});
+
+test("parses upsertSlot payloads from fixture", () => {
+  const body = fs.readFileSync(UPSERT_FIXTURE, "utf8");
+  assert.equal(detectPayloadAction(body), "upsertSlot");
+
+  const payload = parseUpsertSlotPayload(body);
+  assert.equal(payload.destinationKey, "silks-foundations");
+  assert.equal(payload.slot.scheduleId, 1600);
+});
+
+test("rejects unknown managed destination keys", () => {
+  const body = fs.readFileSync(UPSERT_FIXTURE, "utf8");
+  const payload = JSON.parse(body);
+  payload.destinationKey = "unknown-destination";
+  assert.throws(() => parseUpsertSlotPayload(JSON.stringify(payload)), /Unknown managed destination key/);
+});
+
+test("rejects out-of-window upsertSlot payloads", () => {
+  const body = fs.readFileSync(UPSERT_FIXTURE, "utf8");
+  const payload = parseUpsertSlotPayload(body);
+  payload.windowStart = "2026-08-10";
+  payload.windowEnd = "2026-09-01";
+  assert.throws(() => upsertManagedSlot(emptyManagedState(), payload), /outside the managed destination window/);
+});
+
+test("upsertSlot inserts and updates without duplicates", () => {
+  const first = parseUpsertSlotPayload(fs.readFileSync(UPSERT_FIXTURE, "utf8"));
+  const { state: afterInsert, summary: insertSummary } = upsertManagedSlot(emptyManagedState(), first);
+  assert.equal(insertSummary.inserted, true);
+  assert.equal(afterInsert.destinations["silks-foundations"].slots.length, 1);
+
+  const secondBody = JSON.parse(fs.readFileSync(UPSERT_FIXTURE, "utf8"));
+  secondBody.availableSpots = 1;
+  secondBody.isFull = true;
+  const second = parseUpsertSlotPayload(JSON.stringify(secondBody));
+  const { state: afterUpdate, summary: updateSummary } = upsertManagedSlot(afterInsert, second);
+  assert.equal(updateSummary.inserted, false);
+  assert.equal(afterUpdate.destinations["silks-foundations"].slots.length, 1);
+  assert.equal(afterUpdate.destinations["silks-foundations"].slots[0].isFull, true);
+});
+
+test("managed manifest schedule IDs are accepted by availability sync", () => {
+  const upsertPayload = parseUpsertSlotPayload(fs.readFileSync(UPSERT_FIXTURE, "utf8"));
+  const { state: managedState } = upsertManagedSlot(emptyManagedState(), upsertPayload);
+  const knownScheduleIds = resolveKnownScheduleIds(emptyPopupState(), managedState);
+
+  const availabilityPayload = parsePayload(
+    JSON.stringify({
+      source: "smartastro",
+      updates: [{ scheduleId: 1600, isFull: false, availableSpots: 2, isClosed: false }],
+    }),
+  );
+  const { state, summary } = mergeSlotState(null, availabilityPayload, { knownScheduleIds });
+  assert.equal(summary.updated, 1);
+  assert.equal(state.slots["1600"].availableSpots, 2);
+});
+
+test("class pages expose managed destination markers", () => {
+  const silks = fs.readFileSync(path.join(PROJECT_ROOT, "silks.html"), "utf8");
+  const lyra = fs.readFileSync(path.join(PROJECT_ROOT, "lyra.html"), "utf8");
+
+  assert.match(silks, /data-smartastro-managed-destination="silks-foundations"/);
+  assert.match(silks, /data-smartastro-managed-destination="silks-adult-aerials"/);
+  assert.match(lyra, /data-smartastro-managed-destination="lyra-foundations"/);
+  assert.match(silks, /js\/smartastro-availability\.js/);
+});
+
+test("public state exposes managed destinations and combined manifest", () => {
+  const upsertPayload = parseUpsertSlotPayload(fs.readFileSync(UPSERT_FIXTURE, "utf8"));
+  const { state: managedState } = upsertManagedSlot(emptyManagedState(), upsertPayload);
+  const response = publicState(
+    { slots: {}, updatedAt: null, generatedAt: null },
+    emptyPopupState(),
+    managedState,
+  );
+
+  assert.ok(response.managed.destinations["silks-foundations"]);
+  assert.deepEqual(response.manifest.scheduleIds, [1600]);
+  assert.ok(VALID_MANAGED_DESTINATION_KEYS.has("lyra-foundations"));
 });

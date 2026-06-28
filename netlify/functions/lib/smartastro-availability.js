@@ -9,9 +9,14 @@ const STATIC_KNOWN_SCHEDULE_IDS = new Set([
   1495, 1496, 1497, 1526, 1537, 1543,
 ]);
 
-function resolveKnownScheduleIds(popupState) {
+function resolveKnownScheduleIds(popupState, managedState) {
   const { mergeKnownScheduleIds } = require("./smartastro-popup-rollover");
-  return mergeKnownScheduleIds(STATIC_KNOWN_SCHEDULE_IDS, popupState);
+  const { collectManagedManifestScheduleIds } = require("./smartastro-managed-destinations");
+  let merged = mergeKnownScheduleIds(STATIC_KNOWN_SCHEDULE_IDS, popupState);
+  for (const id of collectManagedManifestScheduleIds(managedState)) {
+    merged.add(id);
+  }
+  return merged;
 }
 
 function json(statusCode, body) {
@@ -121,16 +126,29 @@ function mergeSlotState(existingState, payload, options = {}) {
   };
 }
 
-function publicState(state, popupState) {
+function publicState(state, popupState, managedState) {
   const { publicPopupState } = require("./smartastro-popup-rollover");
+  const { publicManagedState } = require("./smartastro-managed-destinations");
   const popups = publicPopupState(popupState);
+  const managed = publicManagedState(managedState);
+  const scheduleIds = new Set([
+    ...(popups.manifest && popups.manifest.scheduleIds ? popups.manifest.scheduleIds : []),
+    ...(managed.manifest && managed.manifest.scheduleIds ? managed.manifest.scheduleIds : []),
+  ]);
+
   return {
     source: "smartastro",
     updatedAt: state && state.updatedAt ? state.updatedAt : null,
     generatedAt: state && state.generatedAt ? state.generatedAt : null,
     slots: state && state.slots ? state.slots : {},
     popups,
-    manifest: popups.manifest,
+    managed,
+    manifest: {
+      scheduleIds: Array.from(scheduleIds).sort((a, b) => a - b),
+      popupByDestination: popups.manifest ? popups.manifest.byDestination : {},
+      managedByDestination: managed.manifest ? managed.manifest.byDestination : {},
+      updatedAt: new Date().toISOString(),
+    },
   };
 }
 

@@ -15,10 +15,17 @@ const {
   mergeReplaceWeek,
   parseReplaceWeekPayload,
 } = require("./lib/smartastro-popup-rollover");
+const {
+  availabilityUpdateFromManagedSlot,
+  emptyManagedState,
+  parseUpsertSlotPayload,
+  upsertManagedSlot,
+} = require("./lib/smartastro-managed-destinations");
 
 const STORE_NAME = "smartastro-availability";
 const STATE_KEY = "class-slots";
 const POPUP_STATE_KEY = "homepage-popups";
+const MANAGED_STATE_KEY = "managed-slots";
 const MAX_BODY_BYTES = 1024 * 1024;
 const MAX_UPDATES = 500;
 const MAX_IDEMPOTENCY_KEYS = 100;
@@ -46,6 +53,11 @@ async function readState(store) {
 async function readPopupState(store) {
   const state = await store.get(POPUP_STATE_KEY, { type: "json" });
   return state || emptyPopupState();
+}
+
+async function readManagedState(store) {
+  const state = await store.get(MANAGED_STATE_KEY, { type: "json" });
+  return state || emptyManagedState();
 }
 
 function hasSeenIdempotencyKey(state, key) {
@@ -81,12 +93,24 @@ function buildAvailabilityPayloadFromRolloverSlots(slots, generatedAt) {
   };
 }
 
+function buildAvailabilityPayloadFromManagedSlot(slot, generatedAt) {
+  return {
+    source: "smartastro",
+    generatedAt,
+    updates: [availabilityUpdateFromManagedSlot(slot, generatedAt)],
+  };
+}
+
 exports.handler = async function smartAstroAvailability(event) {
   const store = getStore(STORE_NAME);
 
   if (event.httpMethod === "GET") {
-    const [state, popupState] = await Promise.all([readState(store), readPopupState(store)]);
-    return json(200, publicState(state, popupState));
+    const [state, popupState, managedState] = await Promise.all([
+      readState(store),
+      readPopupState(store),
+      readManagedState(store),
+    ]);
+    return json(200, publicState(state, popupState, managedState));
   }
 
   if (event.httpMethod !== "POST") {
@@ -146,10 +170,11 @@ exports.handler = async function smartAstroAvailability(event) {
     }
 
     const existingPopupState = await readPopupState(store);
+    const managedState = await readManagedState(store);
     const { state: popupState, summary } = mergeReplaceWeek(existingPopupState, payload);
     await store.setJSON(POPUP_STATE_KEY, popupState);
 
-    const knownScheduleIds = resolveKnownScheduleIds(popupState);
+    const knownScheduleIds = resolveKnownScheduleIds(popupState, managedState);
     const rolloverAvailabilityPayload = buildAvailabilityPayloadFromRolloverSlots(
       payload.slots,
       payload.generatedAt,
@@ -172,6 +197,42 @@ exports.handler = async function smartAstroAvailability(event) {
     });
   }
 
+  if (action === "upsertSlot") {
+    let payload;
+    try {
+      payload = parseUpsertSlotPayload(body);
+    } catch (err) {
+      return json(400, { error: err.message });
+    }
+
+    const existingManagedState = await readManagedState(store);
+    const popupState = await readPopupState(store);
+    const { state: managedState, summary } = upsertManagedSlot(existingManagedState, payload);
+    await store.setJSON(MANAGED_STATE_KEY, managedState);
+
+    const knownScheduleIds = resolveKnownScheduleIds(popupState, managedState);
+    const slotAvailabilityPayload = buildAvailabilityPayloadFromManagedSlot(
+      payload.slot,
+      payload.generatedAt,
+    );
+    const { state: mergedAvailabilityState, summary: availabilitySummary } = mergeSlotState(
+      existingState,
+      slotAvailabilityPayload,
+      { knownScheduleIds },
+    );
+    await store.setJSON(
+      STATE_KEY,
+      rememberIdempotencyKey(mergedAvailabilityState, idempotencyKey),
+    );
+
+    return json(200, {
+      ok: true,
+      action: "upsertSlot",
+      ...summary,
+      availabilityUpdated: availabilitySummary.updated,
+    });
+  }
+
   let payload;
   try {
     payload = parsePayload(body);
@@ -184,7 +245,8 @@ exports.handler = async function smartAstroAvailability(event) {
   }
 
   const popupState = await readPopupState(store);
-  const knownScheduleIds = resolveKnownScheduleIds(popupState);
+  const managedState = await readManagedState(store);
+  const knownScheduleIds = resolveKnownScheduleIds(popupState, managedState);
   const { state, summary } = mergeSlotState(existingState, payload, { knownScheduleIds });
   await store.setJSON(STATE_KEY, rememberIdempotencyKey(state, idempotencyKey));
 
