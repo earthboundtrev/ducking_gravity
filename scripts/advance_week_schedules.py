@@ -77,27 +77,12 @@ SLIDE2 = """                    <!-- Slide 2: All classes for the week of 6/29 -
                                     <span class="popup-slot-button full">Class Full</span>
                                 </div>
                                 <div class="popup-slot">
-                                    <span class="popup-slot-time">Tue Jun 30 &middot; 5:30&ndash;6:30pm</span>
-                                    <a href="https://smartastro.app/calendar?class=1468" target="_blank" class="popup-slot-button">Sign up!</a>
-                                </div>
-                                <div class="popup-slot">
                                     <span class="popup-slot-time">Tue Jun 30 &middot; 6:45&ndash;7:45pm</span>
                                     <a href="https://smartastro.app/calendar?class=1478" target="_blank" class="popup-slot-button">Sign up!</a>
                                 </div>
                                 <div class="popup-slot">
                                     <span class="popup-slot-time">Thu Jul 2 &middot; 6:45&ndash;7:45pm</span>
                                     <span class="popup-slot-button full">Class Full</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="popup-dropdown-container">
-                            <button class="popup-dropdown-toggle" type="button">
-                                Lyra Foundations <span class="popup-dropdown-arrow">▼</span>
-                            </button>
-                            <div class="popup-dropdown-content">
-                                <div class="popup-slot">
-                                    <span class="popup-slot-time">Wed Jul 1 &middot; 6:00&ndash;7:00pm</span>
-                                    <a href="https://smartastro.app/calendar?class=1494" target="_blank" class="popup-slot-button">Sign up!</a>
                                 </div>
                             </div>
                         </div>
@@ -198,10 +183,6 @@ SLIDE3 = """                    <!-- Slide 3: All silks-related classes for the 
                                 <div class="popup-slot">
                                     <span class="popup-slot-time">Mon Jun 29 &middot; 3:45&ndash;4:45pm</span>
                                     <span class="popup-slot-button full">Class Full</span>
-                                </div>
-                                <div class="popup-slot">
-                                    <span class="popup-slot-time">Tue Jun 30 &middot; 5:30&ndash;6:30pm</span>
-                                    <a href="https://smartastro.app/calendar?class=1468" target="_blank" class="popup-slot-button">Sign up!</a>
                                 </div>
                                 <div class="popup-slot">
                                     <span class="popup-slot-time">Tue Jun 30 &middot; 6:45&ndash;7:45pm</span>
