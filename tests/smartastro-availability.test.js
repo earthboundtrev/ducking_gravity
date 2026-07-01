@@ -441,6 +441,37 @@ test("class pages expose managed destination markers", () => {
   assert.match(silks, /js\/smartastro-availability\.js/);
 });
 
+test("stores hasEnded separately from isFull in availability state (#269)", () => {
+  const payload = parsePayload(
+    JSON.stringify({
+      source: "smartastro",
+      generatedAt: "2026-07-01T15:00:00.000Z",
+      updates: [
+        {
+          scheduleId: 1440,
+          isFull: false,
+          availableSpots: 6,
+          isClosed: false,
+          hasEnded: true,
+        },
+        {
+          scheduleId: 1478,
+          isFull: true,
+          availableSpots: 0,
+          isClosed: false,
+          hasEnded: false,
+        },
+      ],
+    }),
+  );
+
+  const { state } = mergeSlotState(null, payload);
+  assert.equal(state.slots["1440"].hasEnded, true);
+  assert.equal(state.slots["1440"].isFull, false);
+  assert.equal(state.slots["1478"].hasEnded, false);
+  assert.equal(state.slots["1478"].isFull, true);
+});
+
 test("public state exposes managed destinations and combined manifest", () => {
   const upsertPayload = parseUpsertSlotPayload(fs.readFileSync(UPSERT_FIXTURE, "utf8"));
   const { state: managedState } = upsertManagedSlot(emptyManagedState(), upsertPayload);

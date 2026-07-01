@@ -98,11 +98,13 @@ function normalizeUpdate(update, calendarBaseUrl, knownScheduleIds = STATIC_KNOW
   if (!knownScheduleIds.has(scheduleId)) return { scheduleId, unknown: true };
 
   const availableSpots = Math.max(0, Number(update.availableSpots) || 0);
+  const hasEnded = Boolean(update.hasEnded);
   return {
     scheduleId,
     isFull: Boolean(update.isFull),
     availableSpots,
     isClosed: Boolean(update.isClosed),
+    hasEnded,
     signUpUrl: buildSignUpUrl(scheduleId, calendarBaseUrl),
     lastSyncedAt: new Date().toISOString(),
   };

@@ -348,9 +348,13 @@ ul.camp-list li {
     display: inline;
   }
 
-  .camp-table .info-btn.full[data-mobile-label]::after,
-  .camp-table .info-btn.disabled[data-mobile-label]::after {
+  .camp-table .info-btn.full[data-mobile-label]::after {
     content: 'Full';
+    display: inline;
+  }
+
+  .camp-table .info-btn.disabled[data-mobile-label]::after {
+    content: 'Over';
     display: inline;
   }
 
@@ -374,7 +378,11 @@ ul.camp-list li {
   }
 }
 
-.camp-table .info-btn.disabled[data-mobile-label]::after,
+.camp-table .info-btn.disabled[data-mobile-label]::after {
+  content: 'Over';
+  display: inline;
+}
+
 .camp-table .info-btn.full[data-mobile-label]::after {
   content: 'Full';
   display: inline;

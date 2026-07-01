@@ -27,11 +27,44 @@
     return span;
   }
 
+  function createOverButton(className) {
+    const span = document.createElement("span");
+    span.className = className === "info-btn" ? "info-btn disabled" : "popup-slot-button disabled";
+    span.dataset.mobileLabel = "";
+    const inner = document.createElement("span");
+    inner.textContent = "Class Over";
+    span.appendChild(inner);
+    return span;
+  }
+
+  function createClosedButton(className) {
+    const span = document.createElement("span");
+    span.className = className === "info-btn" ? "info-btn full" : "popup-slot-button closed";
+    span.dataset.mobileLabel = "";
+    const inner = document.createElement("span");
+    inner.textContent = "Registration Closed";
+    span.appendChild(inner);
+    return span;
+  }
+
+  function createSlotButton(slot, className) {
+    if (slot.hasEnded) {
+      return createOverButton(className);
+    }
+    if (slot.isClosed) {
+      return createClosedButton(className);
+    }
+    if (slot.isFull) {
+      return createFullButton(className);
+    }
+    return createOpenButton(slot, className);
+  }
+
   function applyPopupSlotState(slotElement, slot) {
     const currentButton = slotElement.querySelector(".popup-slot-button");
     if (!currentButton) return;
 
-    const nextButton = slot.isFull ? createFullButton() : createOpenButton(slot);
+    const nextButton = createSlotButton(slot);
     currentButton.replaceWith(nextButton);
   }
 
@@ -39,9 +72,7 @@
     const signUpCell = row.cells[row.cells.length - 1];
     if (!signUpCell) return;
 
-    const nextButton = slot.isFull
-      ? createFullButton("info-btn")
-      : createOpenButton(slot, "info-btn");
+    const nextButton = createSlotButton(slot, "info-btn");
     signUpCell.replaceChildren(nextButton);
   }
 
@@ -90,11 +121,7 @@
 
     const signUpCell = document.createElement("td");
     const availability = availabilitySlots[String(slot.scheduleId)] || slot;
-    signUpCell.appendChild(
-      availability.isFull
-        ? createFullButton("info-btn")
-        : createOpenButton(availability, "info-btn"),
-    );
+    signUpCell.appendChild(createSlotButton(availability, "info-btn"));
 
     if (columnCount >= 5) {
       const sessionCell = document.createElement("td");
@@ -137,12 +164,7 @@
     time.className = "popup-slot-time";
     time.textContent = slot.displayTime;
 
-    const button = slot.isFull
-      ? createFullButton()
-      : createOpenButton({
-          scheduleId: slot.scheduleId,
-          signUpUrl: slot.signUpUrl,
-        });
+    const button = createSlotButton(slot);
 
     slotElement.append(time, button);
     return slotElement;

@@ -153,6 +153,7 @@ function normalizeManagedSlot(rawSlot) {
     isFull: Boolean(rawSlot.isFull),
     availableSpots: Math.max(0, Number(rawSlot.availableSpots) || 0),
     isClosed: Boolean(rawSlot.isClosed),
+    hasEnded: Boolean(rawSlot.hasEnded),
     signUpUrl,
     updatedAt: new Date().toISOString(),
   };
@@ -373,6 +374,7 @@ function availabilityUpdateFromManagedSlot(slot, generatedAt) {
     isFull: slot.isFull,
     availableSpots: slot.availableSpots,
     isClosed: slot.isClosed,
+    hasEnded: Boolean(slot.hasEnded),
     signUpUrl: slot.signUpUrl,
     lastSyncedAt: generatedAt,
   };
