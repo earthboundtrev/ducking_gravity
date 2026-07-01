@@ -1,4 +1,4 @@
-const { getStore } = require("@netlify/blobs");
+const { connectLambda, getStore } = require("@netlify/blobs");
 const {
   json,
   mergeSlotState,
@@ -79,6 +79,8 @@ function buildAvailabilityPayloadFromManagedSlot(slot, generatedAt) {
 }
 
 exports.handler = async function smartAstroAvailability(event) {
+  // Functions v1 (Lambda compatibility) does not auto-inject Blobs credentials.
+  connectLambda(event);
   const store = getStore(STORE_NAME);
 
   if (event.httpMethod === "GET") {

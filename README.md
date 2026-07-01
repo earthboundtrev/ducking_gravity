@@ -56,7 +56,7 @@ In **Site configuration → Environment variables**, set:
 Build command: `node inject-env.js`  
 Publish directory: repo root (see `netlify.toml`).
 
-Enable **Netlify Blobs** for the SmartAstro sync function.
+Enable **Netlify Blobs** for the SmartAstro sync function. The receiver uses Functions v1 (`exports.handler`), so the handler calls `connectLambda(event)` before `getStore()` — required for Blobs to work in Lambda compatibility mode.
 
 ---
 
