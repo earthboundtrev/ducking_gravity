@@ -1,6 +1,7 @@
 const SMARTASTRO_CALENDAR_HOST = "smartastro.app";
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const DEFAULT_WINDOW_WEEKS = 6;
+const STUDIO_TIMEZONE = process.env.SMARTASTRO_STUDIO_TIMEZONE || "America/New_York";
 const MAX_CLASS_NAME_LENGTH = 120;
 const MAX_DISPLAY_FIELD_LENGTH = 200;
 const MAX_SLOTS_PER_DESTINATION = 300;
@@ -34,7 +35,7 @@ const MANAGED_DESTINATION_DEFINITIONS = {
   },
   "junior-aerial-classes": {
     destinationKey: "junior-aerial-classes",
-    classNames: ["Junior Aerial Classes"],
+    classNames: ["Junior Aerial Classes", "Junior Aerials"],
     insertionEnabled: true,
   },
   "spin-and-swing": {
@@ -88,8 +89,13 @@ function isValidSignUpUrl(url, scheduleId) {
   }
 }
 
-function toYmdFromIsoDateTime(isoDateTime) {
-  return new Date(isoDateTime).toISOString().slice(0, 10);
+function toYmdFromIsoDateTime(isoDateTime, timezone = STUDIO_TIMEZONE) {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: timezone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date(isoDateTime));
 }
 
 function addDaysToYmd(ymd, days) {
@@ -99,7 +105,7 @@ function addDaysToYmd(ymd, days) {
 }
 
 function defaultWindow(referenceDate = new Date()) {
-  const today = referenceDate.toISOString().slice(0, 10);
+  const today = toYmdFromIsoDateTime(referenceDate.toISOString());
   return {
     windowStart: today,
     windowEnd: addDaysToYmd(today, DEFAULT_WINDOW_WEEKS * 7 - 1),
