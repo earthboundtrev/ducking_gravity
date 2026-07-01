@@ -5,6 +5,8 @@ const test = require("node:test");
 
 const {
   createSignature,
+  collectPayloadScheduleIds,
+  mergeKnownScheduleIdsWithPayload,
   mergeSlotState,
   parsePayload,
   publicState,
@@ -120,6 +122,50 @@ test("updates known slots and skips unknown schedule IDs", () => {
   assert.deepEqual(summary.skippedUnknown, [999999]);
   assert.equal(state.slots["1440"].isFull, false);
   assert.equal(state.slots["1440"].signUpUrl, "https://smartastro.app/calendar?class=1440");
+});
+
+test("availability batch accepts schedule IDs discovered on class pages", () => {
+  const payload = parsePayload(
+    JSON.stringify({
+      source: "smartastro",
+      generatedAt: "2026-07-01T15:00:00.000Z",
+      updates: [
+        { scheduleId: 1444, isFull: true, availableSpots: 0, isClosed: false },
+        { scheduleId: 1511, isFull: false, availableSpots: 2, isClosed: false },
+      ],
+    }),
+  );
+
+  const knownScheduleIds = mergeKnownScheduleIdsWithPayload(
+    resolveKnownScheduleIds(emptyPopupState(), emptyManagedState()),
+    payload,
+  );
+
+  assert.ok(!STATIC_KNOWN_SCHEDULE_IDS.has(1444));
+  assert.ok(!STATIC_KNOWN_SCHEDULE_IDS.has(1511));
+  assert.ok(knownScheduleIds.has(1444));
+  assert.ok(knownScheduleIds.has(1511));
+
+  const { state, summary } = mergeSlotState(null, payload, { knownScheduleIds });
+  assert.equal(summary.updated, 2);
+  assert.deepEqual(summary.skippedUnknown, []);
+  assert.equal(state.slots["1444"].isFull, true);
+  assert.equal(state.slots["1511"].isFull, false);
+});
+
+test("collectPayloadScheduleIds ignores invalid schedule IDs", () => {
+  const payload = parsePayload(
+    JSON.stringify({
+      source: "smartastro",
+      updates: [
+        { scheduleId: 1478, isFull: true, availableSpots: 0, isClosed: false },
+        { scheduleId: "bad", isFull: false, availableSpots: 1, isClosed: false },
+        { scheduleId: 0, isFull: false, availableSpots: 1, isClosed: false },
+      ],
+    }),
+  );
+
+  assert.deepEqual(collectPayloadScheduleIds(payload), [1478]);
 });
 
 test("homepage popup slots keep stable SmartAstro schedule IDs", () => {

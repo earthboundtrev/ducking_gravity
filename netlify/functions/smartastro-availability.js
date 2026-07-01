@@ -1,6 +1,7 @@
 const { connectLambda, getStore } = require("@netlify/blobs");
 const {
   json,
+  mergeKnownScheduleIdsWithPayload,
   mergeSlotState,
   parsePayload,
   publicState,
@@ -246,7 +247,10 @@ exports.handler = async function smartAstroAvailability(event) {
 
   const popupState = await readPopupState(store);
   const managedState = await readManagedState(store);
-  const knownScheduleIds = resolveKnownScheduleIds(popupState, managedState);
+  const knownScheduleIds = mergeKnownScheduleIdsWithPayload(
+    resolveKnownScheduleIds(popupState, managedState),
+    payload,
+  );
   const { state, summary } = mergeSlotState(existingState, payload, { knownScheduleIds });
   await store.setJSON(STATE_KEY, rememberIdempotencyKey(state, idempotencyKey));
 

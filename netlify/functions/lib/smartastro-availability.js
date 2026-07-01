@@ -74,6 +74,24 @@ function parsePayload(body) {
   return payload;
 }
 
+function collectPayloadScheduleIds(payload) {
+  if (!payload || !Array.isArray(payload.updates)) return [];
+  const ids = [];
+  for (const update of payload.updates) {
+    const scheduleId = Number(update && update.scheduleId);
+    if (Number.isInteger(scheduleId) && scheduleId > 0) ids.push(scheduleId);
+  }
+  return ids;
+}
+
+function mergeKnownScheduleIdsWithPayload(knownScheduleIds, payload) {
+  const merged = new Set(knownScheduleIds);
+  for (const scheduleId of collectPayloadScheduleIds(payload)) {
+    merged.add(scheduleId);
+  }
+  return merged;
+}
+
 function normalizeUpdate(update, calendarBaseUrl, knownScheduleIds = STATIC_KNOWN_SCHEDULE_IDS) {
   const scheduleId = Number(update && update.scheduleId);
   if (!Number.isInteger(scheduleId) || scheduleId <= 0) return null;
@@ -156,6 +174,8 @@ module.exports = {
   DEFAULT_CALENDAR_BASE_URL,
   KNOWN_SCHEDULE_IDS: STATIC_KNOWN_SCHEDULE_IDS,
   STATIC_KNOWN_SCHEDULE_IDS,
+  collectPayloadScheduleIds,
+  mergeKnownScheduleIdsWithPayload,
   resolveKnownScheduleIds,
   createSignature,
   json,

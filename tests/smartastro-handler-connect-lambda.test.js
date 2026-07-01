@@ -101,6 +101,60 @@ test("handler calls connectLambda before POST auth checks use the blob store", a
   assert.equal(response.statusCode, 503);
 });
 
+test("handler applies availability batch using payload schedule IDs", async () => {
+  const calls = { connectLambda: [], getStore: [] };
+  const stored = { slots: {} };
+  const mockStore = {
+    get: async (key) => {
+      if (key === "class-slots") return stored;
+      return null;
+    },
+    setJSON: async (key, value) => {
+      if (key === "class-slots") Object.assign(stored, value);
+    },
+  };
+
+  const availabilityLib = require("../netlify/functions/lib/smartastro-availability");
+  const timestamp = new Date().toISOString();
+  const body = JSON.stringify({
+    source: "smartastro",
+    generatedAt: timestamp,
+    updates: [{ scheduleId: 1444, isFull: true, availableSpots: 0, isClosed: false }],
+  });
+
+  const previousSecret = process.env.MARKETING_SYNC_SHARED_SECRET;
+  process.env.MARKETING_SYNC_SHARED_SECRET = "test-secret";
+
+  const { handler } = loadHandlerWithBlobMocks({
+    connectLambda: (event) => calls.connectLambda.push(event),
+    getStore: (name) => {
+      calls.getStore.push(name);
+      return mockStore;
+    },
+  });
+
+  try {
+    const response = await handler({
+      httpMethod: "POST",
+      headers: {
+        "x-smartastro-timestamp": timestamp,
+        "x-smartastro-signature": availabilityLib.createSignature("test-secret", timestamp, body),
+      },
+      body,
+      isBase64Encoded: false,
+    });
+
+    assert.equal(response.statusCode, 200);
+    assert.equal(stored.slots["1444"].isFull, true);
+  } finally {
+    if (previousSecret === undefined) {
+      delete process.env.MARKETING_SYNC_SHARED_SECRET;
+    } else {
+      process.env.MARKETING_SYNC_SHARED_SECRET = previousSecret;
+    }
+  }
+});
+
 test("handler source initializes Netlify Blobs for Lambda compatibility mode", () => {
   const source = fs.readFileSync(HANDLER_PATH, "utf8");
 
