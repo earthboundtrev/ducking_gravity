@@ -255,14 +255,25 @@
     return ids;
   }
 
+  function removeOrphanManagedTableRows(table) {
+    table.querySelectorAll("tr").forEach((row) => {
+      if (row.querySelector("th")) return;
+      if (row.dataset.smartastroInserted === "true") return;
+      if (scheduleIdFromRow(row)) return;
+      row.remove();
+    });
+  }
+
   function renderManagedDestination(table, destination, availabilitySlots) {
     if (!destination || !Array.isArray(destination.slots) || destination.slots.length === 0) {
       return;
     }
 
-    const existingIds = existingScheduleIdsForTable(table);
     const insertedRows = table.querySelectorAll('tr[data-smartastro-inserted="true"]');
     insertedRows.forEach((row) => row.remove());
+    removeOrphanManagedTableRows(table);
+
+    const existingIds = existingScheduleIdsForTable(table);
 
     const columnCount = managedTableColumnCount(table);
     const rowsToInsert = destination.slots.filter(
