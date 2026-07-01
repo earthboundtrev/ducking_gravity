@@ -454,3 +454,20 @@ test("public state exposes managed destinations and combined manifest", () => {
   assert.deepEqual(response.manifest.scheduleIds, [1600]);
   assert.ok(VALID_MANAGED_DESTINATION_KEYS.has("lyra-foundations"));
 });
+
+test("public state manifest includes availability slot ids for discovery", () => {
+  const response = publicState(
+    {
+      slots: {
+        1444: { scheduleId: 1444, isFull: true, availableSpots: 0, isClosed: false },
+        1511: { scheduleId: 1511, isFull: false, availableSpots: 2, isClosed: false },
+      },
+      updatedAt: "2026-07-01T15:00:00.000Z",
+      generatedAt: "2026-07-01T15:00:00.000Z",
+    },
+    emptyPopupState(),
+    emptyManagedState(),
+  );
+
+  assert.deepEqual(response.manifest.scheduleIds, [1444, 1511]);
+});

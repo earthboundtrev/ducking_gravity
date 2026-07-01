@@ -152,6 +152,9 @@ function publicState(state, popupState, managedState) {
   const scheduleIds = new Set([
     ...(popups.manifest && popups.manifest.scheduleIds ? popups.manifest.scheduleIds : []),
     ...(managed.manifest && managed.manifest.scheduleIds ? managed.manifest.scheduleIds : []),
+    ...Object.keys(state && state.slots ? state.slots : {})
+      .map((id) => Number(id))
+      .filter((id) => Number.isInteger(id) && id > 0),
   ]);
 
   return {
