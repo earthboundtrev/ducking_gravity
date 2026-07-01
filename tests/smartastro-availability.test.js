@@ -453,6 +453,34 @@ test("public state exposes managed destinations and combined manifest", () => {
   assert.ok(response.managed.destinations["silks-foundations"]);
   assert.deepEqual(response.manifest.scheduleIds, [1600]);
   assert.ok(VALID_MANAGED_DESTINATION_KEYS.has("lyra-foundations"));
+  assert.ok(VALID_MANAGED_DESTINATION_KEYS.has("silks-act-classes"));
+});
+
+test("accepts ACT! Session 1 upserts for silks-act-classes", () => {
+  const body = JSON.stringify({
+    action: "upsertSlot",
+    source: "smartastro",
+    generatedAt: "2026-07-01T16:00:00.000Z",
+    destinationKey: "silks-act-classes",
+    windowStart: "2026-07-01",
+    windowEnd: "2026-08-11",
+    scheduleId: 1586,
+    className: "ACT! Session 1",
+    startsAt: "2026-08-03T21:45:00.000Z",
+    endsAt: "2026-08-03T23:15:00.000Z",
+    displayDate: "August 3",
+    displayTime: "5:45pm - 7:15pm",
+    displayPrice: "$115/month with ACT membership",
+    isFull: false,
+    availableSpots: 10,
+    isClosed: false,
+    signUpUrl: "https://smartastro.app/calendar?class=1586",
+  });
+
+  const payload = parseUpsertSlotPayload(body);
+  const { summary } = upsertManagedSlot(emptyManagedState(), payload);
+  assert.equal(summary.destinationKey, "silks-act-classes");
+  assert.equal(summary.scheduleId, 1586);
 });
 
 test("public state manifest includes availability slot ids for discovery", () => {

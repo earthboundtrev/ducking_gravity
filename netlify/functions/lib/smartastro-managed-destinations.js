@@ -48,6 +48,11 @@ const MANAGED_DESTINATION_DEFINITIONS = {
     classNames: ["Open Aerials"],
     insertionEnabled: true,
   },
+  "silks-act-classes": {
+    destinationKey: "silks-act-classes",
+    classNames: ["ACT! Classes", "ACT! Session 1"],
+    insertionEnabled: true,
+  },
 };
 
 const VALID_MANAGED_DESTINATION_KEYS = new Set(Object.keys(MANAGED_DESTINATION_DEFINITIONS));

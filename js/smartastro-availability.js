@@ -64,7 +64,17 @@
       .join("<br>");
   }
 
-  function createManagedTableRow(slot, availabilitySlots) {
+  function sessionLabelFromClassName(className) {
+    const match = /^ACT!\s*(.+)$/i.exec(String(className || "").trim());
+    return match ? match[1].trim() : "Session 1";
+  }
+
+  function managedTableColumnCount(table) {
+    const headerRow = table.querySelector("tr");
+    return headerRow ? headerRow.cells.length : 4;
+  }
+
+  function createManagedTableRow(slot, availabilitySlots, columnCount) {
     const row = document.createElement("tr");
     row.dataset.smartastroScheduleId = String(slot.scheduleId);
     row.dataset.smartastroInserted = "true";
@@ -86,7 +96,14 @@
         : createOpenButton(availability, "info-btn"),
     );
 
-    row.append(dateCell, timeCell, priceCell, signUpCell);
+    if (columnCount >= 5) {
+      const sessionCell = document.createElement("td");
+      sessionCell.textContent = sessionLabelFromClassName(slot.className);
+      row.append(sessionCell, dateCell, timeCell, priceCell, signUpCell);
+    } else {
+      row.append(dateCell, timeCell, priceCell, signUpCell);
+    }
+
     return row;
   }
 
@@ -212,12 +229,13 @@
     const insertedRows = table.querySelectorAll('tr[data-smartastro-inserted="true"]');
     insertedRows.forEach((row) => row.remove());
 
+    const columnCount = managedTableColumnCount(table);
     const rowsToInsert = destination.slots.filter(
       (slot) => !existingIds.has(String(slot.scheduleId)),
     );
 
     for (const slot of rowsToInsert) {
-      table.appendChild(createManagedTableRow(slot, availabilitySlots));
+      table.appendChild(createManagedTableRow(slot, availabilitySlots, columnCount));
     }
 
     table.querySelectorAll("tr").forEach((row) => {
