@@ -20,6 +20,7 @@ const {
   availabilityUpdateFromManagedSlot,
   emptyManagedState,
   parseUpsertSlotPayload,
+  removeSchedulesFromManagedState,
   upsertManagedSlot,
 } = require("./lib/smartastro-managed-destinations");
 const {
@@ -246,12 +247,25 @@ exports.handler = async function smartAstroAvailability(event) {
   }
 
   const popupState = await readPopupState(store);
-  const managedState = await readManagedState(store);
+  let managedState = await readManagedState(store);
   const knownScheduleIds = mergeKnownScheduleIdsWithPayload(
     resolveKnownScheduleIds(popupState, managedState),
     payload,
   );
   const { state, summary } = mergeSlotState(existingState, payload, { knownScheduleIds });
+
+  if (payload.removedScheduleIds && payload.removedScheduleIds.length > 0) {
+    const { state: nextManagedState, removed: managedRemoved } = removeSchedulesFromManagedState(
+      managedState,
+      payload.removedScheduleIds,
+    );
+    if (managedRemoved > 0) {
+      managedState = nextManagedState;
+      await store.setJSON(MANAGED_STATE_KEY, managedState);
+      summary.managedRemoved = managedRemoved;
+    }
+  }
+
   await store.setJSON(STATE_KEY, rememberIdempotencyKey(state, idempotencyKey));
 
   return json(200, {

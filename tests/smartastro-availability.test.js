@@ -472,6 +472,23 @@ test("stores hasEnded separately from isFull in availability state (#269)", () =
   assert.equal(state.slots["1478"].isFull, true);
 });
 
+test("marks removed schedules with a tombstone slot (#270)", () => {
+  const payload = parsePayload(
+    JSON.stringify({
+      source: "smartastro",
+      generatedAt: "2026-07-01T15:00:00.000Z",
+      updates: [],
+      removedScheduleIds: [1440],
+    }),
+  );
+
+  const { state, summary } = mergeSlotState(null, payload);
+  assert.equal(summary.removed, 1);
+  assert.equal(state.slots["1440"].removed, true);
+  assert.equal(state.slots["1440"].hasEnded, true);
+  assert.equal(state.slots["1440"].isFull, false);
+});
+
 test("public state exposes managed destinations and combined manifest", () => {
   const upsertPayload = parseUpsertSlotPayload(fs.readFileSync(UPSERT_FIXTURE, "utf8"));
   const { state: managedState } = upsertManagedSlot(emptyManagedState(), upsertPayload);

@@ -47,7 +47,20 @@
     return span;
   }
 
+  function createRemovedButton(className) {
+    const span = document.createElement("span");
+    span.className = className === "info-btn" ? "info-btn disabled" : "popup-slot-button disabled";
+    span.dataset.mobileLabel = "";
+    const inner = document.createElement("span");
+    inner.textContent = "Class Removed";
+    span.appendChild(inner);
+    return span;
+  }
+
   function createSlotButton(slot, className) {
+    if (slot.removed) {
+      return createRemovedButton(className);
+    }
     if (slot.hasEnded) {
       return createOverButton(className);
     }

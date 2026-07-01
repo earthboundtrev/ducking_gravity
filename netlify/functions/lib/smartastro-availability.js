@@ -71,7 +71,15 @@ function parsePayload(body) {
     throw new Error("Invalid SmartAstro sync payload");
   }
 
-  return payload;
+  const removedScheduleIds = Array.isArray(payload.removedScheduleIds)
+    ? payload.removedScheduleIds
+    : [];
+
+  if (payload.updates.length === 0 && removedScheduleIds.length === 0) {
+    throw new Error("Invalid SmartAstro sync payload");
+  }
+
+  return { ...payload, removedScheduleIds };
 }
 
 function collectPayloadScheduleIds(payload) {
@@ -116,11 +124,28 @@ function mergeSlotState(existingState, payload, options = {}) {
   const slots = { ...(existingState && existingState.slots ? existingState.slots : {}) };
   const summary = {
     updated: 0,
+    removed: 0,
     skippedUnknown: [],
     skippedInvalid: 0,
   };
 
-  for (const rawUpdate of payload.updates) {
+  for (const rawId of payload.removedScheduleIds || []) {
+    const scheduleId = Number(rawId);
+    if (!Number.isInteger(scheduleId) || scheduleId <= 0) continue;
+    slots[String(scheduleId)] = {
+      scheduleId,
+      removed: true,
+      hasEnded: true,
+      isFull: false,
+      isClosed: false,
+      availableSpots: 0,
+      signUpUrl: buildSignUpUrl(scheduleId, baseCalendarUrl),
+      lastSyncedAt: new Date().toISOString(),
+    };
+    summary.removed += 1;
+  }
+
+  for (const rawUpdate of payload.updates || []) {
     const update = normalizeUpdate(rawUpdate, baseCalendarUrl, knownScheduleIds);
     if (!update) {
       summary.skippedInvalid += 1;
