@@ -616,3 +616,23 @@ test("index.html wires both week popup destinations", () => {
   assert.match(indexHtml, /data-smartastro-popup-destination="homepage-all-classes-week"/);
   assert.match(indexHtml, /data-smartastro-popup-destination="homepage-silks-week"/);
 });
+
+test("upsertSlot never shrinks stored managed destination window (#280)", () => {
+  const firstBody = JSON.parse(fs.readFileSync(UPSERT_FIXTURE, "utf8"));
+  firstBody.windowStart = "2026-07-06";
+  firstBody.windowEnd = "2026-08-09";
+  const first = parseUpsertSlotPayload(JSON.stringify(firstBody));
+  const { state: afterFirst } = upsertManagedSlot(emptyManagedState(), first);
+  const storedStart = afterFirst.destinations["silks-foundations"].windowStart;
+  const storedEnd = afterFirst.destinations["silks-foundations"].windowEnd;
+
+  const secondBody = JSON.parse(fs.readFileSync(UPSERT_FIXTURE, "utf8"));
+  secondBody.windowStart = "2026-06-29";
+  secondBody.windowEnd = "2026-07-20";
+  const second = parseUpsertSlotPayload(JSON.stringify(secondBody));
+  const { state: afterSecond } = upsertManagedSlot(afterFirst, second);
+
+  const destination = afterSecond.destinations["silks-foundations"];
+  assert.equal(destination.windowStart, storedStart);
+  assert.equal(destination.windowEnd, storedEnd);
+});

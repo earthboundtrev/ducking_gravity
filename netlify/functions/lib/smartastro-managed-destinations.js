@@ -117,6 +117,12 @@ function defaultWindow(referenceDate = new Date()) {
   };
 }
 
+function maxIsoDate(a, b) {
+  if (!a) return b;
+  if (!b) return a;
+  return a > b ? a : b;
+}
+
 function normalizeManagedSlot(rawSlot) {
   if (!isPlainObject(rawSlot)) return null;
 
@@ -269,15 +275,24 @@ function upsertManagedSlot(existingState, payload) {
   };
 
   const existingDestination = destinations[payload.destinationKey] || {};
-  const window =
-    payload.windowStart && payload.windowEnd
-      ? { windowStart: payload.windowStart, windowEnd: payload.windowEnd }
-      : existingDestination.windowStart && existingDestination.windowEnd
-        ? {
-            windowStart: existingDestination.windowStart,
-            windowEnd: existingDestination.windowEnd,
-          }
-        : defaultWindow();
+  const fresh = defaultWindow();
+  let windowStart = fresh.windowStart;
+  let windowEnd = fresh.windowEnd;
+
+  if (existingDestination.windowStart) {
+    windowStart = maxIsoDate(windowStart, existingDestination.windowStart);
+  }
+  if (existingDestination.windowEnd) {
+    windowEnd = maxIsoDate(windowEnd, existingDestination.windowEnd);
+  }
+  if (payload.windowStart) {
+    windowStart = maxIsoDate(windowStart, payload.windowStart);
+  }
+  if (payload.windowEnd) {
+    windowEnd = maxIsoDate(windowEnd, payload.windowEnd);
+  }
+
+  const window = { windowStart, windowEnd };
 
   if (!slotWithinWindow(payload.slot, window.windowStart, window.windowEnd)) {
     throw new Error("Slot is outside the managed destination window");

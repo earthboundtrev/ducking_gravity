@@ -281,7 +281,7 @@
       if (!scheduleId) return;
 
       const availability = availabilitySlots[scheduleId];
-      if (availability && availability.removed) {
+      if (availability && (availability.removed || availability.hasEnded)) {
         row.remove();
         return;
       }
@@ -299,7 +299,14 @@
 
     removeStaleManagedTableRows(table, destination, availabilitySlots);
 
+    const hasSyncedData =
+      Boolean(destination.updatedAt) ||
+      (Array.isArray(destination.slots) && destination.slots.length > 0);
+
     if (!Array.isArray(destination.slots) || destination.slots.length === 0) {
+      if (hasSyncedData) {
+        removeOrphanManagedTableRows(table);
+      }
       return;
     }
 
