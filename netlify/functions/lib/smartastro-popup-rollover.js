@@ -280,6 +280,48 @@ function mergeKnownScheduleIds(staticIds, popupState) {
   return merged;
 }
 
+function removeSchedulesFromPopupState(existingState, scheduleIds) {
+  const ids = new Set(
+    (scheduleIds || [])
+      .map((id) => Number(id))
+      .filter((id) => Number.isInteger(id) && id > 0),
+  );
+  if (ids.size === 0) {
+    return { state: existingState, removed: 0 };
+  }
+
+  const destinations = {
+    ...(existingState && existingState.destinations ? existingState.destinations : {}),
+  };
+  let removed = 0;
+
+  for (const [destinationKey, destination] of Object.entries(destinations)) {
+    const slots = Array.isArray(destination.slots) ? destination.slots : [];
+    const nextSlots = slots.filter((slot) => !ids.has(slot.scheduleId));
+    if (nextSlots.length === slots.length) continue;
+    removed += slots.length - nextSlots.length;
+    destinations[destinationKey] = {
+      ...destination,
+      slots: nextSlots,
+      updatedAt: new Date().toISOString(),
+    };
+  }
+
+  if (removed === 0) {
+    return { state: existingState, removed: 0 };
+  }
+
+  return {
+    state: {
+      source: "smartastro",
+      updatedAt: new Date().toISOString(),
+      destinations,
+      manifest: buildManifest(destinations),
+    },
+    removed,
+  };
+}
+
 function detectPayloadAction(body) {
   let payload;
   try {
@@ -310,4 +352,5 @@ module.exports = {
   mergeReplaceWeek,
   parseReplaceWeekPayload,
   publicPopupState,
+  removeSchedulesFromPopupState,
 };

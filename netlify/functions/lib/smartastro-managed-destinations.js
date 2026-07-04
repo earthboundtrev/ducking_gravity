@@ -368,6 +368,44 @@ function collectManagedManifestScheduleIds(managedState) {
   return managedState.manifest.scheduleIds;
 }
 
+function purgeOutOfWindowManagedSlots(existingState) {
+  const destinations = {
+    ...(existingState && existingState.destinations ? existingState.destinations : {}),
+  };
+  let purged = 0;
+
+  for (const [destinationKey, destination] of Object.entries(destinations)) {
+    const windowStart = destination.windowStart;
+    const windowEnd = destination.windowEnd;
+    if (!windowStart || !windowEnd) continue;
+
+    const slots = Array.isArray(destination.slots) ? destination.slots : [];
+    const nextSlots = slots.filter((slot) => slotWithinWindow(slot, windowStart, windowEnd));
+    if (nextSlots.length === slots.length) continue;
+
+    purged += slots.length - nextSlots.length;
+    destinations[destinationKey] = {
+      ...destination,
+      slots: sortManagedSlots(nextSlots),
+      updatedAt: new Date().toISOString(),
+    };
+  }
+
+  if (purged === 0) {
+    return { state: existingState, purged: 0 };
+  }
+
+  return {
+    state: {
+      source: "smartastro",
+      updatedAt: new Date().toISOString(),
+      destinations,
+      manifest: buildManagedManifest(destinations),
+    },
+    purged,
+  };
+}
+
 function removeSchedulesFromManagedState(existingState, scheduleIds) {
   const ids = new Set(
     (scheduleIds || [])
@@ -433,6 +471,8 @@ module.exports = {
   emptyManagedState,
   parseUpsertSlotPayload,
   publicManagedState,
+  purgeOutOfWindowManagedSlots,
   removeSchedulesFromManagedState,
+  slotWithinWindow,
   upsertManagedSlot,
 };

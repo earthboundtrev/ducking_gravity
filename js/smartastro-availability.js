@@ -264,8 +264,42 @@
     });
   }
 
+  function removeStaleManagedTableRows(table, destination, availabilitySlots) {
+    if (!destination) return;
+
+    const validIds = new Set(
+      (destination.slots || []).map((slot) => String(slot.scheduleId)),
+    );
+    const hasSyncedData =
+      Boolean(destination.updatedAt) ||
+      (Array.isArray(destination.slots) && destination.slots.length > 0);
+
+    table.querySelectorAll("tr").forEach((row) => {
+      if (row.querySelector("th")) return;
+
+      const scheduleId = scheduleIdFromRow(row);
+      if (!scheduleId) return;
+
+      const availability = availabilitySlots[scheduleId];
+      if (availability && availability.removed) {
+        row.remove();
+        return;
+      }
+
+      if (hasSyncedData && !validIds.has(scheduleId)) {
+        row.remove();
+      }
+    });
+  }
+
   function renderManagedDestination(table, destination, availabilitySlots) {
-    if (!destination || !Array.isArray(destination.slots) || destination.slots.length === 0) {
+    if (!destination) {
+      return;
+    }
+
+    removeStaleManagedTableRows(table, destination, availabilitySlots);
+
+    if (!Array.isArray(destination.slots) || destination.slots.length === 0) {
       return;
     }
 
@@ -350,6 +384,10 @@
           const scheduleId = scheduleIdFromRow(row);
           if (!scheduleId) return;
           const slot = slots[scheduleId];
+          if (slot && slot.removed) {
+            row.remove();
+            return;
+          }
           if (slot) {
             applyTableRowState(row, slot);
           }

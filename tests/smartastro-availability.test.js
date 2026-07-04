@@ -22,10 +22,14 @@ const {
   mergeKnownScheduleIds,
   mergeReplaceWeek,
   parseReplaceWeekPayload,
+  removeSchedulesFromPopupState,
 } = require("../netlify/functions/lib/smartastro-popup-rollover");
 const {
   emptyManagedState,
   parseUpsertSlotPayload,
+  purgeOutOfWindowManagedSlots,
+  removeSchedulesFromManagedState,
+  buildManagedManifest,
   upsertManagedSlot,
   VALID_MANAGED_DESTINATION_KEYS,
 } = require("../netlify/functions/lib/smartastro-managed-destinations");
@@ -34,6 +38,10 @@ const PROJECT_ROOT = path.resolve(__dirname, "..");
 const ALL_CLASSES_FIXTURE = path.join(
   PROJECT_ROOT,
   "tests/fixtures/replace-week-all-classes.json",
+);
+const SILKS_WEEK_FIXTURE = path.join(
+  PROJECT_ROOT,
+  "tests/fixtures/replace-week-silks-week.json",
 );
 const NEXT_WEEK_FIXTURE = path.join(
   PROJECT_ROOT,
@@ -546,4 +554,65 @@ test("public state manifest includes availability slot ids for discovery", () =>
   );
 
   assert.deepEqual(response.manifest.scheduleIds, [1444, 1511]);
+});
+
+test("replaceWeek applies homepage-silks-week independently of all-classes (#278)", () => {
+  const allClasses = parseReplaceWeekPayload(fs.readFileSync(ALL_CLASSES_FIXTURE, "utf8"));
+  const silksWeek = parseReplaceWeekPayload(fs.readFileSync(SILKS_WEEK_FIXTURE, "utf8"));
+
+  const { state: afterAllClasses } = mergeReplaceWeek(emptyPopupState(), allClasses);
+  const { state: afterBoth, summary } = mergeReplaceWeek(afterAllClasses, silksWeek);
+
+  assert.equal(summary.destinationKey, "homepage-silks-week");
+  assert.equal(afterBoth.destinations["homepage-all-classes-week"].windowStart, "2026-06-29");
+  assert.equal(afterBoth.destinations["homepage-silks-week"].windowStart, "2026-07-06");
+  assert.deepEqual(
+    afterBoth.manifest.byDestination["homepage-silks-week"],
+    [1468, 1518],
+  );
+});
+
+test("removedScheduleIds purge popup registry slots (#278)", () => {
+  const silksWeek = parseReplaceWeekPayload(fs.readFileSync(SILKS_WEEK_FIXTURE, "utf8"));
+  const { state: popupState } = mergeReplaceWeek(emptyPopupState(), silksWeek);
+
+  const { state: nextPopupState, removed } = removeSchedulesFromPopupState(popupState, [1468]);
+  assert.equal(removed, 1);
+  assert.deepEqual(nextPopupState.manifest.byDestination["homepage-silks-week"], [1518]);
+});
+
+test("removedScheduleIds purge managed table slots (#278)", () => {
+  const upsertPayload = parseUpsertSlotPayload(fs.readFileSync(UPSERT_FIXTURE, "utf8"));
+  const { state: managedState } = upsertManagedSlot(emptyManagedState(), upsertPayload);
+
+  const { state: nextManagedState, removed } = removeSchedulesFromManagedState(managedState, [1600]);
+  assert.equal(removed, 1);
+  assert.equal(nextManagedState.destinations["silks-foundations"].slots.length, 0);
+});
+
+test("purgeOutOfWindowManagedSlots drops rows outside the published window (#278)", () => {
+  const upsertPayload = parseUpsertSlotPayload(fs.readFileSync(UPSERT_FIXTURE, "utf8"));
+  const { state: managedState } = upsertManagedSlot(emptyManagedState(), upsertPayload);
+
+  const staleSlot = {
+    ...managedState.destinations["silks-foundations"].slots[0],
+    scheduleId: 1700,
+    startsAt: "2026-05-01T21:30:00.000Z",
+    endsAt: "2026-05-01T22:30:00.000Z",
+  };
+  managedState.destinations["silks-foundations"].slots.push(staleSlot);
+  managedState.manifest = buildManagedManifest(managedState.destinations);
+
+  const { state: purgedState, purged } = purgeOutOfWindowManagedSlots(managedState);
+  assert.equal(purged, 1);
+  assert.deepEqual(
+    purgedState.destinations["silks-foundations"].slots.map((slot) => slot.scheduleId),
+    [1600],
+  );
+});
+
+test("index.html wires both week popup destinations", () => {
+  const indexHtml = fs.readFileSync(path.join(PROJECT_ROOT, "index.html"), "utf8");
+  assert.match(indexHtml, /data-smartastro-popup-destination="homepage-all-classes-week"/);
+  assert.match(indexHtml, /data-smartastro-popup-destination="homepage-silks-week"/);
 });

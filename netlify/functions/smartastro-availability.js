@@ -15,11 +15,13 @@ const {
   emptyPopupState,
   mergeReplaceWeek,
   parseReplaceWeekPayload,
+  removeSchedulesFromPopupState,
 } = require("./lib/smartastro-popup-rollover");
 const {
   availabilityUpdateFromManagedSlot,
   emptyManagedState,
   parseUpsertSlotPayload,
+  purgeOutOfWindowManagedSlots,
   removeSchedulesFromManagedState,
   upsertManagedSlot,
 } = require("./lib/smartastro-managed-destinations");
@@ -209,7 +211,12 @@ exports.handler = async function smartAstroAvailability(event) {
 
     const existingManagedState = await readManagedState(store);
     const popupState = await readPopupState(store);
-    const { state: managedState, summary } = upsertManagedSlot(existingManagedState, payload);
+    let { state: managedState, summary } = upsertManagedSlot(existingManagedState, payload);
+    const { state: purgedState, purged } = purgeOutOfWindowManagedSlots(managedState);
+    if (purged > 0) {
+      managedState = purgedState;
+      summary.purgedOutOfWindow = purged;
+    }
     await store.setJSON(MANAGED_STATE_KEY, managedState);
 
     const knownScheduleIds = resolveKnownScheduleIds(popupState, managedState);
@@ -255,14 +262,32 @@ exports.handler = async function smartAstroAvailability(event) {
   const { state, summary } = mergeSlotState(existingState, payload, { knownScheduleIds });
 
   if (payload.removedScheduleIds && payload.removedScheduleIds.length > 0) {
+    const { state: nextPopupState, removed: popupRemoved } = removeSchedulesFromPopupState(
+      popupState,
+      payload.removedScheduleIds,
+    );
+    if (popupRemoved > 0) {
+      await store.setJSON(POPUP_STATE_KEY, nextPopupState);
+      summary.popupRemoved = popupRemoved;
+    }
+
     const { state: nextManagedState, removed: managedRemoved } = removeSchedulesFromManagedState(
       managedState,
       payload.removedScheduleIds,
     );
     if (managedRemoved > 0) {
       managedState = nextManagedState;
-      await store.setJSON(MANAGED_STATE_KEY, managedState);
       summary.managedRemoved = managedRemoved;
+    }
+
+    const { state: purgedState, purged } = purgeOutOfWindowManagedSlots(managedState);
+    if (purged > 0) {
+      managedState = purgedState;
+      summary.purgedOutOfWindow = purged;
+    }
+
+    if ((summary.managedRemoved || 0) > 0 || (summary.purgedOutOfWindow || 0) > 0) {
+      await store.setJSON(MANAGED_STATE_KEY, managedState);
     }
   }
 
