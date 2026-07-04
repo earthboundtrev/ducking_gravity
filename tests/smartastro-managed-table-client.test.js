@@ -191,6 +191,42 @@ test("removeStaleManagedTableRows drops hasEnded availability rows (#280)", () =
   assert.equal(table.children.length, 0);
 });
 
+test("removeStaleManagedTableRows drops static rows without schedule ids after sync (#281)", () => {
+  const { removeStaleManagedTableRows } = loadManagedTableHelpers();
+  const table = createElement("table");
+  const orphanRow = createElement("tr");
+  const cell = createElement("td");
+  cell.textContent = "July 2";
+  orphanRow.appendChild(cell);
+  table.appendChild(orphanRow);
+
+  removeStaleManagedTableRows(
+    table,
+    { updatedAt: "2026-07-05T12:00:00.000Z", slots: [] },
+    {},
+  );
+
+  assert.equal(orphanRow.removed, true);
+});
+
+test("removeStaleManagedTableRows keeps future rows not in receiver slot list (#281)", () => {
+  const { removeStaleManagedTableRows } = loadManagedTableHelpers();
+  const table = createElement("table");
+  const row = createManagedTableRow(1444);
+  table.appendChild(row);
+
+  removeStaleManagedTableRows(
+    table,
+    {
+      updatedAt: "2026-07-05T12:00:00.000Z",
+      slots: [{ scheduleId: 1600 }],
+    },
+    {},
+  );
+
+  assert.equal(row.removed, false);
+});
+
 test("renderManagedDestination cleans orphan rows when synced slots are empty (#280)", () => {
   const { renderManagedDestination } = loadManagedTableHelpers();
   const table = createElement("table");

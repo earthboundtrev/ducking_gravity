@@ -188,9 +188,14 @@ function mergeReplaceWeek(existingState, payload) {
 
   const previous = destinations[payload.destinationKey];
 
-  // #229: never wipe a populated popup with an empty replaceWeek payload.
+  // #229: never wipe a populated popup with an empty replaceWeek for the same week.
+  // #281: allow empty payloads when the display window advanced (weekend rollover).
   if (payload.slots.length === 0) {
-    if (previous && Array.isArray(previous.slots) && previous.slots.length > 0) {
+    const sameWindow =
+      previous &&
+      previous.windowStart === payload.windowStart &&
+      previous.windowEnd === payload.windowEnd;
+    if (sameWindow && Array.isArray(previous.slots) && previous.slots.length > 0) {
       return {
         state: existingState || emptyPopupState(),
         summary: {
@@ -202,7 +207,34 @@ function mergeReplaceWeek(existingState, payload) {
         },
       };
     }
-    throw new Error("Cannot apply empty replaceWeek without a prior populated week");
+
+    destinations[payload.destinationKey] = {
+      destinationKey: payload.destinationKey,
+      windowStart: payload.windowStart,
+      windowEnd: payload.windowEnd,
+      heading: payload.heading,
+      slots: [],
+      generatedAt: payload.generatedAt,
+      updatedAt: new Date().toISOString(),
+    };
+
+    const state = {
+      source: "smartastro",
+      updatedAt: new Date().toISOString(),
+      destinations,
+      manifest: buildManifest(destinations),
+    };
+
+    return {
+      state,
+      summary: {
+        destinationKey: payload.destinationKey,
+        preservedPreviousWeek: false,
+        slotsReplaced: 0,
+        windowStart: payload.windowStart,
+        windowEnd: payload.windowEnd,
+      },
+    };
   }
 
   destinations[payload.destinationKey] = {

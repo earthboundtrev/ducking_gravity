@@ -222,8 +222,7 @@
   }
 
   function renderPopupDestination(slide, destination, availabilitySlots) {
-    // #229: keep static fallback markup when SmartAstro sends no slots for a destination.
-    if (!destination || !Array.isArray(destination.slots) || destination.slots.length === 0) {
+    if (!destination) {
       return;
     }
 
@@ -231,6 +230,13 @@
 
     const slotRoot = slide.querySelector("[data-smartastro-popup-slot-root]");
     if (!slotRoot) return;
+
+    if (!Array.isArray(destination.slots) || destination.slots.length === 0) {
+      if (destination.updatedAt) {
+        slotRoot.replaceChildren();
+      }
+      return;
+    }
 
     slotRoot.replaceChildren();
     for (const group of groupSlots(destination.slots)) {
@@ -267,26 +273,20 @@
   function removeStaleManagedTableRows(table, destination, availabilitySlots) {
     if (!destination) return;
 
-    const validIds = new Set(
-      (destination.slots || []).map((slot) => String(slot.scheduleId)),
-    );
-    const hasSyncedData =
-      Boolean(destination.updatedAt) ||
-      (Array.isArray(destination.slots) && destination.slots.length > 0);
-
     table.querySelectorAll("tr").forEach((row) => {
       if (row.querySelector("th")) return;
 
       const scheduleId = scheduleIdFromRow(row);
-      if (!scheduleId) return;
-
-      const availability = availabilitySlots[scheduleId];
-      if (availability && (availability.removed || availability.hasEnded)) {
-        row.remove();
+      if (scheduleId) {
+        const availability = availabilitySlots[scheduleId];
+        if (availability && (availability.removed || availability.hasEnded)) {
+          row.remove();
+        }
         return;
       }
 
-      if (hasSyncedData && !validIds.has(scheduleId)) {
+      // Static HTML rows without a schedule id (e.g. legacy July 2 row).
+      if (destination.updatedAt) {
         row.remove();
       }
     });
@@ -305,6 +305,7 @@
 
     if (!Array.isArray(destination.slots) || destination.slots.length === 0) {
       if (hasSyncedData) {
+        table.querySelectorAll('tr[data-smartastro-inserted="true"]').forEach((row) => row.remove());
         removeOrphanManagedTableRows(table);
       }
       return;

@@ -285,6 +285,29 @@ test("empty replaceWeek preserves the last populated week (#229)", () => {
   assert.deepEqual(afterEmpty.manifest.scheduleIds.sort((a, b) => a - b), [1468, 1518]);
 });
 
+test("empty replaceWeek for a new window clears prior popup slots (#281)", () => {
+  const populated = parseReplaceWeekPayload(fs.readFileSync(ALL_CLASSES_FIXTURE, "utf8"));
+  const { state: afterPopulated } = mergeReplaceWeek(emptyPopupState(), populated);
+
+  const newWeekEmptyBody = JSON.stringify({
+    action: "replaceWeek",
+    source: "smartastro",
+    generatedAt: "2026-07-05T10:00:00.000Z",
+    destinationKey: "homepage-all-classes-week",
+    windowStart: "2026-07-06",
+    windowEnd: "2026-07-10",
+    heading: "All classes this week — Mon Jul 6 through Fri Jul 10, 2026",
+    slots: [],
+  });
+  const newWeekEmpty = parseReplaceWeekPayload(newWeekEmptyBody);
+  const { state: afterEmpty, summary } = mergeReplaceWeek(afterPopulated, newWeekEmpty);
+
+  assert.equal(summary.preservedPreviousWeek, false);
+  assert.equal(afterEmpty.destinations["homepage-all-classes-week"].slots.length, 0);
+  assert.equal(afterEmpty.destinations["homepage-all-classes-week"].windowStart, "2026-07-06");
+  assert.deepEqual(afterEmpty.manifest.scheduleIds, []);
+});
+
 test("weekend next-week replaceWeek payload replaces the published window", () => {
   const currentWeek = parseReplaceWeekPayload(fs.readFileSync(ALL_CLASSES_FIXTURE, "utf8"));
   const nextWeek = parseReplaceWeekPayload(fs.readFileSync(NEXT_WEEK_FIXTURE, "utf8"));
