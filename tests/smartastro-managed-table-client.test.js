@@ -149,6 +149,7 @@ function loadManagedTableHelpers() {
 module.exports = {
   removeStaleManagedTableRows,
   renderManagedDestination,
+  deriveSilksWeekPopupFromAllClasses,
 };`,
     sandbox,
   );
@@ -252,4 +253,33 @@ test("renderManagedDestination cleans orphan rows when synced slots are empty (#
 
   assert.equal(orphanRow.removed, true);
   assert.equal(syncedRow.removed, true);
+});
+
+test("deriveSilksWeekPopupFromAllClasses filters silks popup groups (#283)", () => {
+  const source = fs.readFileSync(CLIENT_SCRIPT, "utf8");
+  const body = source
+    .replace(/^\(function \(\) \{/, "")
+    .replace(/if \(document\.readyState[\s\S]*$/, "")
+    .replace(/\}\)\(\);\s*$/, "");
+
+  const sandbox = { document: createDocument(), module: { exports: {} }, console, fetch: async () => ({ ok: false }) };
+  vm.runInNewContext(`${body}\nmodule.exports = { deriveSilksWeekPopupFromAllClasses };`, sandbox);
+  const { deriveSilksWeekPopupFromAllClasses } = sandbox.module.exports;
+
+  const derived = deriveSilksWeekPopupFromAllClasses({
+    destinationKey: "homepage-all-classes-week",
+    windowStart: "2026-07-06",
+    windowEnd: "2026-07-10",
+    heading: "All classes this week — Sun, Jul 5, 2026 through Fri, Jul 10, 2026",
+    updatedAt: "2026-07-04T13:46:22.268Z",
+    slots: [
+      { scheduleId: 1, groupKey: "silks-foundations", groupLabel: "Silks Foundations", displayTime: "Tue" },
+      { scheduleId: 2, groupKey: "lyra-foundations", groupLabel: "Lyra Foundations", displayTime: "Wed" },
+      { scheduleId: 3, groupKey: "adult-aerials", groupLabel: "Adult Aerials", displayTime: "Thu" },
+    ],
+  });
+
+  assert.equal(derived.destinationKey, "homepage-silks-week");
+  assert.match(derived.heading, /^Silks classes this week/i);
+  assert.deepEqual(derived.slots.map((slot) => slot.scheduleId), [1, 3]);
 });
