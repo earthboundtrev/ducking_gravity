@@ -1,4 +1,5 @@
 const crypto = require("node:crypto");
+const { formatWeekPopupSlotDisplayTime } = require("./smartastro-schedule-display");
 
 const VALID_DESTINATION_KEYS = new Set([
   "homepage-all-classes-week",
@@ -46,6 +47,19 @@ function isValidSignUpUrl(url, scheduleId) {
   }
 }
 
+function isValidIsoDateTime(value) {
+  if (typeof value !== "string" || !value.trim()) return false;
+  const parsed = Date.parse(value);
+  return Number.isFinite(parsed);
+}
+
+function shouldDeriveWeekPopupDisplayTime(rawDisplayTime) {
+  if (!rawDisplayTime) return true;
+  // Lyra popup rows use month + pricing, not clock ranges.
+  if (/Members|Non-members/i.test(rawDisplayTime)) return false;
+  return true;
+}
+
 function normalizeSlot(rawSlot) {
   if (!isPlainObject(rawSlot)) return null;
 
@@ -54,10 +68,22 @@ function normalizeSlot(rawSlot) {
 
   const groupKey = typeof rawSlot.groupKey === "string" ? rawSlot.groupKey.trim() : "";
   const groupLabel = typeof rawSlot.groupLabel === "string" ? rawSlot.groupLabel.trim() : "";
-  const displayTime = typeof rawSlot.displayTime === "string" ? rawSlot.displayTime.trim() : "";
+  let displayTime = typeof rawSlot.displayTime === "string" ? rawSlot.displayTime.trim() : "";
 
   if (!groupKey || groupKey.length > MAX_GROUP_KEY_LENGTH) return null;
   if (!groupLabel || groupLabel.length > MAX_GROUP_LABEL_LENGTH) return null;
+
+  let startsAt = null;
+  let endsAt = null;
+  if (isValidIsoDateTime(rawSlot.startsAt) && isValidIsoDateTime(rawSlot.endsAt)) {
+    startsAt = new Date(rawSlot.startsAt).toISOString();
+    endsAt = new Date(rawSlot.endsAt).toISOString();
+    if (shouldDeriveWeekPopupDisplayTime(rawSlot.displayTime)) {
+      // #292: derive week popup label from naive wall clock when bounds are provided.
+      displayTime = formatWeekPopupSlotDisplayTime(new Date(startsAt), new Date(endsAt));
+    }
+  }
+
   if (!displayTime || displayTime.length > MAX_SLOT_DISPLAY_TIME_LENGTH) return null;
   if (containsHtml(groupKey) || containsHtml(groupLabel) || containsHtml(displayTime)) return null;
 
@@ -73,6 +99,8 @@ function normalizeSlot(rawSlot) {
     groupKey,
     groupLabel,
     displayTime,
+    startsAt,
+    endsAt,
     isFull: Boolean(rawSlot.isFull),
     availableSpots: Math.max(0, Number(rawSlot.availableSpots) || 0),
     isClosed: Boolean(rawSlot.isClosed),

@@ -1,7 +1,10 @@
 const SMARTASTRO_CALENDAR_HOST = "smartastro.app";
+const {
+  formatNaiveTimeRangeForTable,
+  toYmdFromNaiveIsoDateTime,
+} = require("./smartastro-schedule-display");
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const DEFAULT_WINDOW_WEEKS = 6;
-const STUDIO_TIMEZONE = process.env.SMARTASTRO_STUDIO_TIMEZONE || "America/New_York";
 const MAX_CLASS_NAME_LENGTH = 120;
 const MAX_DISPLAY_FIELD_LENGTH = 200;
 const MAX_SLOTS_PER_DESTINATION = 300;
@@ -94,13 +97,8 @@ function isValidSignUpUrl(url, scheduleId) {
   }
 }
 
-function toYmdFromIsoDateTime(isoDateTime, timezone = STUDIO_TIMEZONE) {
-  return new Intl.DateTimeFormat("en-CA", {
-    timeZone: timezone,
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(new Date(isoDateTime));
+function toYmdFromIsoDateTime(isoDateTime) {
+  return toYmdFromNaiveIsoDateTime(isoDateTime);
 }
 
 function addDaysToYmd(ymd, days) {
@@ -131,15 +129,20 @@ function normalizeManagedSlot(rawSlot) {
 
   const className = typeof rawSlot.className === "string" ? rawSlot.className.trim() : "";
   const displayDate = typeof rawSlot.displayDate === "string" ? rawSlot.displayDate.trim() : "";
-  const displayTime = typeof rawSlot.displayTime === "string" ? rawSlot.displayTime.trim() : "";
+  let displayTime = typeof rawSlot.displayTime === "string" ? rawSlot.displayTime.trim() : "";
   const displayPrice = typeof rawSlot.displayPrice === "string" ? rawSlot.displayPrice.trim() : "";
 
   if (!className || className.length > MAX_CLASS_NAME_LENGTH || containsHtml(className)) return null;
   if (!displayDate || displayDate.length > MAX_DISPLAY_FIELD_LENGTH || containsHtml(displayDate)) return null;
-  if (!displayTime || displayTime.length > MAX_DISPLAY_FIELD_LENGTH || containsHtml(displayTime)) return null;
   if (!displayPrice || displayPrice.length > MAX_DISPLAY_FIELD_LENGTH) return null;
 
   if (!isValidIsoDateTime(rawSlot.startsAt) || !isValidIsoDateTime(rawSlot.endsAt)) return null;
+
+  const startsAt = new Date(rawSlot.startsAt).toISOString();
+  const endsAt = new Date(rawSlot.endsAt).toISOString();
+  displayTime = formatNaiveTimeRangeForTable(new Date(startsAt), new Date(endsAt));
+
+  if (!displayTime || displayTime.length > MAX_DISPLAY_FIELD_LENGTH || containsHtml(displayTime)) return null;
 
   const signUpUrl =
     typeof rawSlot.signUpUrl === "string" && rawSlot.signUpUrl.trim()
@@ -151,8 +154,8 @@ function normalizeManagedSlot(rawSlot) {
   return {
     scheduleId,
     className,
-    startsAt: new Date(rawSlot.startsAt).toISOString(),
-    endsAt: new Date(rawSlot.endsAt).toISOString(),
+    startsAt,
+    endsAt,
     displayDate,
     displayTime,
     displayPrice,
