@@ -595,6 +595,24 @@ test("replaceWeek applies homepage-silks-week independently of all-classes (#278
   );
 });
 
+test("publicState re-derives silks-week popup displayTime from startsAt (#295)", () => {
+  const silksWeek = parseReplaceWeekPayload(fs.readFileSync(SILKS_WEEK_FIXTURE, "utf8"));
+  const { state: popupState } = mergeReplaceWeek(emptyPopupState(), silksWeek);
+  popupState.destinations["homepage-silks-week"].slots[0].displayTime =
+    "Tue Jul 7 · 1:30–2:30pm";
+
+  const response = publicState(
+    { slots: {}, updatedAt: "2026-07-07T00:00:00.000Z" },
+    popupState,
+    emptyManagedState(),
+  );
+
+  assert.equal(
+    response.popups.destinations["homepage-silks-week"].slots[0].displayTime,
+    "Tue Jul 7 · 5:30–6:30pm",
+  );
+});
+
 test("removedScheduleIds purge popup registry slots (#278)", () => {
   const silksWeek = parseReplaceWeekPayload(fs.readFileSync(SILKS_WEEK_FIXTURE, "utf8"));
   const { state: popupState } = mergeReplaceWeek(emptyPopupState(), silksWeek);

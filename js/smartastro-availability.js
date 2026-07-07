@@ -1,6 +1,14 @@
 (function () {
   const STATE_URL = "/api/smartastro-availability";
 
+  function resolveWeekPopupDisplayTime(slot) {
+    const helper = window.SmartAstroScheduleDisplay;
+    if (helper && typeof helper.resolveWeekPopupDisplayTime === "function") {
+      return helper.resolveWeekPopupDisplayTime(slot);
+    }
+    return slot && slot.displayTime ? String(slot.displayTime) : "";
+  }
+
   function createOpenButton(slot, className) {
     const anchor = document.createElement("a");
     anchor.href = slot.signUpUrl || `https://smartastro.app/calendar?class=${slot.scheduleId}`;
@@ -175,7 +183,7 @@
 
     const time = document.createElement("span");
     time.className = "popup-slot-time";
-    time.textContent = slot.displayTime;
+    time.textContent = resolveWeekPopupDisplayTime(slot);
 
     const button = createSlotButton(slot);
 
@@ -224,13 +232,19 @@
   function deriveSilksWeekPopupFromAllClasses(allClassesDestination) {
     const SILKS_GROUP_KEYS = new Set([
       "silks-foundations",
+      "lyra-foundations",
       "adult-aerials",
       "open-aerials",
+      "mixed-apparatus-foundations",
+      "spin-and-swing",
       "act-classes",
     ]);
-    const slots = (allClassesDestination.slots || []).filter((slot) =>
-      SILKS_GROUP_KEYS.has(slot.groupKey),
-    );
+    const slots = (allClassesDestination.slots || [])
+      .filter((slot) => SILKS_GROUP_KEYS.has(slot.groupKey))
+      .map((slot) => ({
+        ...slot,
+        displayTime: resolveWeekPopupDisplayTime(slot),
+      }));
     if (slots.length === 0 && !allClassesDestination.updatedAt) {
       return null;
     }

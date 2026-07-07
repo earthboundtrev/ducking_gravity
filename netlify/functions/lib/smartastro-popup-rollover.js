@@ -306,6 +306,34 @@ function availabilityUpdatesFromSlots(slots, generatedAt) {
   }));
 }
 
+function sanitizePublicPopupSlot(slot) {
+  if (!slot || typeof slot !== "object") return slot;
+  let displayTime = typeof slot.displayTime === "string" ? slot.displayTime.trim() : "";
+  if (
+    isValidIsoDateTime(slot.startsAt) &&
+    isValidIsoDateTime(slot.endsAt) &&
+    shouldDeriveWeekPopupDisplayTime(displayTime)
+  ) {
+    displayTime = formatWeekPopupSlotDisplayTime(new Date(slot.startsAt), new Date(slot.endsAt));
+  }
+  return { ...slot, displayTime };
+}
+
+function sanitizePublicPopupDestinations(destinations) {
+  const result = {};
+  for (const [key, destination] of Object.entries(destinations || {})) {
+    if (!destination || !Array.isArray(destination.slots)) {
+      result[key] = destination;
+      continue;
+    }
+    result[key] = {
+      ...destination,
+      slots: destination.slots.map(sanitizePublicPopupSlot),
+    };
+  }
+  return result;
+}
+
 function publicPopupState(state) {
   const destinations = state && state.destinations ? state.destinations : {};
   const manifest =
@@ -320,7 +348,7 @@ function publicPopupState(state) {
   return {
     source: "smartastro",
     updatedAt: state && state.updatedAt ? state.updatedAt : null,
-    destinations,
+    destinations: sanitizePublicPopupDestinations(destinations),
     manifest,
   };
 }
@@ -413,4 +441,6 @@ module.exports = {
   parseReplaceWeekPayload,
   publicPopupState,
   removeSchedulesFromPopupState,
+  sanitizePublicPopupSlot,
+  shouldDeriveWeekPopupDisplayTime,
 };
