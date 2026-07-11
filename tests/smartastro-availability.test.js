@@ -196,14 +196,13 @@ test("managed homepage popup destinations exist in index.html", () => {
   const html = fs.readFileSync(path.join(PROJECT_ROOT, "index.html"), "utf8");
 
   assert.match(html, /data-smartastro-popup-destination="homepage-all-classes-week"/);
-  assert.match(html, /data-smartastro-popup-destination="homepage-silks-week"/);
   assert.match(html, /data-smartastro-popup-destination="homepage-lyra"/);
+  assert.doesNotMatch(html, /data-smartastro-popup-destination="homepage-silks-week"/);
 
-  const summerCampSlide = html.match(
-    /<div class="popup-carousel-slide active" data-slide="0">[\s\S]*?<\/div>\s*<!-- Slide 2:/,
+  const allClassesSlide = html.match(
+    /<div class="popup-carousel-slide active" data-slide="0" data-smartastro-popup-destination="homepage-all-classes-week">[\s\S]*?<\/div>\s*<!-- Slide 2: Lyra -->/,
   );
-  assert.ok(summerCampSlide, "expected summer camp slide markup");
-  assert.doesNotMatch(summerCampSlide[0], /data-smartastro-popup-destination=/);
+  assert.ok(allClassesSlide, "expected all-classes week slide as first carousel slide");
 });
 
 test("parses replaceWeek payloads from fixture", () => {
@@ -387,14 +386,14 @@ test("buildManifest aggregates ids across destinations", () => {
     "homepage-all-classes-week": {
       slots: [{ scheduleId: 10 }, { scheduleId: 11 }],
     },
-    "homepage-silks-week": {
+    "homepage-lyra": {
       slots: [{ scheduleId: 11 }, { scheduleId: 12 }],
     },
   };
 
   const manifest = buildManifest(destinations);
   assert.deepEqual(manifest.scheduleIds, [10, 11, 12]);
-  assert.deepEqual(manifest.byDestination["homepage-silks-week"], [11, 12]);
+  assert.deepEqual(manifest.byDestination["homepage-lyra"], [11, 12]);
 });
 
 test("mergeKnownScheduleIds unions static and popup ids", () => {
@@ -579,47 +578,18 @@ test("public state manifest includes availability slot ids for discovery", () =>
   assert.deepEqual(response.manifest.scheduleIds, [1444, 1511]);
 });
 
-test("replaceWeek applies homepage-silks-week independently of all-classes (#278)", () => {
-  const allClasses = parseReplaceWeekPayload(fs.readFileSync(ALL_CLASSES_FIXTURE, "utf8"));
-  const silksWeek = parseReplaceWeekPayload(fs.readFileSync(SILKS_WEEK_FIXTURE, "utf8"));
-
-  const { state: afterAllClasses } = mergeReplaceWeek(emptyPopupState(), allClasses);
-  const { state: afterBoth, summary } = mergeReplaceWeek(afterAllClasses, silksWeek);
-
-  assert.equal(summary.destinationKey, "homepage-silks-week");
-  assert.equal(afterBoth.destinations["homepage-all-classes-week"].windowStart, "2026-06-29");
-  assert.equal(afterBoth.destinations["homepage-silks-week"].windowStart, "2026-07-06");
-  assert.deepEqual(
-    afterBoth.manifest.byDestination["homepage-silks-week"],
-    [1468, 1518],
-  );
-});
-
-test("publicState re-derives silks-week popup displayTime from startsAt (#295)", () => {
-  const silksWeek = parseReplaceWeekPayload(fs.readFileSync(SILKS_WEEK_FIXTURE, "utf8"));
-  const { state: popupState } = mergeReplaceWeek(emptyPopupState(), silksWeek);
-  popupState.destinations["homepage-silks-week"].slots[0].displayTime =
-    "Tue Jul 7 · 1:30–2:30pm";
-
-  const response = publicState(
-    { slots: {}, updatedAt: "2026-07-07T00:00:00.000Z" },
-    popupState,
-    emptyManagedState(),
-  );
-
-  assert.equal(
-    response.popups.destinations["homepage-silks-week"].slots[0].displayTime,
-    "Tue Jul 7 · 5:30–6:30pm",
-  );
+test("replaceWeek rejects retired homepage-silks-week destination (#302)", () => {
+  const body = fs.readFileSync(SILKS_WEEK_FIXTURE, "utf8");
+  assert.throws(() => parseReplaceWeekPayload(body), /Unknown popup destination key/);
 });
 
 test("removedScheduleIds purge popup registry slots (#278)", () => {
-  const silksWeek = parseReplaceWeekPayload(fs.readFileSync(SILKS_WEEK_FIXTURE, "utf8"));
-  const { state: popupState } = mergeReplaceWeek(emptyPopupState(), silksWeek);
+  const allClasses = parseReplaceWeekPayload(fs.readFileSync(ALL_CLASSES_FIXTURE, "utf8"));
+  const { state: popupState } = mergeReplaceWeek(emptyPopupState(), allClasses);
 
   const { state: nextPopupState, removed } = removeSchedulesFromPopupState(popupState, [1468]);
   assert.equal(removed, 1);
-  assert.deepEqual(nextPopupState.manifest.byDestination["homepage-silks-week"], [1518]);
+  assert.deepEqual(nextPopupState.manifest.byDestination["homepage-all-classes-week"], [1518]);
 });
 
 test("removedScheduleIds purge managed table slots (#278)", () => {
@@ -652,10 +622,11 @@ test("purgeOutOfWindowManagedSlots drops rows outside the published window (#278
   );
 });
 
-test("index.html wires both week popup destinations", () => {
+test("index.html wires homepage popup destinations (#302)", () => {
   const indexHtml = fs.readFileSync(path.join(PROJECT_ROOT, "index.html"), "utf8");
   assert.match(indexHtml, /data-smartastro-popup-destination="homepage-all-classes-week"/);
-  assert.match(indexHtml, /data-smartastro-popup-destination="homepage-silks-week"/);
+  assert.match(indexHtml, /data-smartastro-popup-destination="homepage-lyra"/);
+  assert.doesNotMatch(indexHtml, /data-smartastro-popup-destination="homepage-silks-week"/);
 });
 
 test("upsertSlot never shrinks stored managed destination window (#280)", () => {

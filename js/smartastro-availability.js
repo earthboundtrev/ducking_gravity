@@ -229,42 +229,6 @@
     headingElement.innerHTML = `${formatHeadingHtml(destination.heading)}${suffixHtml}`;
   }
 
-  function deriveSilksWeekPopupFromAllClasses(allClassesDestination) {
-    const SILKS_GROUP_KEYS = new Set([
-      "silks-foundations",
-      "lyra-foundations",
-      "adult-aerials",
-      "open-aerials",
-      "mixed-apparatus-foundations",
-      "spin-and-swing",
-      "act-classes",
-    ]);
-    const slots = (allClassesDestination.slots || [])
-      .filter((slot) => SILKS_GROUP_KEYS.has(slot.groupKey))
-      .map((slot) => ({
-        ...slot,
-        displayTime: resolveWeekPopupDisplayTime(slot),
-      }));
-    if (slots.length === 0 && !allClassesDestination.updatedAt) {
-      return null;
-    }
-
-    const heading = String(allClassesDestination.heading || "").replace(
-      /^All classes this week/i,
-      "Silks classes this week",
-    );
-
-    return {
-      destinationKey: "homepage-silks-week",
-      windowStart: allClassesDestination.windowStart,
-      windowEnd: allClassesDestination.windowEnd,
-      heading,
-      slots,
-      updatedAt: allClassesDestination.updatedAt,
-      generatedAt: allClassesDestination.generatedAt,
-    };
-  }
-
   function renderPopupDestination(slide, destination, availabilitySlots) {
     if (!destination) {
       return;
@@ -401,16 +365,6 @@
       const slots = state && state.slots ? state.slots : {};
       const popupDestinations =
         state && state.popups && state.popups.destinations ? state.popups.destinations : {};
-      // Bandaid (#295): slide 3 always mirrors slide 2 — dedicated silks-week API
-      // state can carry stale/wrong displayTime; all-classes-week is correct.
-      if (popupDestinations["homepage-all-classes-week"]) {
-        const derived = deriveSilksWeekPopupFromAllClasses(
-          popupDestinations["homepage-all-classes-week"],
-        );
-        if (derived) {
-          popupDestinations["homepage-silks-week"] = derived;
-        }
-      }
       const managedDestinations =
         state && state.managed && state.managed.destinations ? state.managed.destinations : {};
 

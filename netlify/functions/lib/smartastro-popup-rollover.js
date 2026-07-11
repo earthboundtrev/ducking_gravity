@@ -3,7 +3,6 @@ const { formatWeekPopupSlotDisplayTime } = require("./smartastro-schedule-displa
 
 const VALID_DESTINATION_KEYS = new Set([
   "homepage-all-classes-week",
-  "homepage-silks-week",
   "homepage-lyra",
 ]);
 

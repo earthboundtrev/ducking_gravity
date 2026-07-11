@@ -38,14 +38,12 @@ test("replaceWeek overrides shifted displayTime when startsAt is present (#292)"
   assert.equal(payload.slots[1].displayTime, "Thu Jul 2 · 8:00–9:00pm");
 });
 
-test("replaceWeek silks-week fixture re-derives naive wall clock (#295)", () => {
+test("replaceWeek rejects retired homepage-silks-week destination (#302)", () => {
   const body = fs.readFileSync(
     path.join(PROJECT_ROOT, "tests/fixtures/replace-week-silks-week.json"),
     "utf8",
   );
-  const payload = parseReplaceWeekPayload(body);
-  assert.equal(payload.slots[0].displayTime, "Tue Jul 7 · 5:30–6:30pm");
-  assert.equal(payload.slots[1].displayTime, "Thu Jul 9 · 8:00–9:00pm");
+  assert.throws(() => parseReplaceWeekPayload(body), /Unknown popup destination key/);
 });
 
 test("upsertSlot derives table displayTime from startsAt (#292)", () => {
