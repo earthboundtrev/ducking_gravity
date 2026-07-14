@@ -6,7 +6,7 @@ const DEFAULT_CALENDAR_BASE_URL = "https://smartastro.app/calendar";
 
 const STATIC_KNOWN_SCHEDULE_IDS = new Set([
   1292, 1331, 1372, 1440, 1453, 1459, 1478, 1487, 1503, 1508, 1518,
-  1495, 1496, 1497, 1526, 1537, 1543,
+  1495, 1496, 1497, 1526, 1537, 1543, 1640,
 ]);
 
 function resolveKnownScheduleIds(popupState, managedState) {

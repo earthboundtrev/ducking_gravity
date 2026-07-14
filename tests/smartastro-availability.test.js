@@ -198,11 +198,13 @@ test("managed homepage popup destinations exist in index.html", () => {
   assert.match(html, /data-smartastro-popup-destination="homepage-all-classes-week"/);
   assert.match(html, /data-smartastro-popup-destination="homepage-lyra"/);
   assert.doesNotMatch(html, /data-smartastro-popup-destination="homepage-silks-week"/);
+  assert.match(html, /data-smartastro-schedule-id="1640"/);
+  assert.match(html, /PNO_july_25_flyer\.png/);
 
-  const allClassesSlide = html.match(
-    /<div class="popup-carousel-slide active" data-slide="0" data-smartastro-popup-destination="homepage-all-classes-week">[\s\S]*?<\/div>\s*<!-- Slide 2: Lyra -->/,
+  const pnoFirst = html.match(
+    /<div class="popup-carousel-slide active" data-slide="0">[\s\S]*?Parents Night Out[\s\S]*?data-slide="1" data-smartastro-popup-destination="homepage-all-classes-week"/,
   );
-  assert.ok(allClassesSlide, "expected all-classes week slide as first carousel slide");
+  assert.ok(pnoFirst, "expected Parents Night Out as first carousel slide");
 });
 
 test("parses replaceWeek payloads from fixture", () => {
