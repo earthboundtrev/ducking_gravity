@@ -502,6 +502,7 @@ body {
 .about-carousel-viewport {
   position: relative;
   height: 380px;
+  transition: height 0.35s ease;
 }
 
 .about-carousel-slide {
@@ -510,6 +511,9 @@ body {
   opacity: 0;
   transition: opacity 0.7s ease-in-out;
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .about-carousel-slide.is-active {
@@ -553,8 +557,9 @@ body {
 
 .gallery-image {
   width: 100%;
-  height: 380px;
-  object-fit: cover;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
   display: block;
 }
 
@@ -1168,8 +1173,7 @@ footer {
     height: 220px;
   }
 
-  .about-carousel-viewport,
-  .gallery-image {
+  .about-carousel-viewport {
     height: 260px;
   }
 }
