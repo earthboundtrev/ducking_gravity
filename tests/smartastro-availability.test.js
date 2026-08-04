@@ -201,10 +201,20 @@ test("managed homepage popup destinations exist in index.html", () => {
   assert.doesNotMatch(html, /PNO_july_25_flyer\.png/);
   assert.doesNotMatch(html, /Parents Night Out/);
 
-  const allClassesSlide = html.match(
-    /<div class="popup-carousel-slide active" data-slide="0" data-smartastro-popup-destination="homepage-all-classes-week">[\s\S]*?data-slide="1" data-smartastro-popup-destination="homepage-lyra"/,
+  const nightOutSlide = html.match(
+    /<div class="popup-carousel-slide active" data-slide="0">[\s\S]*?national_night_out\.jpeg[\s\S]*?calendar\?class=1649/,
   );
-  assert.ok(allClassesSlide, "expected all-classes week slide as first carousel slide");
+  assert.ok(nightOutSlide, "expected National Night Out as first carousel slide");
+  assert.doesNotMatch(
+    nightOutSlide[0],
+    /data-smartastro-popup-destination=/,
+    "first promo slide should stay manual",
+  );
+
+  const allClassesSlide = html.match(
+    /data-slide="1" data-smartastro-popup-destination="homepage-all-classes-week"[\s\S]*?data-slide="2" data-smartastro-popup-destination="homepage-lyra"/,
+  );
+  assert.ok(allClassesSlide, "expected all-classes and lyra slides after National Night Out");
 });
 
 test("parses replaceWeek payloads from fixture", () => {
