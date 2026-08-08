@@ -24,14 +24,12 @@ INDEX_HERO = """<!-- Site header -->
                                 <ul class="nav-dropdown-menu">
                                     <li><a href="silks.html">Silks</a></li>
                                     <li><a href="lyra.html">Lyra (Aerial Hoop)</a></li>
-                                    <li><a href="mixed-apparatus.html">Mixed Apparatus</a></li>
                                     <li><a href="homeschool.html">Homeschool</a></li>
                                     <li><a href="juniors.html">Junior Aerials</a></li>
                                 </ul>
                             </li>
                             <li class="nav-mobile-item"><a href="silks.html">Silks</a></li>
                             <li class="nav-mobile-item"><a href="lyra.html">Lyra (Aerial Hoop)</a></li>
-                            <li class="nav-mobile-item"><a href="mixed-apparatus.html">Mixed Apparatus</a></li>
                             <li class="nav-mobile-item"><a href="homeschool.html">Homeschool</a></li>
                             <li class="nav-mobile-item"><a href="juniors.html">Junior Aerials</a></li>
                             <li class="nav-dropdown">

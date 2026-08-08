@@ -12,7 +12,7 @@ This repo is the **companion site** to **[SmartAstro](https://smartastro.app)** 
 
 This site was built for and is in active use by **Ducking Gravity — An Aerial Arts Studio**, a real studio in **Culpeper, Virginia** (15532E Montanus Dr, Culpeper, VA 22701). Copy on the live pages describes an inclusive aerial arts community that celebrates movement while promoting physical and emotional well-being, with mixed-level classes and coaching for first-timers through experienced aerialists.
 
-Program pages cover silks and open aerials, lyra, mixed apparatus, junior aerials, summer camps, birthday parties, events, memberships, homeschool programming, and more.
+Program pages cover silks and open aerials, lyra, junior aerials, summer camps, birthday parties, events, memberships, homeschool programming, and more.
 
 ---
 

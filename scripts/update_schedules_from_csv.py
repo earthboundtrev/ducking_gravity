@@ -31,7 +31,6 @@ PRICE_BY_CLASS = {
     "Lyra Foundations": "$30",
     "Junior Aerials": "Junior membership or $75/month",
     "Spin and Swing": "$60/month or $15/class<br>Non-members $20",
-    "Mixed Apparatus Foundations": "Members $25 or $100/month<br>Non-members $30",
 }
 
 SIGNUP_LABEL = "Sign up for this class!"
@@ -289,7 +288,6 @@ def main():
         ("juniors.html", "Junior Aerial Classes", "Junior Aerials", False),
         ("juniors.html", "Spin and Swing Classes", "Spin and Swing", False),
         ("juniors.html", "Open Aerials", "Open Aerials", False),
-        ("mixed-apparatus.html", "Mixed Apparatus Foundations", "Mixed Apparatus Foundations", False),
     ]
 
     for fname, marker, csv_name, use_full_red in updates:

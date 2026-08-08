@@ -31,11 +31,6 @@ const MANAGED_DESTINATION_DEFINITIONS = {
     classNames: ["Lyra Foundations"],
     insertionEnabled: true,
   },
-  "mixed-apparatus-foundations": {
-    destinationKey: "mixed-apparatus-foundations",
-    classNames: ["Mixed Apparatus Foundations"],
-    insertionEnabled: true,
-  },
   "junior-aerial-classes": {
     destinationKey: "junior-aerial-classes",
     classNames: ["Junior Aerial Classes", "Junior Aerials"],

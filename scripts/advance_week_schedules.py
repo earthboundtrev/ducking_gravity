@@ -110,21 +110,6 @@ SLIDE2 = """                    <!-- Slide 2: All classes for the week of 6/29 -
                         </div>
                         <div class="popup-dropdown-container">
                             <button class="popup-dropdown-toggle" type="button">
-                                Mixed Apparatus Foundations <span class="popup-dropdown-arrow">▼</span>
-                            </button>
-                            <div class="popup-dropdown-content">
-                                <div class="popup-slot">
-                                    <span class="popup-slot-time">Tue Jun 30 &middot; 7:30&ndash;8:30am</span>
-                                    <a href="https://smartastro.app/calendar?class=1459" target="_blank" class="popup-slot-button">Sign up!</a>
-                                </div>
-                                <div class="popup-slot">
-                                    <span class="popup-slot-time">Tue Jun 30 &middot; 9:30&ndash;10:30am</span>
-                                    <a href="https://smartastro.app/calendar?class=1526" target="_blank" class="popup-slot-button">Sign up!</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="popup-dropdown-container">
-                            <button class="popup-dropdown-toggle" type="button">
                                 Junior Aerial Classes <span class="popup-dropdown-arrow">▼</span>
                             </button>
                             <div class="popup-dropdown-content">
@@ -296,7 +281,7 @@ def update_csv_script() -> None:
 
 def main():
     update_index(PROJECT / "index.html")
-    for name in ("silks.html", "juniors.html", "mixed-apparatus.html", "lyra.html"):
+    for name in ("silks.html", "juniors.html", "lyra.html"):
         update_schedule_page(PROJECT / name)
     update_csv_script()
 
