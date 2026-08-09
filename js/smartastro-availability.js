@@ -116,6 +116,33 @@
       .join("<br>");
   }
 
+  /** Canonical membership-linked price HTML so sync-inserted rows match static tables. */
+  const MANAGED_DESTINATION_PRICE_HTML = {
+    "silks-foundations":
+      '<a href="memberships.html#fp1-aerial-silks" class="price-membership-link">$100/month or $25/class</a><br>Non-members $30',
+    "silks-adult-aerials":
+      '<a href="memberships.html#fp1-aerial-silks" class="price-membership-link">$100/month or $25/class</a><br>Non-members $30',
+    "silks-open-aerials":
+      '<a href="memberships.html" class="price-membership-link">Free for members</a><br>Non-members $10',
+    "silks-act-classes":
+      '<a href="memberships.html#fp2-act" class="price-membership-link">$115/month or $25/class</a>',
+    "lyra-foundations":
+      '<a href="memberships.html#lyra-membership" class="price-membership-link">$100/month or $25/class</a><br>Non-members $30',
+    "junior-aerial-classes":
+      '<a href="memberships.html#junior-membership" class="price-membership-link">$75/month or $15/class</a>',
+    "spin-and-swing":
+      '<a href="memberships.html#spin-and-swing-membership" class="price-membership-link">$60/month or $15/class</a><br>Non-members $20',
+    "juniors-open-aerials":
+      '<a href="memberships.html" class="price-membership-link">Free for members</a><br>Non-members $10',
+  };
+
+  function priceHtmlForDestination(destinationKey, displayPrice) {
+    if (destinationKey && MANAGED_DESTINATION_PRICE_HTML[destinationKey]) {
+      return MANAGED_DESTINATION_PRICE_HTML[destinationKey];
+    }
+    return formatPriceHtml(displayPrice || "");
+  }
+
   function sessionLabelFromClassName(className) {
     const match = /^ACT!\s*(.+)$/i.exec(String(className || "").trim());
     return match ? match[1].trim() : "Session 1";
@@ -126,7 +153,7 @@
     return headerRow ? headerRow.cells.length : 4;
   }
 
-  function createManagedTableRow(slot, availabilitySlots, columnCount) {
+  function createManagedTableRow(slot, availabilitySlots, columnCount, destinationKey) {
     const row = document.createElement("tr");
     row.dataset.smartastroScheduleId = String(slot.scheduleId);
     row.dataset.smartastroInserted = "true";
@@ -138,7 +165,7 @@
     timeCell.textContent = slot.displayTime;
 
     const priceCell = document.createElement("td");
-    priceCell.innerHTML = formatPriceHtml(slot.displayPrice);
+    priceCell.innerHTML = priceHtmlForDestination(destinationKey, slot.displayPrice);
 
     const signUpCell = document.createElement("td");
     const availability = availabilitySlots[String(slot.scheduleId)] || slot;
@@ -331,7 +358,9 @@
     );
 
     for (const slot of rowsToInsert) {
-      table.appendChild(createManagedTableRow(slot, availabilitySlots, columnCount));
+      table.appendChild(
+        createManagedTableRow(slot, availabilitySlots, columnCount, table.dataset.smartastroManagedDestination),
+      );
     }
 
     table.querySelectorAll("tr").forEach((row) => {

@@ -24,13 +24,13 @@ STUDIO_CLOSED_DATES = {
 }
 
 PRICE_BY_CLASS = {
-    "Silks Foundations": "Members $25 or $100/month<br>Non-members $30",
-    "Adult Aerials": "Members $25 or $100/month<br>Non-members $30",
-    "Open Aerials": "Free for members<br>Non-members $10",
-    "ACT! Session 1": "$115/month with ACT membership",
-    "Lyra Foundations": "$30",
-    "Junior Aerials": "Junior membership or $15/class",
-    "Spin and Swing": "$60/month or $15/class<br>Non-members $20",
+    "Silks Foundations": '<a href="memberships.html#fp1-aerial-silks" class="price-membership-link">$100/month or $25/class</a><br>Non-members $30',
+    "Adult Aerials": '<a href="memberships.html#fp1-aerial-silks" class="price-membership-link">$100/month or $25/class</a><br>Non-members $30',
+    "Open Aerials": '<a href="memberships.html" class="price-membership-link">Free for members</a><br>Non-members $10',
+    "ACT! Session 1": '<a href="memberships.html#fp2-act" class="price-membership-link">$115/month or $25/class</a>',
+    "Lyra Foundations": '<a href="memberships.html#lyra-membership" class="price-membership-link">$100/month or $25/class</a><br>Non-members $30',
+    "Junior Aerials": '<a href="memberships.html#junior-membership" class="price-membership-link">$75/month or $15/class</a>',
+    "Spin and Swing": '<a href="memberships.html#spin-and-swing-membership" class="price-membership-link">$60/month or $15/class</a><br>Non-members $20',
 }
 
 SIGNUP_LABEL = "Sign up for this class!"
