@@ -29,7 +29,7 @@ PRICE_BY_CLASS = {
     "Open Aerials": "Free for members<br>Non-members $10",
     "ACT! Session 1": "$115/month with ACT membership",
     "Lyra Foundations": "$30",
-    "Junior Aerials": "Junior membership or $75/month",
+    "Junior Aerials": "Junior membership or $15/class",
     "Spin and Swing": "$60/month or $15/class<br>Non-members $20",
 }
 
