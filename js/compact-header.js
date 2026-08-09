@@ -137,6 +137,11 @@
   setupObserver();
   updateFromScroll();
 
+  // Used by anchor-offset.js so programmatic compact sticks in module state.
+  window.dgSetHeaderCompact = function (next) {
+    applyCompact(!!next);
+  };
+
   if (mobileMq.addEventListener) {
     mobileMq.addEventListener('change', onBreakpointChange);
   } else if (mobileMq.addListener) {

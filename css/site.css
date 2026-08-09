@@ -31,6 +31,8 @@
   --radius-lg: 16px;
   --radius-xl: 24px;
   --max-content: 1120px;
+  /* Sticky header clears fragment targets (#services, #about, etc.) */
+  --anchor-scroll-padding: calc(var(--logo-height-sticky) + 1.25rem);
 }
 
 *,
@@ -43,9 +45,14 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: var(--anchor-scroll-padding);
 }
 
 @media (max-width: 768px) {
+  :root {
+    --anchor-scroll-padding: calc(var(--logo-height-sticky-mobile) + 1.25rem);
+  }
+
   html {
     scroll-behavior: auto;
   }
@@ -84,6 +91,18 @@ body {
 .page-header.is-compact {
   background: rgba(255, 255, 255, 0.97);
   box-shadow: 0 4px 20px var(--shadow);
+}
+
+/* Instant compact layout while correcting fragment scroll offsets */
+.site-header.is-anchor-scrolling,
+.page-header.is-anchor-scrolling,
+.site-header.is-anchor-scrolling .site-header-inner,
+.page-header.is-anchor-scrolling .page-header-inner,
+.site-header.is-anchor-scrolling .brand,
+.page-header.is-anchor-scrolling .brand,
+.site-header.is-anchor-scrolling .logo-mark,
+.page-header.is-anchor-scrolling .logo-mark {
+  transition: none !important;
 }
 
 .site-header-inner,

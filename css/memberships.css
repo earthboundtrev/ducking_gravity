@@ -20,7 +20,7 @@
   height: 100%;
   min-height: 100%;
   box-sizing: border-box;
-  scroll-margin-top: 6rem;
+  scroll-margin-top: var(--anchor-scroll-padding);
 }
 
 .membership-card::before {
