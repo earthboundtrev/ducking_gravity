@@ -1,6 +1,7 @@
 const { connectLambda, getStore } = require("@netlify/blobs");
 const {
   json,
+  markInWeekPopupRemovalsAsClassOver,
   mergeKnownScheduleIdsWithPayload,
   mergeSlotState,
   parsePayload,
@@ -13,6 +14,7 @@ const {
   availabilityUpdatesFromSlots,
   detectPayloadAction,
   emptyPopupState,
+  excludeInWeekPopupProtectedIds,
   mergeReplaceWeek,
   parseReplaceWeekPayload,
   removeSchedulesFromPopupState,
@@ -259,7 +261,33 @@ exports.handler = async function smartAstroAvailability(event) {
     resolveKnownScheduleIds(popupState, managedState),
     payload,
   );
-  const { state, summary } = mergeSlotState(existingState, payload, { knownScheduleIds });
+
+  // In-week popup IDs may still appear in removedScheduleIds when managed tables
+  // prune yesterday. Do not tombstone them as removed — the client prefers
+  // ``removed`` over ``hasEnded`` and would show Class Removed instead of Class Over.
+  const tombstoneRemovedIds = excludeInWeekPopupProtectedIds(
+    payload.removedScheduleIds,
+    popupState,
+  );
+  const mergePayload = {
+    ...payload,
+    removedScheduleIds: tombstoneRemovedIds,
+  };
+  const { state: mergedState, summary } = mergeSlotState(existingState, mergePayload, {
+    knownScheduleIds,
+  });
+  const { state, marked: classOverMarked } = markInWeekPopupRemovalsAsClassOver(
+    mergedState,
+    payload.removedScheduleIds,
+    popupState,
+    {
+      updates: payload.updates,
+      calendarBaseUrl: payload.baseCalendarUrl,
+    },
+  );
+  if (classOverMarked > 0) {
+    summary.classOverMarked = classOverMarked;
+  }
   let managedDirty = false;
 
   if (payload.removedScheduleIds && payload.removedScheduleIds.length > 0) {

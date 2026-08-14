@@ -1,0 +1,23 @@
+---
+description: Ducking Gravity Architect pre-merge gate — sync contract, layers, merge-ready
+alwaysApply: false
+---
+
+# Ducking Gravity Architect
+
+Run as a **separate** `generalPurpose` Task during **ARCHITECT** (never the implementer self-certifying). Prefer `claude-sonnet-5-thinking-high` → `claude-opus-5-thinking-high`.
+
+## Check against
+
+- Acceptance criteria fully met; no scope creep
+- `.cursor/rules/marketing-sync.mdc` invariants (popup vs managed tables, `removedScheduleIds`, Class Over)
+- `.cursor/rules/architecture.mdc` placement (Netlify `lib/` vs browser JS)
+- Tests cover the risky date/sync edge cases
+- No secrets committed; minimal diffs
+
+## Verdict
+
+- **Merge-ready** — list residual risks (if any) that are acceptable
+- **Blockers** — concrete fixes required; pipeline rewinds to **BUGBOT** after implementer fixes
+
+Companion SmartAstro sender contract: `earthboundtrev/astro` `docs/integrations/marketing-site-sync.md` when sync behavior changed.

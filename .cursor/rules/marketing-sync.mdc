@@ -19,8 +19,9 @@ Companion sender: SmartAstro (`earthboundtrev/astro`). Receiver lives here (Netl
 
 1. **Do not purge in-week popup slots** just because managed tables advanced `windowStart` to today. Yesterday’s Silks/Lyra/etc. rows must remain in every popup dropdown until weekend whole-week replace.
 2. `removedScheduleIds` applied to **popup** state must only drop slots that are **outside** that popup destination’s `windowStart`–`windowEnd` (or truly deleted and later replaced by `replaceWeek`). Managed-table stale IDs may still be removed from **managed** state.
-3. Client: popup slots with `hasEnded` → **Class Over** button (never remove the row). Managed tables may remove `hasEnded` / `removed` rows (`#280`).
-4. When changing sync behavior, add/extend tests under `tests/smartastro-*.test.js` that lock the day-after-class popup retention case.
+3. Availability **`removed` tombstones** must not be written for in-week popup schedule IDs — the browser prefers `removed` over `hasEnded` and would show **Class Removed** instead of **Class Over**.
+4. Client: popup slots with `hasEnded` → **Class Over** button (never remove the row). Managed tables may remove `hasEnded` / `removed` rows (`#280`).
+5. When changing sync behavior, add/extend tests under `tests/smartastro-*.test.js` that lock the day-after-class popup retention case.
 
 ## Failure pattern to watch for
 

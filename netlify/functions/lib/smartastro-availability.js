@@ -171,6 +171,78 @@ function mergeSlotState(existingState, payload, options = {}) {
   };
 }
 
+/**
+ * When managed-stale IDs are still on the in-week popup, do not tombstone them as
+ * ``removed``. Instead force Class Over so the client does not keep Sign up! or
+ * an older Class Removed tombstone (#3).
+ */
+function markInWeekPopupRemovalsAsClassOver(state, removedScheduleIds, popupState, options = {}) {
+  const { collectInWeekPopupScheduleIds } = require("./smartastro-popup-rollover");
+  const protectedIds = collectInWeekPopupScheduleIds(popupState);
+  if (!state || !state.slots || protectedIds.size === 0) {
+    return { state, marked: 0 };
+  }
+
+  const calendarBaseUrl = options.calendarBaseUrl || DEFAULT_CALENDAR_BASE_URL;
+  const updatedByPayload = new Set(
+    (options.updates || [])
+      .map((update) => Number(update && update.scheduleId))
+      .filter((id) => Number.isInteger(id) && id > 0),
+  );
+
+  const slots = { ...state.slots };
+  let marked = 0;
+
+  for (const rawId of removedScheduleIds || []) {
+    const scheduleId = Number(rawId);
+    if (!Number.isInteger(scheduleId) || scheduleId <= 0) continue;
+    if (!protectedIds.has(scheduleId)) continue;
+    if (updatedByPayload.has(scheduleId)) {
+      const existing = slots[String(scheduleId)];
+      if (!existing) continue;
+      const next = {
+        ...existing,
+        removed: false,
+        hasEnded: true,
+        isFull: false,
+      };
+      if (
+        existing.removed ||
+        !existing.hasEnded ||
+        existing.isFull
+      ) {
+        slots[String(scheduleId)] = next;
+        marked += 1;
+      }
+      continue;
+    }
+
+    const prev = slots[String(scheduleId)] || {};
+    slots[String(scheduleId)] = {
+      scheduleId,
+      isFull: false,
+      availableSpots: Math.max(0, Number(prev.availableSpots) || 0),
+      isClosed: Boolean(prev.isClosed),
+      hasEnded: true,
+      removed: false,
+      signUpUrl: prev.signUpUrl || buildSignUpUrl(scheduleId, calendarBaseUrl),
+      lastSyncedAt: new Date().toISOString(),
+    };
+    marked += 1;
+  }
+
+  if (marked === 0) return { state, marked: 0 };
+
+  return {
+    state: {
+      ...state,
+      slots,
+      updatedAt: new Date().toISOString(),
+    },
+    marked,
+  };
+}
+
 function publicState(state, popupState, managedState) {
   const { publicPopupState } = require("./smartastro-popup-rollover");
   const { publicManagedState } = require("./smartastro-managed-destinations");
@@ -209,6 +281,7 @@ module.exports = {
   resolveKnownScheduleIds,
   createSignature,
   json,
+  markInWeekPopupRemovalsAsClassOver,
   mergeSlotState,
   parsePayload,
   publicState,

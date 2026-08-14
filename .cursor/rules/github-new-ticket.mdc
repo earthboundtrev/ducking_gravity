@@ -1,0 +1,32 @@
+---
+description: Create a GitHub issue when the user says "new ticket" before starting duckinggravity work
+alwaysApply: true
+---
+
+# GitHub issue on "new ticket"
+
+When the user opens work with **"New ticket"** (or similar) **for this repo**, create a **GitHub** issue on `earthboundtrev/ducking_gravity` **before** writing code (or before starting Architect-skip backfill).
+
+## Required first step
+
+1. Parse the request into title + body (Summary, user story, acceptance criteria, definition of done).
+2. Create the issue:
+
+```powershell
+gh issue create --repo earthboundtrev/ducking_gravity --title "..." --body "..." --label "bug"
+```
+
+Use label `bug` for defects, `enhancement` for features (create labels if missing, or omit if the repo has none).
+3. Share the issue number/URL with the user immediately.
+4. Use `#N` in branch names, commits, and PR bodies (`Closes #N`).
+
+## Do not skip
+
+- Do **not** rely on chat-only tracking for "new ticket" work.
+- Companion SmartAstro sender changes still use GitLab `earthboundtrev/astro` when that repo is in scope — this rule is for **duckinggravity** receiver/site work.
+
+## When closing
+
+- PR body must include `Closes #N`.
+- After human merge (or clean backfill sign-off): **verify** `gh issue view {N} --json state` is `CLOSED`; close manually if needed.
+- Delete the local ticket branch after merge.
