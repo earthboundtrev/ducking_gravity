@@ -1,0 +1,57 @@
+---
+description: Core Ducking Gravity marketing-site standards — always apply
+alwaysApply: true
+---
+
+# Ducking Gravity Core Rules
+
+## Project identity
+
+- **duckinggravity.com** — public marketing site for Ducking Gravity aerial studio (static HTML/CSS/JS + Netlify Functions).
+- **Repo:** https://github.com/earthboundtrev/ducking_gravity
+- Companion studio app: **SmartAstro** (`earthboundtrev/astro` on GitLab) pushes schedule/availability via marketing sync. Do not casually rewrite root `README.md`; put deeper technical notes under `docs/` when needed.
+
+## Scope and quality
+
+- **Minimal diffs** — change only what the task requires; match existing naming and patterns.
+- After JS/Netlify changes: run relevant `node --test` suites under `tests/` (or `npm test` when scoped).
+- Prefer fixing the receiver **and** documenting SmartAstro contract impact when sync behavior changes.
+- **Ticket workflow:** pointer pipeline `IMPLEMENT → BUGBOT → TESTS → ARCHITECT → DEPLOY` until human sign-off — `.cursor/rules/ticket-lifecycle-loop.mdc`. Any code fix rewinds to **BUGBOT**.
+
+## Model strategy (ticket work)
+
+Human approval happens at **issue/PR intent** — not via a pre-code architect gate.
+
+| Phase | Stage | Who / what | Purpose |
+|-------|-------|------------|---------|
+| **Implement** | IMPLEMENT | Default Agent (fast model) | Ship against AC; small diffs |
+| **Bugbot** | BUGBOT | `review-bugbot` skill | Logic bugs, edge cases, AC gaps — **re-run until clean** |
+| **Tests** | TESTS | Same session | Lock behavior under `tests/`; map ACs to regression tests |
+| **Architect** | ARCHITECT | Architect-style review / premium model when available | Sync contract, layering, merge-ready |
+| **Deploy** | DEPLOY | Default Agent | Validate, push, PR; checks until human merge |
+
+**Architect blockers → rewind pointer to BUGBOT**, then forward through TESTS and ARCHITECT again.
+
+## Git workflow (GitHub)
+
+**Before writing code** for a GitHub issue or feature branch, sync with `main`.
+
+1. Load issue context (`gh issue view {N}`) when applicable; use `Closes #N` in PR body.
+2. `git fetch origin` → `git checkout main` → `git pull origin main`
+3. Branch: `git checkout -b feature/short-description-{N}` (or merge `origin/main` into an existing feature branch)
+4. Implement on the feature branch — **never commit directly to `main`** unless the user explicitly asks
+5. Keep secrets out of git (`.env`, credentials)
+
+## Marketing sync (non-negotiable)
+
+See `.cursor/rules/marketing-sync.mdc`. Short version:
+
+- Homepage **week popup** keeps Mon–Fri slots for the display week, including past days as **Class Over**, until weekend whole-week replace.
+- Managed class **tables** may drop ended / out-of-window rows.
+- `removedScheduleIds` must **not** wipe in-week popup slots that should still show as Class Over.
+
+## AI collaboration
+
+- Ticket pipeline: `.cursor/rules/ticket-lifecycle-loop.mdc`
+- Sync invariants: `.cursor/rules/marketing-sync.mdc`
+- Architecture notes: `.cursor/rules/architecture.mdc`

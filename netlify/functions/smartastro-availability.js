@@ -260,6 +260,7 @@ exports.handler = async function smartAstroAvailability(event) {
     payload,
   );
   const { state, summary } = mergeSlotState(existingState, payload, { knownScheduleIds });
+  let managedDirty = false;
 
   if (payload.removedScheduleIds && payload.removedScheduleIds.length > 0) {
     const { state: nextPopupState, removed: popupRemoved } = removeSchedulesFromPopupState(
@@ -278,17 +279,21 @@ exports.handler = async function smartAstroAvailability(event) {
     if (managedRemoved > 0) {
       managedState = nextManagedState;
       summary.managedRemoved = managedRemoved;
+      managedDirty = true;
     }
+  }
 
-    const { state: purgedState, purged } = purgeOutOfWindowManagedSlots(managedState);
-    if (purged > 0) {
-      managedState = purgedState;
-      summary.purgedOutOfWindow = purged;
-    }
+  // Always drop managed rows outside the published table window so yesterday can
+  // leave class tables without wiping the same IDs from the in-week homepage popup.
+  const { state: purgedState, purged } = purgeOutOfWindowManagedSlots(managedState);
+  if (purged > 0) {
+    managedState = purgedState;
+    summary.purgedOutOfWindow = purged;
+    managedDirty = true;
+  }
 
-    if ((summary.managedRemoved || 0) > 0 || (summary.purgedOutOfWindow || 0) > 0) {
-      await store.setJSON(MANAGED_STATE_KEY, managedState);
-    }
+  if (managedDirty) {
+    await store.setJSON(MANAGED_STATE_KEY, managedState);
   }
 
   await store.setJSON(STATE_KEY, rememberIdempotencyKey(state, idempotencyKey));

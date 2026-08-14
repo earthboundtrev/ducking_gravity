@@ -1,5 +1,8 @@
 const crypto = require("node:crypto");
-const { formatWeekPopupSlotDisplayTime } = require("./smartastro-schedule-display");
+const {
+  formatWeekPopupSlotDisplayTime,
+  toYmdFromNaiveIsoDateTime,
+} = require("./smartastro-schedule-display");
 
 const VALID_DESTINATION_KEYS = new Set([
   "homepage-all-classes-week",
@@ -367,6 +370,19 @@ function mergeKnownScheduleIds(staticIds, popupState) {
   return merged;
 }
 
+/**
+ * True when a popup slot still belongs on the published Mon–Fri (or Lyra) window.
+ * In-week past classes must stay visible as Class Over; managed-table stale
+ * removals must not wipe them the day after class.
+ */
+function isPopupSlotWithinDestinationWindow(slot, destination) {
+  if (!destination || !destination.windowStart || !destination.windowEnd) return false;
+  if (!slot || !slot.startsAt) return false;
+  const ymd = toYmdFromNaiveIsoDateTime(slot.startsAt);
+  if (!ymd) return false;
+  return ymd >= destination.windowStart && ymd <= destination.windowEnd;
+}
+
 function removeSchedulesFromPopupState(existingState, scheduleIds) {
   const ids = new Set(
     (scheduleIds || [])
@@ -384,7 +400,12 @@ function removeSchedulesFromPopupState(existingState, scheduleIds) {
 
   for (const [destinationKey, destination] of Object.entries(destinations)) {
     const slots = Array.isArray(destination.slots) ? destination.slots : [];
-    const nextSlots = slots.filter((slot) => !ids.has(slot.scheduleId));
+    const nextSlots = slots.filter((slot) => {
+      if (!ids.has(slot.scheduleId)) return true;
+      // Keep in-week popup rows even when managed tables mark the same IDs stale.
+      if (isPopupSlotWithinDestinationWindow(slot, destination)) return true;
+      return false;
+    });
     if (nextSlots.length === slots.length) continue;
     removed += slots.length - nextSlots.length;
     destinations[destinationKey] = {
@@ -435,6 +456,7 @@ module.exports = {
   collectManifestScheduleIds,
   detectPayloadAction,
   emptyPopupState,
+  isPopupSlotWithinDestinationWindow,
   mergeKnownScheduleIds,
   mergeReplaceWeek,
   parseReplaceWeekPayload,

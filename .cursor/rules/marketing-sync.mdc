@@ -1,0 +1,27 @@
+---
+description: Marketing sync invariants — popup vs managed tables, removals, Class Over
+globs: "{js/smartastro*.js,netlify/functions/**/*.js,tests/smartastro*.js}"
+alwaysApply: false
+---
+
+# Marketing sync invariants
+
+Companion sender: SmartAstro (`earthboundtrev/astro`). Receiver lives here (Netlify Functions + `js/smartastro-availability.js`).
+
+## Two surfaces, two lifecycles
+
+| Surface | Destination keys (examples) | Past classes this week |
+|---------|-----------------------------|-------------------------|
+| Homepage **week popup** dropdowns | `homepage-all-classes-week`, `homepage-lyra` | Keep through Fri; show **Class Over** (`hasEnded`) |
+| Class **page tables** | `silks-foundations`, `lyra-foundations`, … | May drop ended / out-of-window rows |
+
+## Hard rules
+
+1. **Do not purge in-week popup slots** just because managed tables advanced `windowStart` to today. Yesterday’s Silks/Lyra/etc. rows must remain in every popup dropdown until weekend whole-week replace.
+2. `removedScheduleIds` applied to **popup** state must only drop slots that are **outside** that popup destination’s `windowStart`–`windowEnd` (or truly deleted and later replaced by `replaceWeek`). Managed-table stale IDs may still be removed from **managed** state.
+3. Client: popup slots with `hasEnded` → **Class Over** button (never remove the row). Managed tables may remove `hasEnded` / `removed` rows (`#280`).
+4. When changing sync behavior, add/extend tests under `tests/smartastro-*.test.js` that lock the day-after-class popup retention case.
+
+## Failure pattern to watch for
+
+`replaceWeek` adds Mon–Fri → availability marks out-of-managed-window IDs in `removedScheduleIds` → receiver deletes those IDs from the popup → **yesterday’s classes vanish from dropdowns** until a later run. Guard both sender and receiver.

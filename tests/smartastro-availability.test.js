@@ -52,6 +52,24 @@ const UPSERT_FIXTURE = path.join(
   "tests/fixtures/upsert-slot-silks-foundations.json",
 );
 
+/** Fixture upsert whose slot falls inside defaultWindow() (starts at today). */
+function inWindowUpsertBody(overrides = {}) {
+  const today = new Date().toISOString().slice(0, 10);
+  return {
+    ...JSON.parse(fs.readFileSync(UPSERT_FIXTURE, "utf8")),
+    windowStart: today,
+    windowEnd: "2099-12-31",
+    startsAt: `${today}T21:30:00.000Z`,
+    endsAt: `${today}T22:30:00.000Z`,
+    displayDate: "Today",
+    ...overrides,
+  };
+}
+
+function parseInWindowUpsert(overrides = {}) {
+  return parseUpsertSlotPayload(JSON.stringify(inWindowUpsertBody(overrides)));
+}
+
 test("verifies SmartAstro HMAC signatures over timestamp and raw body", () => {
   const body = JSON.stringify({ source: "smartastro", updates: [] });
   const timestamp = "2026-06-27T15:00:00.000Z";
@@ -416,7 +434,7 @@ test("mergeKnownScheduleIds unions static and popup ids", () => {
 });
 
 test("parses upsertSlot payloads from fixture", () => {
-  const body = fs.readFileSync(UPSERT_FIXTURE, "utf8");
+  const body = JSON.stringify(inWindowUpsertBody());
   assert.equal(detectPayloadAction(body), "upsertSlot");
 
   const payload = parseUpsertSlotPayload(body);
@@ -425,30 +443,24 @@ test("parses upsertSlot payloads from fixture", () => {
 });
 
 test("rejects unknown managed destination keys", () => {
-  const body = fs.readFileSync(UPSERT_FIXTURE, "utf8");
-  const payload = JSON.parse(body);
-  payload.destinationKey = "unknown-destination";
+  const payload = inWindowUpsertBody({ destinationKey: "unknown-destination" });
   assert.throws(() => parseUpsertSlotPayload(JSON.stringify(payload)), /Unknown managed destination key/);
 });
 
 test("rejects out-of-window upsertSlot payloads", () => {
-  const body = fs.readFileSync(UPSERT_FIXTURE, "utf8");
-  const payload = parseUpsertSlotPayload(body);
-  payload.windowStart = "2026-08-10";
-  payload.windowEnd = "2026-09-01";
+  const payload = parseInWindowUpsert();
+  payload.windowStart = "2099-01-01";
+  payload.windowEnd = "2099-01-31";
   assert.throws(() => upsertManagedSlot(emptyManagedState(), payload), /outside the managed destination window/);
 });
 
 test("upsertSlot inserts and updates without duplicates", () => {
-  const first = parseUpsertSlotPayload(fs.readFileSync(UPSERT_FIXTURE, "utf8"));
+  const first = parseInWindowUpsert();
   const { state: afterInsert, summary: insertSummary } = upsertManagedSlot(emptyManagedState(), first);
   assert.equal(insertSummary.inserted, true);
   assert.equal(afterInsert.destinations["silks-foundations"].slots.length, 1);
 
-  const secondBody = JSON.parse(fs.readFileSync(UPSERT_FIXTURE, "utf8"));
-  secondBody.availableSpots = 1;
-  secondBody.isFull = true;
-  const second = parseUpsertSlotPayload(JSON.stringify(secondBody));
+  const second = parseInWindowUpsert({ availableSpots: 1, isFull: true });
   const { state: afterUpdate, summary: updateSummary } = upsertManagedSlot(afterInsert, second);
   assert.equal(updateSummary.inserted, false);
   assert.equal(afterUpdate.destinations["silks-foundations"].slots.length, 1);
@@ -456,7 +468,7 @@ test("upsertSlot inserts and updates without duplicates", () => {
 });
 
 test("managed manifest schedule IDs are accepted by availability sync", () => {
-  const upsertPayload = parseUpsertSlotPayload(fs.readFileSync(UPSERT_FIXTURE, "utf8"));
+  const upsertPayload = parseInWindowUpsert();
   const { state: managedState } = upsertManagedSlot(emptyManagedState(), upsertPayload);
   const knownScheduleIds = resolveKnownScheduleIds(emptyPopupState(), managedState);
 
@@ -530,7 +542,7 @@ test("marks removed schedules with a tombstone slot (#270)", () => {
 });
 
 test("public state exposes managed destinations and combined manifest", () => {
-  const upsertPayload = parseUpsertSlotPayload(fs.readFileSync(UPSERT_FIXTURE, "utf8"));
+  const upsertPayload = parseInWindowUpsert();
   const { state: managedState } = upsertManagedSlot(emptyManagedState(), upsertPayload);
   const response = publicState(
     { slots: {}, updatedAt: null, generatedAt: null },
@@ -545,18 +557,19 @@ test("public state exposes managed destinations and combined manifest", () => {
 });
 
 test("accepts ACT! Session 1 upserts for silks-act-classes", () => {
+  const today = new Date().toISOString().slice(0, 10);
   const body = JSON.stringify({
     action: "upsertSlot",
     source: "smartastro",
     generatedAt: "2026-07-01T16:00:00.000Z",
     destinationKey: "silks-act-classes",
-    windowStart: "2026-07-01",
-    windowEnd: "2026-08-11",
+    windowStart: today,
+    windowEnd: "2099-12-31",
     scheduleId: 1586,
     className: "ACT! Session 1",
-    startsAt: "2026-08-03T21:45:00.000Z",
-    endsAt: "2026-08-03T23:15:00.000Z",
-    displayDate: "August 3",
+    startsAt: `${today}T21:45:00.000Z`,
+    endsAt: `${today}T23:15:00.000Z`,
+    displayDate: "Today",
     displayTime: "5:45pm - 7:15pm",
     displayPrice: "$115/month with ACT membership",
     isFull: false,
@@ -593,17 +606,37 @@ test("replaceWeek rejects retired homepage-silks-week destination (#302)", () =>
   assert.throws(() => parseReplaceWeekPayload(body), /Unknown popup destination key/);
 });
 
-test("removedScheduleIds purge popup registry slots (#278)", () => {
+test("removedScheduleIds keep in-week popup slots for Class Over (day-after guard)", () => {
   const allClasses = parseReplaceWeekPayload(fs.readFileSync(ALL_CLASSES_FIXTURE, "utf8"));
   const { state: popupState } = mergeReplaceWeek(emptyPopupState(), allClasses);
 
+  // Managed-table stale detection historically shipped these IDs the day after class.
+  // In-week popup rows must remain so every dropdown still shows yesterday as Class Over.
   const { state: nextPopupState, removed } = removeSchedulesFromPopupState(popupState, [1468]);
+  assert.equal(removed, 0);
+  assert.deepEqual(nextPopupState.manifest.byDestination["homepage-all-classes-week"], [1468, 1518]);
+});
+
+test("removedScheduleIds purge popup slots outside the published week (#278)", () => {
+  const allClasses = parseReplaceWeekPayload(fs.readFileSync(ALL_CLASSES_FIXTURE, "utf8"));
+  const { state: popupState } = mergeReplaceWeek(emptyPopupState(), allClasses);
+  const destination = popupState.destinations["homepage-all-classes-week"];
+  destination.slots.push({
+    ...destination.slots[0],
+    scheduleId: 1999,
+    startsAt: "2026-06-20T17:30:00.000Z",
+    endsAt: "2026-06-20T18:30:00.000Z",
+    displayTime: "Sat Jun 20 · 1:30–2:30pm",
+  });
+  popupState.manifest = buildManifest(popupState.destinations);
+
+  const { state: nextPopupState, removed } = removeSchedulesFromPopupState(popupState, [1999, 1468]);
   assert.equal(removed, 1);
-  assert.deepEqual(nextPopupState.manifest.byDestination["homepage-all-classes-week"], [1518]);
+  assert.deepEqual(nextPopupState.manifest.byDestination["homepage-all-classes-week"], [1468, 1518]);
 });
 
 test("removedScheduleIds purge managed table slots (#278)", () => {
-  const upsertPayload = parseUpsertSlotPayload(fs.readFileSync(UPSERT_FIXTURE, "utf8"));
+  const upsertPayload = parseInWindowUpsert();
   const { state: managedState } = upsertManagedSlot(emptyManagedState(), upsertPayload);
 
   const { state: nextManagedState, removed } = removeSchedulesFromManagedState(managedState, [1600]);
@@ -612,14 +645,14 @@ test("removedScheduleIds purge managed table slots (#278)", () => {
 });
 
 test("purgeOutOfWindowManagedSlots drops rows outside the published window (#278)", () => {
-  const upsertPayload = parseUpsertSlotPayload(fs.readFileSync(UPSERT_FIXTURE, "utf8"));
+  const upsertPayload = parseInWindowUpsert();
   const { state: managedState } = upsertManagedSlot(emptyManagedState(), upsertPayload);
 
   const staleSlot = {
     ...managedState.destinations["silks-foundations"].slots[0],
     scheduleId: 1700,
-    startsAt: "2026-05-01T21:30:00.000Z",
-    endsAt: "2026-05-01T22:30:00.000Z",
+    startsAt: "2020-05-01T21:30:00.000Z",
+    endsAt: "2020-05-01T22:30:00.000Z",
   };
   managedState.destinations["silks-foundations"].slots.push(staleSlot);
   managedState.manifest = buildManagedManifest(managedState.destinations);
@@ -640,18 +673,15 @@ test("index.html wires homepage popup destinations (#302)", () => {
 });
 
 test("upsertSlot never shrinks stored managed destination window (#280)", () => {
-  const firstBody = JSON.parse(fs.readFileSync(UPSERT_FIXTURE, "utf8"));
-  firstBody.windowStart = "2026-07-06";
-  firstBody.windowEnd = "2026-08-09";
-  const first = parseUpsertSlotPayload(JSON.stringify(firstBody));
+  const first = parseInWindowUpsert({ windowEnd: "2099-08-09" });
   const { state: afterFirst } = upsertManagedSlot(emptyManagedState(), first);
   const storedStart = afterFirst.destinations["silks-foundations"].windowStart;
   const storedEnd = afterFirst.destinations["silks-foundations"].windowEnd;
 
-  const secondBody = JSON.parse(fs.readFileSync(UPSERT_FIXTURE, "utf8"));
-  secondBody.windowStart = "2026-06-29";
-  secondBody.windowEnd = "2026-07-20";
-  const second = parseUpsertSlotPayload(JSON.stringify(secondBody));
+  const second = parseInWindowUpsert({
+    windowStart: "2020-06-29",
+    windowEnd: "2020-07-20",
+  });
   const { state: afterSecond } = upsertManagedSlot(afterFirst, second);
 
   const destination = afterSecond.destinations["silks-foundations"];

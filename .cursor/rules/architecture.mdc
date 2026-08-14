@@ -1,0 +1,37 @@
+---
+description: Ducking Gravity site layout — where HTML, CSS, JS, and Netlify sync code belong
+globs: "{*.html,css/**,js/**,netlify/**,partials/**,tests/**}"
+alwaysApply: false
+---
+
+# Architecture
+
+## Layout
+
+```
+*.html                 # Public pages (index popup, class pages, memberships, …)
+partials/              # Shared header/nav fragments
+css/                   # Site + page styles
+js/                    # Browser scripts (availability sync, anchors, header)
+netlify/functions/     # Receiver webhooks + lib (popup rollover, managed tables)
+tests/                 # node:test suites for sync/receiver logic
+scripts/               # One-off measurement / maintenance scripts
+```
+
+## Placement
+
+| Concern | Location |
+|---------|----------|
+| Homepage popup markup / carousel | `index.html` + `css/popup.css` |
+| Live popup/table rendering | `js/smartastro-availability.js` |
+| Wall-clock display helpers | `js/smartastro-schedule-display.js` (+ Netlify twin) |
+| `replaceWeek` merge / popup state | `netlify/functions/lib/smartastro-popup-rollover.js` |
+| Managed table upsert / windows | `netlify/functions/lib/smartastro-managed-destinations.js` |
+| Availability batch + removals | `netlify/functions/lib/smartastro-availability.js` + handler |
+| Sticky-header hash offset | `js/anchor-offset.js` + `js/compact-header.js` |
+
+## Boundaries
+
+- Prefer structured sync state over hand-editing weekly class rows in HTML when SmartAstro manages the destination.
+- Keep Netlify `lib/` free of browser DOM APIs; keep browser JS free of Node `fs` / Blobs.
+- Match existing vanilla JS patterns — no framework without an explicit decision.
