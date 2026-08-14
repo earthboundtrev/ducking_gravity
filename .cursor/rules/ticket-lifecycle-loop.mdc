@@ -7,7 +7,7 @@ alwaysApply: true
 
 Active **GitHub issue `#N`** and/or **open PR** work follows a **fixed stage order**. Track a **pointer** to the current stage. Advance forward only when that stage passes. **Any code fix rewinds the pointer to `BUGBOT`** (then move forward again).
 
-Adapted from Integral / SmartAstro workflow for this marketing-site repo.
+Adapted from SmartAstro (`earthboundtrev/astro`) for this marketing-site repo (GitHub).
 
 ## Stages (in order)
 
@@ -18,28 +18,64 @@ IMPLEMENT → BUGBOT → TESTS → ARCHITECT → DEPLOY
 | Stage | What happens | Advance when |
 |-------|----------------|--------------|
 | **IMPLEMENT** | Ship code/docs for AC, review feedback, or CI fixes | Chunk ready for review → **BUGBOT** |
-| **BUGBOT** | `/review-bugbot` · `Diff: branch changes` | **Clean** on current diff → **TESTS** |
-| **TESTS** | `tests/*.test.js` (prefer issue refs in names); `npm test` / `node --test` for touched areas | **Pass** → **ARCHITECT** |
-| **ARCHITECT** | Pre-merge gate: sync contract, HTML/JS layering, no scope creep | **Merge-ready** → **DEPLOY** |
-| **DEPLOY** | Validate, push, PR with `Closes #N` when applicable; watch checks; merge **only when human asks** | Human **merge/sign-off** + issue closed → **exit** |
+| **BUGBOT** | Separate `bugbot` Task (`review-bugbot`) — never self-review as Bugbot | **Clean** on current diff → **TESTS** |
+| **TESTS** | `tests/*.test.js` (prefer issue refs / AC mapping); `node --test` / `npm test` for touched areas | **Pass** → **ARCHITECT** |
+| **ARCHITECT** | Separate Architect Task — sync contract, layering, merge-ready (`.cursor/rules/duckinggravity-architect.mdc`) | **Merge-ready** → **DEPLOY** |
+| **DEPLOY** | Validate, push, PR with `Closes #N`; watch checks; **after human merge:** verify issue `#N` CLOSED, delete local ticket branch | Human merge/sign-off + **issue closed** + local cleanup → **exit** |
+
+## Separate agents / models (mandatory)
+
+Implementer, Bugbot, and Architect **must not be the same review perspective**.
+
+| Role | How it must run | Primary model | Comparable fallback(s) |
+|------|-----------------|---------------|------------------------|
+| **IMPLEMENT** | Parent and/or implement Task | **`composer-2.5-fast`** | `cursor-grok-4.5-high-fast` → omit / parent |
+| **BUGBOT** | Always a separate **`bugbot`** Task — never “I reviewed my own diff as Bugbot” | Tool default (omit `model`) | `claude-sonnet-5-thinking-high` → `claude-opus-5-thinking-high` |
+| **ARCHITECT** | Always a separate **`generalPurpose`** Task as Ducking Gravity Architect — never implementer self-certify | **`claude-sonnet-5-thinking-high`** | **`claude-opus-5-thinking-high`** |
+
+**Hard rules**
+
+1. Do **not** skip Bugbot or Architect by self-certifying (except watchdog soft-fail after comparable chain exhausted — `.cursor/rules/subagent-watchdog.mdc`).
+2. Do **not** use Architect-class models for routine implementation Tasks.
+3. After any code fix, rewind to **BUGBOT** and launch a **fresh** Bugbot on the new diff.
+4. Architect blockers → rewind to **BUGBOT**, then TESTS → ARCHITECT again.
 
 ## Rewind rules (mandatory)
 
 | Situation | Pointer moves to |
 |-----------|------------------|
-| Bugbot reports findings | Stay **BUGBOT** — fix, re-run Bugbot until clean |
-| Tests fail or test fixes change behavior | **BUGBOT** |
-| Architect reports blockers | **BUGBOT** — fix, re-run Bugbot → Tests → Architect |
-| PR/CI/human review needs code changes | **IMPLEMENT** — then **BUGBOT** before skipping ahead |
+| Bugbot reports findings | Stay **BUGBOT** — fix, re-run until clean |
+| Tests fail or test-driven code changes | **BUGBOT** |
+| Architect reports blockers | **BUGBOT** — fix → Bugbot → Tests → Architect |
+| PR/CI/human review needs code changes | **IMPLEMENT** — then **BUGBOT** |
 
-**Never skip BUGBOT** after a code change, including session resume or post-architect fixes.
+## Post-merge / Architect-skip backfill
+
+If release-related work **already landed on `main`** without a distinct Architect gate (or the human asks to put a shipped fix through the pipeline):
+
+1. Treat merged code as **IMPLEMENT done**. Pointer starts at **`BUGBOT`**.
+2. Create GitHub issue `#N` if missing (`.cursor/rules/github-new-ticket.mdc`).
+3. Open remediation branch `fix/architect-backfill-{N}` only if reviews produce fixes; otherwise review in place.
+4. **Review scope:** if branch vs `main` is empty, use Bugbot/Architect with **`Diff: natural language`** and a Change Description of the shipped paths/commits (e.g. `261ca6e`).
+5. Cycle: Bugbot clean → TESTS → ARCHITECT → DEPLOY (sign-off and/or remediation PR with `Closes #N`).
+6. **Close issue `#N`** when the gate completes (even if no code changes).
 
 ## Bug-class that must get a regression test
 
-Schedule/popup/availability behavior (especially date windows, `hasEnded`, `removedScheduleIds`, dropdown rendering) **must** include a failing-then-passing unit test. These regressions look “fine today” and break tomorrow.
+Schedule/popup/availability behavior (date windows, `hasEnded`, `removedScheduleIds`, dropdown rendering) **must** include a regression test. These look fine today and break tomorrow.
+
+## Exit (human sign-off + issue closed)
+
+1. Human approves merge or sign-off-only backfill.
+2. Verify GitHub issue `#N` is **CLOSED** (`gh issue view {N}`).
+3. Delete local feature/remediation branch; `git fetch --prune`.
+
+## Session resume
+
+1. Sync git + read issue/PR (`gh issue view` / `gh pr view`).
+2. If branch diff changed since last clean Bugbot → pointer **BUGBOT**.
+3. Report: `Pipeline pointer: <STAGE>`.
 
 ## Response format (active ticket)
 
-End substantive work with:
-
-**Pipeline:** `IMPLEMENT` | `BUGBOT` | `TESTS` | `ARCHITECT` | `DEPLOY` — plus Bugbot / tests / architect / deploy state and **next stage**.
+**Pipeline:** `IMPLEMENT` | `BUGBOT` | `TESTS` | `ARCHITECT` | `DEPLOY` — Bugbot / tests / architect / deploy / **issue open|closed** / **next stage**.

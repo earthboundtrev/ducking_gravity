@@ -20,27 +20,28 @@ alwaysApply: true
 
 ## Model strategy (ticket work)
 
-Human approval happens at **issue/PR intent** — not via a pre-code architect gate.
+Human approval happens at **issue/PR intent** — not via a pre-code architect gate. Use **different agents/models per role** (`.cursor/rules/ticket-lifecycle-loop.mdc`):
 
-| Phase | Stage | Who / what | Purpose |
-|-------|-------|------------|---------|
-| **Implement** | IMPLEMENT | Default Agent (fast model) | Ship against AC; small diffs |
-| **Bugbot** | BUGBOT | `review-bugbot` skill | Logic bugs, edge cases, AC gaps — **re-run until clean** |
-| **Tests** | TESTS | Same session | Lock behavior under `tests/`; map ACs to regression tests |
-| **Architect** | ARCHITECT | Architect-style review / premium model when available | Sync contract, layering, merge-ready |
-| **Deploy** | DEPLOY | Default Agent | Validate, push, PR; checks until human merge |
+| Phase | Stage | Who / what | Primary → fallback(s) |
+|-------|-------|------------|------------------------|
+| **Implement** | IMPLEMENT | Parent / implement Task | `composer-2.5-fast` → `cursor-grok-4.5-high-fast` |
+| **Bugbot** | BUGBOT | Separate **`bugbot`** Task — never self-review | tool default → Sonnet → Opus |
+| **Tests** | TESTS | Same session | — |
+| **Architect** | ARCHITECT | Separate Architect Task | Sonnet → Opus |
+| **Deploy** | DEPLOY | Default Agent | Composer → Grok / parent |
 
-**Architect blockers → rewind pointer to BUGBOT**, then forward through TESTS and ARCHITECT again.
+Outages: `.cursor/rules/subagent-watchdog.mdc`. **New ticket:** `.cursor/rules/github-new-ticket.mdc`.
 
 ## Git workflow (GitHub)
 
 **Before writing code** for a GitHub issue or feature branch, sync with `main`.
 
-1. Load issue context (`gh issue view {N}`) when applicable; use `Closes #N` in PR body.
+1. Load issue (`gh issue view {N}`); use `Closes #N` in PR body.
 2. `git fetch origin` → `git checkout main` → `git pull origin main`
-3. Branch: `git checkout -b feature/short-description-{N}` (or merge `origin/main` into an existing feature branch)
+3. Branch: `git checkout -b feature/short-description-{N}` (or `fix/...-{N}`)
 4. Implement on the feature branch — **never commit directly to `main`** unless the user explicitly asks
-5. Keep secrets out of git (`.env`, credentials)
+5. Pipeline through BUGBOT → TESTS → ARCHITECT before opening/updating the PR
+6. Keep secrets out of git (`.env`, credentials)
 
 ## Marketing sync (non-negotiable)
 
@@ -53,5 +54,8 @@ See `.cursor/rules/marketing-sync.mdc`. Short version:
 ## AI collaboration
 
 - Ticket pipeline: `.cursor/rules/ticket-lifecycle-loop.mdc`
+- New ticket → GitHub issue: `.cursor/rules/github-new-ticket.mdc`
+- Subagent watchdog: `.cursor/rules/subagent-watchdog.mdc`
+- Architect gate: `.cursor/rules/duckinggravity-architect.mdc`
 - Sync invariants: `.cursor/rules/marketing-sync.mdc`
-- Architecture notes: `.cursor/rules/architecture.mdc`
+- Architecture: `.cursor/rules/architecture.mdc`

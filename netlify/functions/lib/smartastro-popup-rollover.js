@@ -383,6 +383,40 @@ function isPopupSlotWithinDestinationWindow(slot, destination) {
   return ymd >= destination.windowStart && ymd <= destination.windowEnd;
 }
 
+/** Schedule IDs still published on an in-week homepage popup destination. */
+function collectInWeekPopupScheduleIds(popupState) {
+  const protectedIds = new Set();
+  const destinations =
+    popupState && popupState.destinations && typeof popupState.destinations === "object"
+      ? popupState.destinations
+      : {};
+  for (const destination of Object.values(destinations)) {
+    const slots = Array.isArray(destination && destination.slots) ? destination.slots : [];
+    for (const slot of slots) {
+      if (!isPopupSlotWithinDestinationWindow(slot, destination)) continue;
+      const scheduleId = Number(slot.scheduleId);
+      if (Number.isInteger(scheduleId) && scheduleId > 0) protectedIds.add(scheduleId);
+    }
+  }
+  return protectedIds;
+}
+
+/**
+ * IDs that may be purged from managed tables but must not get availability
+ * ``removed`` tombstones (client would show Class Removed instead of Class Over).
+ */
+function excludeInWeekPopupProtectedIds(scheduleIds, popupState) {
+  const protectedIds = collectInWeekPopupScheduleIds(popupState);
+  if (protectedIds.size === 0) {
+    return (scheduleIds || [])
+      .map((id) => Number(id))
+      .filter((id) => Number.isInteger(id) && id > 0);
+  }
+  return (scheduleIds || [])
+    .map((id) => Number(id))
+    .filter((id) => Number.isInteger(id) && id > 0 && !protectedIds.has(id));
+}
+
 function removeSchedulesFromPopupState(existingState, scheduleIds) {
   const ids = new Set(
     (scheduleIds || [])
@@ -453,9 +487,11 @@ module.exports = {
   VALID_DESTINATION_KEYS,
   availabilityUpdatesFromSlots,
   buildManifest,
+  collectInWeekPopupScheduleIds,
   collectManifestScheduleIds,
   detectPayloadAction,
   emptyPopupState,
+  excludeInWeekPopupProtectedIds,
   isPopupSlotWithinDestinationWindow,
   mergeKnownScheduleIds,
   mergeReplaceWeek,

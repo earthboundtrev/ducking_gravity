@@ -1,0 +1,36 @@
+---
+description: Subagent watchdog — comparable model fallbacks on outage/stuck; never idle
+alwaysApply: true
+---
+
+# Subagent watchdog (no idle stalls)
+
+Whenever you launch a **Task / subagent** (Bugbot, Architect, security-review, explore, shell, generalPurpose, etc.), you own the clock. Do not leave the ticket pipeline idle because a model hung, timed out, or was unavailable.
+
+## Stuck / unavailable
+
+Treat as stuck if: tool/runtime timeout, provider outage/capacity, ~2–3 minutes with no useful progress, or repeated identical failure on the same slug.
+
+## Recovery
+
+1. Cancel the hung invocation.
+2. Walk that stage’s **comparable fallback chain** (same prompt, next unused slug).
+3. On success → continue; note which model worked.
+4. If the **entire chain** fails → **soft-fail continue**:
+   - **BUGBOT:** brief parent diff skim; if clear → TESTS
+   - **ARCHITECT:** concise parent merge-ready check (AC, sync contract, tests)
+   - **IMPLEMENT Task:** continue in parent
+5. One short status line to the user.
+
+## Comparable chains
+
+| Stage | Primary | Fallback 1 | Fallback 2 | After chain |
+|-------|---------|------------|------------|-------------|
+| **IMPLEMENT** | `composer-2.5-fast` | `cursor-grok-4.5-high-fast` | omit / parent | Parent continues |
+| **BUGBOT** | omit `model` | `claude-sonnet-5-thinking-high` | `claude-opus-5-thinking-high` | Parent skim → TESTS |
+| **ARCHITECT** | `claude-sonnet-5-thinking-high` | `claude-opus-5-thinking-high` | — | Parent merge-ready skim |
+| **Security** | omit `model` | `claude-sonnet-5-thinking-high` | `claude-opus-5-thinking-high` | Parent threat skim |
+
+Do **not** demote Architect to Composer/Grok. Soft-fail does **not** skip required code fixes when a review returned blockers.
+
+Full pipeline: `.cursor/rules/ticket-lifecycle-loop.mdc`.

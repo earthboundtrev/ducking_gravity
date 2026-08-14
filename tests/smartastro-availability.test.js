@@ -6,6 +6,7 @@ const test = require("node:test");
 const {
   createSignature,
   collectPayloadScheduleIds,
+  markInWeekPopupRemovalsAsClassOver,
   mergeKnownScheduleIdsWithPayload,
   mergeSlotState,
   parsePayload,
@@ -19,6 +20,7 @@ const {
   buildManifest,
   detectPayloadAction,
   emptyPopupState,
+  excludeInWeekPopupProtectedIds,
   mergeKnownScheduleIds,
   mergeReplaceWeek,
   parseReplaceWeekPayload,
@@ -615,6 +617,88 @@ test("removedScheduleIds keep in-week popup slots for Class Over (day-after guar
   const { state: nextPopupState, removed } = removeSchedulesFromPopupState(popupState, [1468]);
   assert.equal(removed, 0);
   assert.deepEqual(nextPopupState.manifest.byDestination["homepage-all-classes-week"], [1468, 1518]);
+});
+
+test("in-week popup IDs are excluded from availability removed tombstones (#3)", () => {
+  const allClasses = parseReplaceWeekPayload(fs.readFileSync(ALL_CLASSES_FIXTURE, "utf8"));
+  const { state: popupState } = mergeReplaceWeek(emptyPopupState(), allClasses);
+
+  // 1468 is in-week; 1999 is not on the popup at all → still eligible for tombstone.
+  assert.deepEqual(excludeInWeekPopupProtectedIds([1468, 1999], popupState), [1999]);
+
+  const mergePayload = {
+    source: "smartastro",
+    removedScheduleIds: excludeInWeekPopupProtectedIds([1468, 1999], popupState),
+    updates: [],
+  };
+  const { state: merged, summary } = mergeSlotState(null, mergePayload, {
+    knownScheduleIds: new Set([1468, 1518, 1999]),
+  });
+  assert.equal(summary.removed, 1);
+  assert.equal(merged.slots["1999"].removed, true);
+  assert.equal(merged.slots["1468"], undefined);
+
+  const { state, marked } = markInWeekPopupRemovalsAsClassOver(
+    merged,
+    [1468, 1999],
+    popupState,
+  );
+  assert.equal(marked, 1);
+  assert.equal(state.slots["1468"].hasEnded, true);
+  assert.equal(state.slots["1468"].removed, false);
+  assert.equal(state.slots["1999"].removed, true);
+});
+
+test("in-week popup removals clear prior Class Removed tombstones (#3)", () => {
+  const allClasses = parseReplaceWeekPayload(fs.readFileSync(ALL_CLASSES_FIXTURE, "utf8"));
+  const { state: popupState } = mergeReplaceWeek(emptyPopupState(), allClasses);
+  const prior = {
+    source: "smartastro",
+    updatedAt: "2026-07-01T12:00:00.000Z",
+    slots: {
+      1468: {
+        scheduleId: 1468,
+        removed: true,
+        hasEnded: true,
+        isFull: false,
+        isClosed: false,
+        availableSpots: 0,
+        signUpUrl: "https://smartastro.app/calendar?class=1468",
+      },
+    },
+  };
+
+  const { state, marked } = markInWeekPopupRemovalsAsClassOver(prior, [1468], popupState);
+  assert.equal(marked, 1);
+  assert.equal(state.slots["1468"].removed, false);
+  assert.equal(state.slots["1468"].hasEnded, true);
+});
+
+test("in-week popup removals force Class Over even when update says open (#3)", () => {
+  const allClasses = parseReplaceWeekPayload(fs.readFileSync(ALL_CLASSES_FIXTURE, "utf8"));
+  const { state: popupState } = mergeReplaceWeek(emptyPopupState(), allClasses);
+  const merged = {
+    source: "smartastro",
+    slots: {
+      1468: {
+        scheduleId: 1468,
+        removed: false,
+        hasEnded: false,
+        isFull: false,
+        isClosed: false,
+        availableSpots: 2,
+        signUpUrl: "https://smartastro.app/calendar?class=1468",
+      },
+    },
+  };
+
+  const { state, marked } = markInWeekPopupRemovalsAsClassOver(merged, [1468], popupState, {
+    updates: [{ scheduleId: 1468, hasEnded: false, availableSpots: 2 }],
+  });
+  assert.equal(marked, 1);
+  assert.equal(state.slots["1468"].hasEnded, true);
+  assert.equal(state.slots["1468"].removed, false);
+  assert.equal(state.slots["1468"].isFull, false);
 });
 
 test("removedScheduleIds purge popup slots outside the published week (#278)", () => {
