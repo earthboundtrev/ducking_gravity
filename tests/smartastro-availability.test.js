@@ -502,6 +502,31 @@ test("class pages expose managed destination markers", () => {
   assert.match(homeschool, /js\/smartastro-availability\.js/);
 });
 
+test("managed Homeschool and Junior ACT sections omit redundant day/age one-liners (#11)", () => {
+  const homeschool = fs.readFileSync(path.join(PROJECT_ROOT, "homeschool.html"), "utf8");
+  const juniors = fs.readFileSync(path.join(PROJECT_ROOT, "juniors.html"), "utf8");
+
+  assert.doesNotMatch(
+    homeschool,
+    /Tuesdays,\s*1:00pm(?:&ndash;|–)2:00pm\.\s*Homeschool students ages 9\+\./,
+  );
+  assert.doesNotMatch(
+    homeschool,
+    /Thursdays,\s*11:45am(?:&ndash;|–)12:45pm\.\s*Homeschool students ages 4 through 8\./,
+  );
+  assert.doesNotMatch(
+    juniors,
+    /Wednesdays,\s*6:00pm(?:&ndash;|–)7:00pm\.\s*Ages 4 through 9\.\s*Coach approval required\./,
+  );
+  assert.match(homeschool, /About Our Homeschool Classes/);
+  assert.match(homeschool, /Designed for homeschool students aged 9\+/);
+  assert.match(homeschool, /Tuesdays from 1:00pm to 2:00pm/);
+  assert.match(homeschool, /Designed for homeschool students aged 4 through 8/);
+  assert.match(homeschool, /Thursdays from 11:45am to 12:45pm/);
+  assert.match(homeschool, /memberships\.html#fp1-aerial-silks/);
+  assert.match(homeschool, /memberships\.html#junior-membership/);
+});
+
 test("stores hasEnded separately from isFull in availability state (#269)", () => {
   const payload = parsePayload(
     JSON.stringify({
