@@ -488,11 +488,18 @@ test("managed manifest schedule IDs are accepted by availability sync", () => {
 test("class pages expose managed destination markers", () => {
   const silks = fs.readFileSync(path.join(PROJECT_ROOT, "silks.html"), "utf8");
   const lyra = fs.readFileSync(path.join(PROJECT_ROOT, "lyra.html"), "utf8");
+  const juniors = fs.readFileSync(path.join(PROJECT_ROOT, "juniors.html"), "utf8");
+  const homeschool = fs.readFileSync(path.join(PROJECT_ROOT, "homeschool.html"), "utf8");
 
   assert.match(silks, /data-smartastro-managed-destination="silks-foundations"/);
   assert.match(silks, /data-smartastro-managed-destination="silks-adult-aerials"/);
+  assert.match(silks, /data-smartastro-managed-destination="silks-act-classes"/);
   assert.match(lyra, /data-smartastro-managed-destination="lyra-foundations"/);
+  assert.match(juniors, /data-smartastro-managed-destination="juniors-act-classes"/);
+  assert.match(homeschool, /data-smartastro-managed-destination="homeschool-foundations"/);
+  assert.match(homeschool, /data-smartastro-managed-destination="junior-homeschool-foundations"/);
   assert.match(silks, /js\/smartastro-availability\.js/);
+  assert.match(homeschool, /js\/smartastro-availability\.js/);
 });
 
 test("stores hasEnded separately from isFull in availability state (#269)", () => {
@@ -556,6 +563,9 @@ test("public state exposes managed destinations and combined manifest", () => {
   assert.deepEqual(response.manifest.scheduleIds, [1600]);
   assert.ok(VALID_MANAGED_DESTINATION_KEYS.has("lyra-foundations"));
   assert.ok(VALID_MANAGED_DESTINATION_KEYS.has("silks-act-classes"));
+  assert.ok(VALID_MANAGED_DESTINATION_KEYS.has("juniors-act-classes"));
+  assert.ok(VALID_MANAGED_DESTINATION_KEYS.has("homeschool-foundations"));
+  assert.ok(VALID_MANAGED_DESTINATION_KEYS.has("junior-homeschool-foundations"));
 });
 
 test("accepts ACT! Session 1 upserts for silks-act-classes", () => {
@@ -584,6 +594,119 @@ test("accepts ACT! Session 1 upserts for silks-act-classes", () => {
   const { summary } = upsertManagedSlot(emptyManagedState(), payload);
   assert.equal(summary.destinationKey, "silks-act-classes");
   assert.equal(summary.scheduleId, 1586);
+});
+
+test("accepts Junior ACT! and both Homeschool upserts for their destinations (#5)", () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const juniorAct = parseUpsertSlotPayload(
+    JSON.stringify({
+      action: "upsertSlot",
+      source: "smartastro",
+      generatedAt: "2026-09-01T16:00:00.000Z",
+      destinationKey: "juniors-act-classes",
+      windowStart: today,
+      windowEnd: "2099-12-31",
+      scheduleId: 1731,
+      className: "Junior ACT!",
+      startsAt: `${today}T22:00:00.000Z`,
+      endsAt: `${today}T23:00:00.000Z`,
+      displayDate: "Today",
+      displayTime: "6:00pm - 7:00pm",
+      displayPrice: "$115/month with ACT membership",
+      isFull: false,
+      availableSpots: 10,
+      isClosed: true,
+      signUpUrl: "https://smartastro.app/calendar?class=1731",
+    }),
+  );
+  const homeschool = parseUpsertSlotPayload(
+    JSON.stringify({
+      action: "upsertSlot",
+      source: "smartastro",
+      generatedAt: "2026-09-01T16:00:00.000Z",
+      destinationKey: "homeschool-foundations",
+      windowStart: today,
+      windowEnd: "2099-12-31",
+      scheduleId: 1740,
+      className: "Homeschool Foundations",
+      startsAt: `${today}T17:00:00.000Z`,
+      endsAt: `${today}T18:00:00.000Z`,
+      displayDate: "Today",
+      displayTime: "1:00pm - 2:00pm",
+      displayPrice: "Members $25 or $100/month\nNon-members $30",
+      isFull: false,
+      availableSpots: 8,
+      isClosed: false,
+      signUpUrl: "https://smartastro.app/calendar?class=1740",
+    }),
+  );
+  const juniorHomeschool = parseUpsertSlotPayload(
+    JSON.stringify({
+      action: "upsertSlot",
+      source: "smartastro",
+      generatedAt: "2026-09-01T16:00:00.000Z",
+      destinationKey: "junior-homeschool-foundations",
+      windowStart: today,
+      windowEnd: "2099-12-31",
+      scheduleId: 1741,
+      className: "Junior Homeschool Foundations",
+      startsAt: `${today}T15:45:00.000Z`,
+      endsAt: `${today}T16:45:00.000Z`,
+      displayDate: "Today",
+      displayTime: "11:45am - 12:45pm",
+      displayPrice: "$75/month or $15/class",
+      isFull: false,
+      availableSpots: 10,
+      isClosed: false,
+      signUpUrl: "https://smartastro.app/calendar?class=1741",
+    }),
+  );
+
+  assert.equal(upsertManagedSlot(emptyManagedState(), juniorAct).summary.destinationKey, "juniors-act-classes");
+  assert.equal(upsertManagedSlot(emptyManagedState(), homeschool).summary.destinationKey, "homeschool-foundations");
+  assert.equal(
+    upsertManagedSlot(emptyManagedState(), juniorHomeschool).summary.destinationKey,
+    "junior-homeschool-foundations",
+  );
+});
+
+test("rejects cross-table ACT and Homeschool upserts (#5)", () => {
+  assert.throws(
+    () =>
+      parseUpsertSlotPayload(
+        JSON.stringify(
+          inWindowUpsertBody({
+            destinationKey: "silks-act-classes",
+            className: "Junior ACT!",
+          }),
+        ),
+      ),
+    /Class name does not match destination rules/,
+  );
+  assert.throws(
+    () =>
+      parseUpsertSlotPayload(
+        JSON.stringify(
+          inWindowUpsertBody({
+            destinationKey: "juniors-act-classes",
+            className: "ACT! Session 1",
+          }),
+        ),
+      ),
+    /Class name does not match destination rules/,
+  );
+  assert.throws(
+    () =>
+      parseUpsertSlotPayload(
+        JSON.stringify(
+          inWindowUpsertBody({
+            destinationKey: "homeschool-foundations",
+            className: "Junior Homeschool Foundations",
+          }),
+        ),
+      ),
+    /Class name does not match destination rules/,
+  );
 });
 
 test("public state manifest includes availability slot ids for discovery", () => {

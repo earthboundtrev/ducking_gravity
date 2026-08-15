@@ -134,6 +134,12 @@
       '<a href="memberships.html#spin-and-swing-membership" class="price-membership-link">$60/month or $15/class</a><br>Non-members $20',
     "juniors-open-aerials":
       '<a href="memberships.html" class="price-membership-link">Free for members</a><br>Non-members $10',
+    "juniors-act-classes":
+      '<a href="memberships.html#fp2-act" class="price-membership-link">$115/month or $25/class</a>',
+    "homeschool-foundations":
+      '<a href="memberships.html#fp1-aerial-silks" class="price-membership-link">$100/month or $25/class</a><br>Non-members $30',
+    "junior-homeschool-foundations":
+      '<a href="memberships.html#junior-membership" class="price-membership-link">$75/month or $15/class</a>',
   };
 
   function priceHtmlForDestination(destinationKey, displayPrice) {
