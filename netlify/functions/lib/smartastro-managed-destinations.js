@@ -51,6 +51,21 @@ const MANAGED_DESTINATION_DEFINITIONS = {
     classNames: ["ACT! Classes", "ACT! Session 1"],
     insertionEnabled: true,
   },
+  "juniors-act-classes": {
+    destinationKey: "juniors-act-classes",
+    classNames: ["Junior ACT!"],
+    insertionEnabled: true,
+  },
+  "homeschool-foundations": {
+    destinationKey: "homeschool-foundations",
+    classNames: ["Homeschool Foundations"],
+    insertionEnabled: true,
+  },
+  "junior-homeschool-foundations": {
+    destinationKey: "junior-homeschool-foundations",
+    classNames: ["Junior Homeschool Foundations"],
+    insertionEnabled: true,
+  },
 };
 
 const VALID_MANAGED_DESTINATION_KEYS = new Set(Object.keys(MANAGED_DESTINATION_DEFINITIONS));
