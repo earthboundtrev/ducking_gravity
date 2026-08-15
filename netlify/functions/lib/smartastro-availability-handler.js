@@ -1,4 +1,3 @@
-const { connectLambda, getStore } = require("@netlify/blobs");
 const {
   json,
   markInWeekPopupRemovalsAsClassOver,
@@ -9,7 +8,7 @@ const {
   resolveKnownScheduleIds,
   validateTimestamp,
   verifySignature,
-} = require("./lib/smartastro-availability");
+} = require("./smartastro-availability");
 const {
   availabilityUpdatesFromSlots,
   detectPayloadAction,
@@ -18,7 +17,7 @@ const {
   mergeReplaceWeek,
   parseReplaceWeekPayload,
   removeSchedulesFromPopupState,
-} = require("./lib/smartastro-popup-rollover");
+} = require("./smartastro-popup-rollover");
 const {
   availabilityUpdateFromManagedSlot,
   emptyManagedState,
@@ -26,13 +25,12 @@ const {
   purgeOutOfWindowManagedSlots,
   removeSchedulesFromManagedState,
   upsertManagedSlot,
-} = require("./lib/smartastro-managed-destinations");
+} = require("./smartastro-managed-destinations");
 const {
   hasSeenIdempotencyKey,
   rememberIdempotencyKey,
-} = require("./lib/smartastro-replay-protection");
+} = require("./smartastro-replay-protection");
 
-const STORE_NAME = "smartastro-availability";
 const STATE_KEY = "class-slots";
 const POPUP_STATE_KEY = "homepage-popups";
 const MANAGED_STATE_KEY = "managed-slots";
@@ -84,11 +82,7 @@ function buildAvailabilityPayloadFromManagedSlot(slot, generatedAt) {
   };
 }
 
-exports.handler = async function smartAstroAvailability(event) {
-  // Functions v1 (Lambda compatibility) does not auto-inject Blobs credentials.
-  connectLambda(event);
-  const store = getStore(STORE_NAME);
-
+async function handleSmartAstroAvailability(event, store) {
   if (event.httpMethod === "GET") {
     const [state, popupState, managedState] = await Promise.all([
       readState(store),
@@ -330,4 +324,8 @@ exports.handler = async function smartAstroAvailability(event) {
     ok: true,
     ...summary,
   });
+}
+
+module.exports = {
+  handleSmartAstroAvailability,
 };
