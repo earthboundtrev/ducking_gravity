@@ -48,7 +48,7 @@ const MANAGED_DESTINATION_DEFINITIONS = {
   },
   "silks-act-classes": {
     destinationKey: "silks-act-classes",
-    classNames: ["ACT! Classes", "ACT! Session 1"],
+    classNames: ["ACT!", "ACT! Classes", "ACT! Session 1", "ACT! Session 2"],
     insertionEnabled: true,
   },
   "juniors-act-classes": {

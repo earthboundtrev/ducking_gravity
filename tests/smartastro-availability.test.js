@@ -568,32 +568,15 @@ test("public state exposes managed destinations and combined manifest", () => {
   assert.ok(VALID_MANAGED_DESTINATION_KEYS.has("junior-homeschool-foundations"));
 });
 
-test("accepts ACT! Session 1 upserts for silks-act-classes", () => {
-  const today = new Date().toISOString().slice(0, 10);
-  const body = JSON.stringify({
-    action: "upsertSlot",
-    source: "smartastro",
-    generatedAt: "2026-07-01T16:00:00.000Z",
-    destinationKey: "silks-act-classes",
-    windowStart: today,
-    windowEnd: "2099-12-31",
-    scheduleId: 1586,
-    className: "ACT! Session 1",
-    startsAt: `${today}T21:45:00.000Z`,
-    endsAt: `${today}T23:15:00.000Z`,
-    displayDate: "Today",
-    displayTime: "5:45pm - 7:15pm",
-    displayPrice: "$115/month with ACT membership",
-    isFull: false,
-    availableSpots: 10,
-    isClosed: false,
-    signUpUrl: "https://smartastro.app/calendar?class=1586",
-  });
-
-  const payload = parseUpsertSlotPayload(body);
-  const { summary } = upsertManagedSlot(emptyManagedState(), payload);
-  assert.equal(summary.destinationKey, "silks-act-classes");
-  assert.equal(summary.scheduleId, 1586);
+test("accepts every adult ACT alias for silks-act-classes (#7)", () => {
+  for (const className of ["ACT!", "ACT! Classes", "ACT! Session 1", "ACT! Session 2"]) {
+    const payload = parseInWindowUpsert({
+      destinationKey: "silks-act-classes",
+      className,
+    });
+    const { summary } = upsertManagedSlot(emptyManagedState(), payload);
+    assert.equal(summary.destinationKey, "silks-act-classes");
+  }
 });
 
 test("accepts Junior ACT! and both Homeschool upserts for their destinations (#5)", () => {
@@ -670,7 +653,7 @@ test("accepts Junior ACT! and both Homeschool upserts for their destinations (#5
   );
 });
 
-test("rejects cross-table ACT and Homeschool upserts (#5)", () => {
+test("rejects cross-table ACT and Homeschool upserts (#5, #7)", () => {
   assert.throws(
     () =>
       parseUpsertSlotPayload(
@@ -683,18 +666,16 @@ test("rejects cross-table ACT and Homeschool upserts (#5)", () => {
       ),
     /Class name does not match destination rules/,
   );
-  assert.throws(
-    () =>
-      parseUpsertSlotPayload(
-        JSON.stringify(
-          inWindowUpsertBody({
-            destinationKey: "juniors-act-classes",
-            className: "ACT! Session 1",
-          }),
-        ),
-      ),
-    /Class name does not match destination rules/,
-  );
+  for (const className of ["ACT!", "ACT! Classes", "ACT! Session 1", "ACT! Session 2"]) {
+    assert.throws(
+      () =>
+        parseInWindowUpsert({
+          destinationKey: "juniors-act-classes",
+          className,
+        }),
+      /Class name does not match destination rules/,
+    );
+  }
   assert.throws(
     () =>
       parseUpsertSlotPayload(
