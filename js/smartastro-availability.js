@@ -129,7 +129,7 @@
     "lyra-foundations":
       '<a href="memberships.html#lyra-membership" class="price-membership-link">$100/month or $25/class</a><br>Non-members $30',
     "junior-aerial-classes":
-      '<a href="memberships.html#junior-membership" class="price-membership-link">$75/month or $15/class</a>',
+      '<a href="memberships.html#junior-membership" class="price-membership-link">$75/month or $15/class</a><br>Non-members $25',
     "spin-and-swing":
       '<a href="memberships.html#spin-and-swing-membership" class="price-membership-link">$60/month or $15/class</a><br>Non-members $20',
     "juniors-open-aerials":
@@ -139,7 +139,7 @@
     "homeschool-foundations":
       '<a href="memberships.html#fp1-aerial-silks" class="price-membership-link">$100/month or $25/class</a><br>Non-members $30',
     "junior-homeschool-foundations":
-      '<a href="memberships.html#junior-membership" class="price-membership-link">$75/month or $15/class</a>',
+      '<a href="memberships.html#junior-membership" class="price-membership-link">$75/month or $15/class</a><br>Non-members $25',
   };
 
   function priceHtmlForDestination(destinationKey, displayPrice) {
