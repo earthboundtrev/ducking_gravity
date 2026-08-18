@@ -235,6 +235,23 @@ test("managed homepage popup destinations exist in index.html", () => {
   );
 });
 
+test("homepage popup ACT dropdown uses expanded ACT label (#13)", () => {
+  const html = fs.readFileSync(path.join(PROJECT_ROOT, "index.html"), "utf8");
+  const allClassesSlide = html.match(
+    /data-smartastro-popup-destination="homepage-all-classes-week"[\s\S]*?(?=<!-- Slide 2: Lyra -->)/,
+  )?.[0];
+
+  assert.ok(allClassesSlide, "expected homepage all-classes popup slide");
+  assert.match(
+    allClassesSlide,
+    /Aerial Competitive Team \(ACT\) Classes[\s\S]*?popup-dropdown-arrow/,
+  );
+  assert.doesNotMatch(
+    allClassesSlide,
+    />ACT! Classes[\s\S]*?popup-dropdown-arrow/,
+  );
+});
+
 test("parses replaceWeek payloads from fixture", () => {
   const body = fs.readFileSync(ALL_CLASSES_FIXTURE, "utf8");
   assert.equal(detectPayloadAction(body), "replaceWeek");
