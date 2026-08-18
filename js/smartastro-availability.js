@@ -142,6 +142,14 @@
       '<a href="memberships.html#junior-membership" class="price-membership-link">$75/month or $15/class</a><br>Non-members $25',
   };
 
+  const POPUP_GROUP_LABEL_OVERRIDES = {
+    "ACT! Classes": "Aerial Competitive Team (ACT) Classes",
+  };
+
+  function displayPopupGroupLabel(groupLabel) {
+    return POPUP_GROUP_LABEL_OVERRIDES[groupLabel] || groupLabel;
+  }
+
   function priceHtmlForDestination(destinationKey, displayPrice) {
     if (destinationKey && MANAGED_DESTINATION_PRICE_HTML[destinationKey]) {
       return MANAGED_DESTINATION_PRICE_HTML[destinationKey];
@@ -232,7 +240,7 @@
     const toggle = document.createElement("button");
     toggle.className = "popup-dropdown-toggle";
     toggle.type = "button";
-    toggle.innerHTML = `${group.groupLabel} <span class="popup-dropdown-arrow">▼</span>`;
+    toggle.innerHTML = `${displayPopupGroupLabel(group.groupLabel)} <span class="popup-dropdown-arrow">▼</span>`;
 
     const content = document.createElement("div");
     content.className = "popup-dropdown-content";
