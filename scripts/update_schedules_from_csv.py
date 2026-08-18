@@ -303,7 +303,7 @@ def main():
     html = path.read_text(encoding="utf-8")
     act_rows = by_class.get("ACT! Session 1", [])
     new_rows = build_act_rows(act_rows, use_full_red=True)
-    html = replace_table_after_title(html, "ACT! Classes", new_rows)
+    html = replace_table_after_title(html, "Aerial Competitive Team (ACT!) Classes", new_rows)
     path.write_text(html, encoding="utf-8", newline="\n")
     print(f"Updated silks.html ACT: {len(act_rows)} sessions")
 

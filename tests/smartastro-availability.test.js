@@ -544,6 +544,25 @@ test("managed Homeschool and Junior ACT sections omit redundant day/age one-line
   assert.match(homeschool, /memberships\.html#junior-membership/);
 });
 
+test("silks ACT table heading uses expanded ACT! label (#15)", () => {
+  const silks = fs.readFileSync(path.join(PROJECT_ROOT, "silks.html"), "utf8");
+  const csvHelper = fs.readFileSync(
+    path.join(PROJECT_ROOT, "scripts/update_schedules_from_csv.py"),
+    "utf8",
+  );
+
+  assert.match(
+    silks,
+    /<div class="camp-title" id="act-section">Aerial Competitive Team \(ACT!\) Classes/,
+  );
+  assert.doesNotMatch(silks, /id="act-section">ACT! Classes/);
+  assert.match(silks, /data-smartastro-managed-destination="silks-act-classes"/);
+  assert.match(
+    csvHelper,
+    /replace_table_after_title\(html, "Aerial Competitive Team \(ACT!\) Classes", new_rows\)/,
+  );
+});
+
 test("stores hasEnded separately from isFull in availability state (#269)", () => {
   const payload = parsePayload(
     JSON.stringify({
