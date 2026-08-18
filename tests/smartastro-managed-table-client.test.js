@@ -255,11 +255,11 @@ test("renderManagedDestination cleans orphan rows when synced slots are empty (#
   assert.equal(syncedRow.removed, true);
 });
 
-test("displayPopupGroupLabel expands ACT popup label (#13)", () => {
+test("displayPopupGroupLabel expands ACT popup label (#13, #17)", () => {
   const { displayPopupGroupLabel } = loadManagedTableHelpers();
   assert.equal(
     displayPopupGroupLabel("ACT! Classes"),
-    "Aerial Competitive Team (ACT) Classes",
+    "Aerial Competitive Team (ACT!) Classes",
   );
   assert.equal(displayPopupGroupLabel("Silks Foundations"), "Silks Foundations");
 });

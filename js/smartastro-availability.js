@@ -143,7 +143,7 @@
   };
 
   const POPUP_GROUP_LABEL_OVERRIDES = {
-    "ACT! Classes": "Aerial Competitive Team (ACT) Classes",
+    "ACT! Classes": "Aerial Competitive Team (ACT!) Classes",
   };
 
   function displayPopupGroupLabel(groupLabel) {

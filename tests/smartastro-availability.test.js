@@ -235,7 +235,7 @@ test("managed homepage popup destinations exist in index.html", () => {
   );
 });
 
-test("homepage popup ACT dropdown uses expanded ACT label (#13)", () => {
+test("homepage popup ACT dropdown uses expanded ACT label (#13, #17)", () => {
   const html = fs.readFileSync(path.join(PROJECT_ROOT, "index.html"), "utf8");
   const allClassesSlide = html.match(
     /data-smartastro-popup-destination="homepage-all-classes-week"[\s\S]*?(?=<!-- Slide 2: Lyra -->)/,
@@ -244,11 +244,15 @@ test("homepage popup ACT dropdown uses expanded ACT label (#13)", () => {
   assert.ok(allClassesSlide, "expected homepage all-classes popup slide");
   assert.match(
     allClassesSlide,
-    /Aerial Competitive Team \(ACT\) Classes[\s\S]*?popup-dropdown-arrow/,
+    /Aerial Competitive Team \(ACT!\) Classes[\s\S]*?popup-dropdown-arrow/,
   );
   assert.doesNotMatch(
     allClassesSlide,
     />ACT! Classes[\s\S]*?popup-dropdown-arrow/,
+  );
+  assert.doesNotMatch(
+    allClassesSlide,
+    /Aerial Competitive Team \(ACT\) Classes/,
   );
 });
 
@@ -544,7 +548,7 @@ test("managed Homeschool and Junior ACT sections omit redundant day/age one-line
   assert.match(homeschool, /memberships\.html#junior-membership/);
 });
 
-test("silks ACT table heading uses expanded ACT! label (#15)", () => {
+test("silks ACT table heading uses expanded ACT! label (#15, #17)", () => {
   const silks = fs.readFileSync(path.join(PROJECT_ROOT, "silks.html"), "utf8");
   const csvHelper = fs.readFileSync(
     path.join(PROJECT_ROOT, "scripts/update_schedules_from_csv.py"),
@@ -556,6 +560,7 @@ test("silks ACT table heading uses expanded ACT! label (#15)", () => {
     /<div class="camp-title" id="act-section">Aerial Competitive Team \(ACT!\) Classes/,
   );
   assert.doesNotMatch(silks, /id="act-section">ACT! Classes/);
+  assert.doesNotMatch(silks, /id="act-section">Aerial Competitive Team \(ACT\) Classes/);
   assert.match(silks, /data-smartastro-managed-destination="silks-act-classes"/);
   assert.match(
     csvHelper,
