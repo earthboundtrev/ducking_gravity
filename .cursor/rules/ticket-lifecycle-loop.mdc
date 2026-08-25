@@ -25,20 +25,26 @@ IMPLEMENT → BUGBOT → TESTS → ARCHITECT → DEPLOY
 
 ## Separate agents / models (mandatory)
 
-Implementer, Bugbot, and Architect **must not be the same review perspective**.
+Implementer, Bugbot, and Architect **must not be the same review perspective**. Different roles exist so a second set of eyes catches bugs the author missed.
+
+**Why the model slugs changed (aligned with SmartAstro 8/18/2026):** Cursor Grok 4.6 High is far cheaper per token than Opus or Sonnet. Implement was already **`composer-2.5-fast`**. Checks were the expensive leak — Bugbot/Architect often **omitted `model`** (a costlier tool default) or fell through to Sonnet/Opus on every rewind. This studio’s Cursor budget is effectively zero, so routine reviews must not burn premium tokens. Same split of perspectives; cheaper check model. Full cost chains: **`.cursor/rules/subagent-watchdog.mdc`**. Prefer local Tasks: **`.cursor/rules/prefer-local-agents.mdc`**.
 
 | Role | How it must run | Primary model | Comparable fallback(s) |
 |------|-----------------|---------------|------------------------|
 | **IMPLEMENT** | Parent and/or implement Task | **`composer-2.5-fast`** | `cursor-grok-4.5-high-fast` → omit / parent |
-| **BUGBOT** | Always a separate **`bugbot`** Task — never “I reviewed my own diff as Bugbot” | Tool default (omit `model`) | `claude-sonnet-5-thinking-high` → `claude-opus-5-thinking-high` |
-| **ARCHITECT** | Always a separate **`generalPurpose`** Task as Ducking Gravity Architect — never implementer self-certify | **`claude-sonnet-5-thinking-high`** | **`claude-opus-5-thinking-high`** |
+| **BUGBOT** | Always a separate **`bugbot`** Task — never “I reviewed my own diff as Bugbot” | **`cursor-grok-4.6-high-fast`** | `cursor-grok-4.5-high-fast` → omit |
+| **ARCHITECT** | Always a separate **`generalPurpose`** Task as Ducking Gravity Architect — never implementer self-certify | **`cursor-grok-4.6-high-fast`** | `cursor-grok-4.5-high-fast` → omit |
 
 **Hard rules**
 
 1. Do **not** skip Bugbot or Architect by self-certifying (except watchdog soft-fail after comparable chain exhausted — `.cursor/rules/subagent-watchdog.mdc`).
-2. Do **not** use Architect-class models for routine implementation Tasks.
-3. After any code fix, rewind to **BUGBOT** and launch a **fresh** Bugbot on the new diff.
-4. Architect blockers → rewind to **BUGBOT**, then TESTS → ARCHITECT again.
+2. **Implement is cheap:** dedicated implement Tasks use **`composer-2.5-fast`**. Do not spend Opus, Sonnet, or Grok 4.6 High on routine IMPLEMENT.
+3. **Checks are Grok 4.6 High:** Bugbot, Architect, and security-review launch with **`model: "cursor-grok-4.6-high-fast"`**. Do **not** omit `model` on those Tasks (omitting often bills a costlier default). Do **not** use Opus/Sonnet for routine checks unless the user **explicitly** names that model.
+4. After any code fix, rewind to **BUGBOT** and launch a **fresh** Bugbot on the new diff.
+5. On outage/stuck, walk that role’s **comparable** chain before soft-fail — checks stay in the Grok High family; do not promote them to Opus/Sonnet, and do not demote them to Composer Fast.
+6. **Stay local by default.** Omit Task `environment` or set `"local"`. Cloud is a cost spike — never launch it without an explicit cost warning **and** current-message cost acceptance. Not an outage fallback. `.cursor/rules/prefer-local-agents.mdc`.
+
+Rationale: Composer Fast writes the diff; a **separate** Grok 4.6 High Task reviews it. Same coverage split, far lower token spend than Sonnet/Opus on every check.
 
 ## Rewind rules (mandatory)
 

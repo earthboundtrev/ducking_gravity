@@ -5,7 +5,9 @@ alwaysApply: false
 
 # Ducking Gravity Architect
 
-Run as a **separate** `generalPurpose` Task during **ARCHITECT** (never the implementer self-certifying). Prefer `claude-sonnet-5-thinking-high` → `claude-opus-5-thinking-high`.
+Run as a **separate** `generalPurpose` Task during **ARCHITECT** (never the implementer self-certifying). Prefer **`cursor-grok-4.6-high-fast`** → **`cursor-grok-4.5-high-fast`** → omit `model`. Do **not** use Opus/Sonnet for this gate unless the user explicitly asks. Stay **local** — `.cursor/rules/prefer-local-agents.mdc`. Cost chains: `.cursor/rules/subagent-watchdog.mdc`.
+
+**Why Grok 4.6 High (aligned with SmartAstro 8/18/2026):** this gate used to prefer Sonnet with an Opus fallback. Those slugs cost far more per token than Cursor Grok 4.6 High and did not change the merge-ready bar. Architect still runs as a **separate Task** from implement; it just must not burn premium tokens.
 
 ## Check against
 
