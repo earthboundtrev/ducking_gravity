@@ -258,6 +258,11 @@
     font-size: 1rem;
 }
 
+.popup-slot-empty .popup-slot-time {
+    font-weight: 500;
+    color: var(--text-muted, #5c6670);
+}
+
 .popup-slot-button {
     background: var(--hard-green);
     color: var(--white);

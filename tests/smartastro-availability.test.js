@@ -942,6 +942,20 @@ test("index.html wires homepage popup destinations (#302)", () => {
   assert.doesNotMatch(indexHtml, /data-smartastro-popup-destination="homepage-silks-week"/);
 });
 
+test("homepage popup includes homeschool dropdown shells (#23)", () => {
+  const indexHtml = fs.readFileSync(path.join(PROJECT_ROOT, "index.html"), "utf8");
+
+  assert.match(
+    indexHtml,
+    /data-smartastro-popup-group="homeschool-foundations"[\s\S]*?Homeschool Foundations/,
+  );
+  assert.match(
+    indexHtml,
+    /data-smartastro-popup-group="junior-homeschool-foundations"[\s\S]*?Junior Homeschool Foundations/,
+  );
+  assert.match(indexHtml, /popup-slot-empty[\s\S]*?No classes this week\./);
+});
+
 test("retired Lyra class surfaces stay off public site (#21)", () => {
   const indexHtml = fs.readFileSync(path.join(PROJECT_ROOT, "index.html"), "utf8");
   const eventsHtml = fs.readFileSync(path.join(PROJECT_ROOT, "events.html"), "utf8");
