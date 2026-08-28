@@ -29,7 +29,7 @@ const MANAGED_DESTINATION_DEFINITIONS = {
   "lyra-foundations": {
     destinationKey: "lyra-foundations",
     classNames: ["Lyra Foundations"],
-    insertionEnabled: true,
+    insertionEnabled: false,
   },
   "junior-aerial-classes": {
     destinationKey: "junior-aerial-classes",

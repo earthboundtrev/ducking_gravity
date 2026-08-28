@@ -6,7 +6,6 @@ const {
 
 const VALID_DESTINATION_KEYS = new Set([
   "homepage-all-classes-week",
-  "homepage-lyra",
 ]);
 
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
