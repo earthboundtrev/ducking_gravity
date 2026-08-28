@@ -146,6 +146,14 @@
     "ACT! Classes": "Aerial Competitive Team (ACT!) Classes",
   };
 
+  /** Always show these popup groups when sync has run; empty state when no slots in payload (#23). */
+  const POPUP_PERSISTENT_EMPTY_GROUPS = [
+    { groupKey: "homeschool-foundations", groupLabel: "Homeschool Foundations" },
+    { groupKey: "junior-homeschool-foundations", groupLabel: "Junior Homeschool Foundations" },
+  ];
+
+  const POPUP_EMPTY_GROUP_MESSAGE = "No classes this week.";
+
   function displayPopupGroupLabel(groupLabel) {
     return POPUP_GROUP_LABEL_OVERRIDES[groupLabel] || groupLabel;
   }
@@ -232,10 +240,37 @@
     return slotElement;
   }
 
+  function createPopupEmptyStateElement() {
+    const slotElement = document.createElement("div");
+    slotElement.className = "popup-slot popup-slot-empty";
+
+    const time = document.createElement("span");
+    time.className = "popup-slot-time";
+    time.textContent = POPUP_EMPTY_GROUP_MESSAGE;
+    slotElement.appendChild(time);
+    return slotElement;
+  }
+
+  function populateDropdownContent(content, slots) {
+    content.replaceChildren();
+    if (!Array.isArray(slots) || slots.length === 0) {
+      content.appendChild(createPopupEmptyStateElement());
+      return;
+    }
+
+    for (const slot of slots) {
+      content.appendChild(createPopupSlotElement(slot));
+    }
+  }
+
   function createDropdownGroup(group) {
     const container = document.createElement("div");
     container.className = "popup-dropdown-container";
     container.dataset.smartastroPopupGroup = group.groupKey;
+    const slots = Array.isArray(group.slots) ? group.slots : [];
+    if (slots.length === 0) {
+      container.dataset.smartastroPopupEmpty = "true";
+    }
 
     const toggle = document.createElement("button");
     toggle.className = "popup-dropdown-toggle";
@@ -244,10 +279,7 @@
 
     const content = document.createElement("div");
     content.className = "popup-dropdown-content";
-
-    for (const slot of group.slots) {
-      content.appendChild(createPopupSlotElement(slot));
-    }
+    populateDropdownContent(content, slots);
 
     container.append(toggle, content);
     return container;
@@ -280,16 +312,28 @@
     const slotRoot = slide.querySelector("[data-smartastro-popup-slot-root]");
     if (!slotRoot) return;
 
-    if (!Array.isArray(destination.slots) || destination.slots.length === 0) {
-      if (destination.updatedAt) {
-        slotRoot.replaceChildren();
-      }
+    const hasSynced = Boolean(destination.updatedAt);
+    const syncedSlots = Array.isArray(destination.slots) ? destination.slots : [];
+
+    if (!hasSynced && syncedSlots.length === 0) {
       return;
     }
 
+    const syncedGroups = groupSlots(syncedSlots);
+    const renderedKeys = new Set();
+
     slotRoot.replaceChildren();
-    for (const group of groupSlots(destination.slots)) {
+
+    for (const group of syncedGroups) {
       slotRoot.appendChild(createDropdownGroup(group));
+      renderedKeys.add(group.groupKey);
+    }
+
+    if (hasSynced) {
+      for (const persistent of POPUP_PERSISTENT_EMPTY_GROUPS) {
+        if (renderedKeys.has(persistent.groupKey)) continue;
+        slotRoot.appendChild(createDropdownGroup({ ...persistent, slots: [] }));
+      }
     }
 
     slotRoot.querySelectorAll("[data-smartastro-schedule-id]").forEach((slotElement) => {
