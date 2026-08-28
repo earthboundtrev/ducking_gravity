@@ -216,7 +216,7 @@ test("managed homepage popup destinations exist in index.html", () => {
   const html = fs.readFileSync(path.join(PROJECT_ROOT, "index.html"), "utf8");
 
   assert.match(html, /data-smartastro-popup-destination="homepage-all-classes-week"/);
-  assert.match(html, /data-smartastro-popup-destination="homepage-lyra"/);
+  assert.doesNotMatch(html, /data-smartastro-popup-destination="homepage-lyra"/);
   assert.doesNotMatch(html, /data-smartastro-popup-destination="homepage-silks-week"/);
   assert.doesNotMatch(html, /PNO_july_25_flyer\.png/);
   assert.doesNotMatch(html, /Parents Night Out/);
@@ -225,20 +225,21 @@ test("managed homepage popup destinations exist in index.html", () => {
   assert.doesNotMatch(html, /National Night Out/);
   assert.doesNotMatch(html, /calendar\?class=1649/);
 
-  const managedSlides = html.match(
-    /data-slide="0" data-smartastro-popup-destination="homepage-all-classes-week"[\s\S]*?data-slide="1" data-smartastro-popup-destination="homepage-lyra"/,
-  );
-  assert.ok(managedSlides, "expected all-classes then lyra as the homepage carousel slides");
   assert.match(
     html,
     /<div class="popup-carousel-slide active" data-slide="0" data-smartastro-popup-destination="homepage-all-classes-week">/,
+  );
+  assert.equal(
+    (html.match(/data-smartastro-popup-destination="/g) || []).length,
+    1,
+    "expected single homepage popup destination after Lyra retirement (#21)",
   );
 });
 
 test("homepage popup ACT dropdown uses expanded ACT label (#13, #17)", () => {
   const html = fs.readFileSync(path.join(PROJECT_ROOT, "index.html"), "utf8");
   const allClassesSlide = html.match(
-    /data-smartastro-popup-destination="homepage-all-classes-week"[\s\S]*?(?=<!-- Slide 2: Lyra -->)/,
+    /data-smartastro-popup-destination="homepage-all-classes-week"[\s\S]*?(?=<button class="popup-carousel-arrow popup-carousel-arrow-right")/,
   )?.[0];
 
   assert.ok(allClassesSlide, "expected homepage all-classes popup slide");
@@ -264,6 +265,13 @@ test("parses replaceWeek payloads from fixture", () => {
   assert.equal(payload.destinationKey, "homepage-all-classes-week");
   assert.equal(payload.slots.length, 2);
   assert.equal(payload.slots[0].scheduleId, 1468);
+});
+
+test("rejects retired homepage-lyra replaceWeek (#21)", () => {
+  const body = fs.readFileSync(ALL_CLASSES_FIXTURE, "utf8");
+  const payload = JSON.parse(body);
+  payload.destinationKey = "homepage-lyra";
+  assert.throws(() => parseReplaceWeekPayload(JSON.stringify(payload)), /Unknown popup destination key/);
 });
 
 test("rejects invalid replaceWeek payloads", () => {
@@ -463,6 +471,14 @@ test("parses upsertSlot payloads from fixture", () => {
   const payload = parseUpsertSlotPayload(body);
   assert.equal(payload.destinationKey, "silks-foundations");
   assert.equal(payload.slot.scheduleId, 1600);
+});
+
+test("rejects disabled lyra-foundations upsertSlot (#21)", () => {
+  const payload = inWindowUpsertBody({ destinationKey: "lyra-foundations", className: "Lyra Foundations" });
+  assert.throws(
+    () => parseUpsertSlotPayload(JSON.stringify(payload)),
+    /Managed destination insertion is disabled/,
+  );
 });
 
 test("rejects unknown managed destination keys", () => {
@@ -922,8 +938,25 @@ test("purgeOutOfWindowManagedSlots drops rows outside the published window (#278
 test("index.html wires homepage popup destinations (#302)", () => {
   const indexHtml = fs.readFileSync(path.join(PROJECT_ROOT, "index.html"), "utf8");
   assert.match(indexHtml, /data-smartastro-popup-destination="homepage-all-classes-week"/);
-  assert.match(indexHtml, /data-smartastro-popup-destination="homepage-lyra"/);
+  assert.doesNotMatch(indexHtml, /data-smartastro-popup-destination="homepage-lyra"/);
   assert.doesNotMatch(indexHtml, /data-smartastro-popup-destination="homepage-silks-week"/);
+});
+
+test("retired Lyra class surfaces stay off public site (#21)", () => {
+  const indexHtml = fs.readFileSync(path.join(PROJECT_ROOT, "index.html"), "utf8");
+  const eventsHtml = fs.readFileSync(path.join(PROJECT_ROOT, "events.html"), "utf8");
+  const membershipsHtml = fs.readFileSync(path.join(PROJECT_ROOT, "memberships.html"), "utf8");
+  const netlifyToml = fs.readFileSync(path.join(PROJECT_ROOT, "netlify.toml"), "utf8");
+
+  assert.ok(fs.existsSync(path.join(PROJECT_ROOT, "lyra.html")), "lyra.html kept in repo");
+  assert.doesNotMatch(indexHtml, /<h3>Lyra Classes<\/h3>/);
+  assert.doesNotMatch(indexHtml, /href="lyra\.html"/);
+  assert.doesNotMatch(eventsHtml, /href="lyra\.html"/);
+  assert.doesNotMatch(eventsHtml, /<strong>Lyra \(Aerial Hoop\)<\/strong>/);
+  assert.doesNotMatch(membershipsHtml, /id="lyra-membership"/);
+  assert.match(netlifyToml, /from = "\/lyra\.html"[\s\S]*?force = true[\s\S]*?status = 301/);
+  assert.match(indexHtml, /Silks · Lyra · Events/);
+  assert.match(indexHtml, /lyra_image_popup\.jpg/);
 });
 
 test("upsertSlot never shrinks stored managed destination window (#280)", () => {

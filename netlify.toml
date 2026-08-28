@@ -17,6 +17,19 @@
   to = "/.netlify/functions/smartastro-availability"
   status = 200
 
+# Lyra classes retired (#21) — keep lyra.html in repo; do not serve publicly
+[[redirects]]
+  from = "/lyra.html"
+  to = "/index.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/lyra"
+  to = "/index.html"
+  status = 301
+  force = true
+
 # This catch-all is for SPA routing - it only applies if no file matches
 [[redirects]]
   from = "/*"
