@@ -956,6 +956,25 @@ test("homepage popup includes homeschool dropdown shells (#23)", () => {
   assert.match(indexHtml, /popup-slot-empty[\s\S]*?No classes this week\./);
 });
 
+test("homepage programs grid includes Homeschool Classes card (#25)", () => {
+  const indexHtml = fs.readFileSync(path.join(PROJECT_ROOT, "index.html"), "utf8");
+  const services = indexHtml.match(/<section id="services"[\s\S]*?<\/section>/);
+  assert.ok(services, "index.html is missing the Programs / services section");
+
+  const homeschoolCard = services[0].match(
+    /<div class="service-card"[^>]*onclick="window\.location\.href='homeschool\.html'"[\s\S]*?<h3>Homeschool Classes<\/h3>[\s\S]*?<\/div>/,
+  );
+  assert.ok(
+    homeschoolCard,
+    "Programs grid is missing the Homeschool Classes service-card that links to homeschool.html",
+  );
+
+  const card = homeschoolCard[0];
+  assert.match(card, /<a href="homeschool\.html" class="cta-button">Learn More<\/a>/);
+  assert.match(card, /Homeschool Foundations \(ages 9\+\)/);
+  assert.match(card, /Junior Homeschool Foundations \(ages 4 through 8\)/);
+});
+
 test("retired Lyra class surfaces stay off public site (#21)", () => {
   const indexHtml = fs.readFileSync(path.join(PROJECT_ROOT, "index.html"), "utf8");
   const eventsHtml = fs.readFileSync(path.join(PROJECT_ROOT, "events.html"), "utf8");
