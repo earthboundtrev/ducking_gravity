@@ -225,14 +225,25 @@ test("managed homepage popup destinations exist in index.html", () => {
   assert.doesNotMatch(html, /National Night Out/);
   assert.doesNotMatch(html, /calendar\?class=1649/);
 
-  const showcaseSlide = html.match(
-    /<div class="popup-carousel-slide active" data-slide="0">[\s\S]*?showcase_autmmn_in_the_air\.png[\s\S]*?calendar\?class=1908/,
+  const showcaseStart = html.indexOf('data-slide="0"');
+  const weeklyStart = html.indexOf('data-slide="1"');
+  assert.ok(
+    showcaseStart !== -1 && weeklyStart > showcaseStart,
+    "expected Autumn in the Air showcase as first carousel slide",
   );
-  assert.ok(showcaseSlide, "expected Autumn in the Air showcase as first carousel slide");
+  const showcaseSlide = html.slice(showcaseStart, weeklyStart);
+  assert.match(showcaseSlide, /showcase_autmmn_in_the_air\.png/);
+  assert.match(showcaseSlide, /calendar\?class=1908/);
+  assert.match(showcaseSlide, /Sign up!/);
   assert.doesNotMatch(
-    showcaseSlide[0],
+    showcaseSlide,
     /data-smartastro-popup-destination=/,
     "first promo slide should stay manual",
+  );
+  assert.doesNotMatch(
+    showcaseSlide,
+    /popup-text/,
+    "showcase flyer already has the copy; first slide should only add Sign up",
   );
 
   assert.match(
