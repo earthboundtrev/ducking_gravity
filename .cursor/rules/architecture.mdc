@@ -29,6 +29,7 @@ scripts/               # One-off measurement / maintenance scripts
 | Managed table upsert / windows | `netlify/functions/lib/smartastro-managed-destinations.js` |
 | Availability batch + removals | `netlify/functions/lib/smartastro-availability.js` + handler |
 | Sticky-header hash offset | `js/anchor-offset.js` + `js/compact-header.js` |
+| Contact / birthday forms | `js/contact-form.js` + `netlify/functions/contact-form.mjs` |
 
 ## Boundaries
 
