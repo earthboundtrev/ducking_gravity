@@ -225,30 +225,13 @@ test("managed homepage popup destinations exist in index.html", () => {
   assert.doesNotMatch(html, /National Night Out/);
   assert.doesNotMatch(html, /calendar\?class=1649/);
 
-  const showcaseStart = html.indexOf('data-slide="0"');
-  const weeklyStart = html.indexOf('data-slide="1"');
-  assert.ok(
-    showcaseStart !== -1 && weeklyStart > showcaseStart,
-    "expected Autumn in the Air showcase as first carousel slide",
-  );
-  const showcaseSlide = html.slice(showcaseStart, weeklyStart);
-  assert.match(showcaseSlide, /showcase_autmmn_in_the_air\.png/);
-  assert.match(showcaseSlide, /calendar\?class=1908/);
-  assert.match(showcaseSlide, /Sign up!/);
-  assert.doesNotMatch(
-    showcaseSlide,
-    /data-smartastro-popup-destination=/,
-    "first promo slide should stay manual",
-  );
-  assert.doesNotMatch(
-    showcaseSlide,
-    /popup-text/,
-    "showcase flyer already has the copy; first slide should only add Sign up",
-  );
+  assert.doesNotMatch(html, /showcase_autmmn_in_the_air\.png/);
+  assert.doesNotMatch(html, /Autumn in the Air/);
+  assert.doesNotMatch(html, /calendar\?class=1908/);
 
   assert.match(
     html,
-    /<div class="popup-carousel-slide" data-slide="1" data-smartastro-popup-destination="homepage-all-classes-week">/,
+    /<div class="popup-carousel-slide active" data-slide="0" data-smartastro-popup-destination="homepage-all-classes-week">/,
   );
   assert.equal(
     (html.match(/data-smartastro-popup-destination="/g) || []).length,
@@ -257,13 +240,13 @@ test("managed homepage popup destinations exist in index.html", () => {
   );
 });
 
-test("events page features Autumn in the Air showcase at the top", () => {
+test("events page has no Autumn in the Air showcase after the event passed", () => {
   const html = fs.readFileSync(path.join(PROJECT_ROOT, "events.html"), "utf8");
-  assert.match(html, /id="showcase-autumn-in-the-air"/);
-  assert.match(html, /showcase_autmmn_in_the_air\.png/);
-  assert.match(html, /calendar\?class=1908/);
-  assert.match(html, /Autumn in the Air Showcase/);
-  assert.doesNotMatch(html, /There are no camps or special events scheduled right now/);
+  assert.doesNotMatch(html, /id="showcase-autumn-in-the-air"/);
+  assert.doesNotMatch(html, /showcase_autmmn_in_the_air\.png/);
+  assert.doesNotMatch(html, /calendar\?class=1908/);
+  assert.doesNotMatch(html, /Autumn in the Air Showcase/);
+  assert.match(html, /There are no camps or special events scheduled right now/);
 });
 
 test("homepage popup ACT dropdown uses expanded ACT label (#13, #17)", () => {
