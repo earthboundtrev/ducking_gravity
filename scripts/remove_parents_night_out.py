@@ -5,49 +5,40 @@ import re
 ROOT = Path(__file__).resolve().parent.parent
 
 index = (ROOT / "index.html").read_text(encoding="utf-8")
-index = index.replace("<motion.div", "<motion.div").replace("</motion.div>", "</motion.div>")
-index = index.replace("<motion.div", "<motion").replace("</motion.div>", "</motion>")
-# normalize accidental motion.* tags
-index = index.replace("<motion", "<div").replace("</motion>", "</div>")
 
 pno_slide = re.compile(
-    r"\s*<!-- Slide 2: Parents.*?Night Out -->.*?"
-    r"</div>\s*\n\s*<!-- Slide 3: Soar The Sky with Baskets and Pie -->",
+    r"\s*<!-- Slide 1: Parents Night Out \(manual promo\) -->.*?"
+    r"(?=                    <!-- Slide \d+:)",
     re.DOTALL,
 )
-index, n = pno_slide.subn(
-    "\n                    <!-- Slide 2: Soar The Sky with Baskets and Pie -->",
-    index,
-    count=1,
-)
+index, n = pno_slide.subn("\n", index, count=1)
 if n != 1:
     raise SystemExit(f"index.html: expected 1 PNO slide removal, got {n}")
 
-marker = '<div class="popup-carousel-container">'
-start = index.find(marker)
-end = index.find(
-    '<button class="popup-carousel-arrow popup-carousel-arrow-right"',
-    start,
+index = index.replace(
+    "<!-- Slide 2: All classes for the week of 6/29 -->",
+    "<!-- Slide 1: All classes for the week of 6/29 -->",
+    1,
 )
-chunk = index[start:end]
-slide_num = 0
-
-def renumber(_match):
-    global slide_num
-    value = f'data-slide="{slide_num}"'
-    slide_num += 1
-    return value
-
-chunk = re.sub(r'data-slide="\d+"', renumber, chunk)
-index = index[:start] + chunk + index[end:]
+index = index.replace(
+    '<div class="popup-carousel-slide" data-slide="1" data-smartastro-popup-destination="homepage-all-classes-week">',
+    '<div class="popup-carousel-slide active" data-slide="0" data-smartastro-popup-destination="homepage-all-classes-week">',
+    1,
+)
 
 (ROOT / "index.html").write_text(index, encoding="utf-8")
 print("index.html: removed PNO slide")
 
+EMPTY_CAMPS = """        <div class="camp-section">
+            <div class="camp-title">Camps &amp; Special Events</div>
+            <p style="color: var(--text-dark); font-size: 1.08rem; text-align: center; max-width: 720px; margin: 0 auto;">There are no camps or special events scheduled right now. When new camps, workshops, and events are added, you&rsquo;ll find the dates, details, and registration links right here. In the meantime, explore our ongoing classes below!</p>
+        </div>
+"""
+
 events = (ROOT / "events.html").read_text(encoding="utf-8")
 events, n2 = re.subn(
-    r'\s*<div class="camp-section" id="parents-night-out">.*?</div>\s*\n',
-    "\n",
+    r'        <div class="camp-section" id="parents-night-out">.*?(?=\s*<div class="camp-section">)',
+    EMPTY_CAMPS,
     events,
     count=1,
     flags=re.DOTALL,
