@@ -20,9 +20,25 @@ function createElement(tagName) {
     parent: null,
     removed: false,
     classList: {
-      contains() {
-        return false;
+      contains(name) {
+        return String(element.className || "")
+          .split(/\s+/)
+          .includes(name);
       },
+    },
+    closest(selector) {
+      let node = element;
+      while (node) {
+        if (
+          selector === "[data-smartastro-popup-destination]" &&
+          node.dataset &&
+          node.dataset.smartastroPopupDestination
+        ) {
+          return node;
+        }
+        node = node.parent;
+      }
+      return null;
     },
     append(...nodes) {
       for (const node of nodes) {
@@ -140,6 +156,7 @@ function loadPopupHelpers() {
     `${body}
 module.exports = {
   renderPopupDestination,
+  applyPopupSlotState,
 };`,
     sandbox,
   );
@@ -172,6 +189,53 @@ function sampleHomeschoolSlot(scheduleId, groupKey, groupLabel) {
     signUpUrl: `https://smartastro.app/calendar?class=${scheduleId}`,
   };
 }
+
+test("manual promo popup slots ignore removed tombstones so PNO stays Sign up", () => {
+  const { applyPopupSlotState } = loadPopupHelpers();
+  const slot = createElement("div");
+  slot.className = "popup-slot";
+  slot.dataset.smartastroScheduleId = "2008";
+  const button = createElement("a");
+  button.className = "popup-slot-button";
+  button.textContent = "Sign up!";
+  slot.appendChild(button);
+
+  applyPopupSlotState(slot, {
+    scheduleId: 2008,
+    removed: true,
+    hasEnded: true,
+    isFull: false,
+    isClosed: false,
+  });
+
+  assert.equal(slot.children[0], button);
+  assert.equal(slot.children[0].textContent, "Sign up!");
+});
+
+test("managed week popup slots still show Class Removed for tombstones", () => {
+  const { applyPopupSlotState } = loadPopupHelpers();
+  const slide = createElement("div");
+  slide.dataset.smartastroPopupDestination = "homepage-all-classes-week";
+  const slot = createElement("div");
+  slot.className = "popup-slot";
+  slot.dataset.smartastroScheduleId = "1440";
+  const button = createElement("a");
+  button.className = "popup-slot-button";
+  button.textContent = "Sign up!";
+  slot.appendChild(button);
+  slide.appendChild(slot);
+
+  applyPopupSlotState(slot, {
+    scheduleId: 1440,
+    removed: true,
+    hasEnded: true,
+    isFull: false,
+    isClosed: false,
+  });
+
+  assert.notEqual(slot.children[0], button);
+  assert.equal(slot.children[0].children[0].textContent, "Class Removed");
+});
 
 test("renderPopupDestination keeps static markup before sync (#23)", () => {
   const { renderPopupDestination } = loadPopupHelpers();

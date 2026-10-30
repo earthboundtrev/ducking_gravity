@@ -668,6 +668,82 @@ test("marks removed schedules with a tombstone slot (#270)", () => {
   assert.equal(state.slots["1440"].isFull, false);
 });
 
+test("removedScheduleIds do not tombstone manual promo class IDs (Parents Night Out 2008)", () => {
+  const payload = parsePayload(
+    JSON.stringify({
+      source: "smartastro",
+      generatedAt: "2026-10-30T06:00:00.000Z",
+      updates: [],
+      removedScheduleIds: [2008, 1440],
+    }),
+  );
+
+  const { state, summary } = mergeSlotState(null, payload);
+  assert.equal(summary.removed, 1);
+  assert.equal(summary.skippedUnknownRemoved, 1);
+  assert.equal(state.slots["1440"].removed, true);
+  assert.equal(state.slots["2008"], undefined);
+});
+
+test("prunes existing removed tombstones for unknown promo IDs (Parents Night Out 2008)", () => {
+  const payload = parsePayload(
+    JSON.stringify({
+      source: "smartastro",
+      generatedAt: "2026-10-30T06:00:00.000Z",
+      updates: [{ scheduleId: 1440, isFull: false, availableSpots: 2, isClosed: false }],
+    }),
+  );
+
+  const { state, summary } = mergeSlotState(
+    {
+      slots: {
+        2008: {
+          scheduleId: 2008,
+          removed: true,
+          hasEnded: true,
+          isFull: false,
+          isClosed: false,
+          availableSpots: 0,
+        },
+        1440: {
+          scheduleId: 1440,
+          removed: true,
+          hasEnded: true,
+          isFull: false,
+          isClosed: false,
+          availableSpots: 0,
+        },
+      },
+    },
+    payload,
+  );
+
+  assert.equal(summary.prunedUnknownRemoved, 1);
+  assert.equal(state.slots["2008"], undefined);
+  assert.equal(state.slots["1440"].isFull, false);
+  assert.equal(state.slots["1440"].removed, undefined);
+});
+
+test("public state omits unknown promo removed tombstones so PNO stays bookable", () => {
+  const response = publicState(
+    {
+      slots: {
+        2008: { scheduleId: 2008, removed: true, hasEnded: true },
+        1440: { scheduleId: 1440, removed: true, hasEnded: true },
+      },
+      updatedAt: "2026-10-30T06:00:00.000Z",
+      generatedAt: null,
+    },
+    emptyPopupState(),
+    emptyManagedState(),
+  );
+
+  assert.equal(response.slots["2008"], undefined);
+  assert.equal(response.slots["1440"].removed, true);
+  assert.ok(!response.manifest.scheduleIds.includes(2008));
+  assert.ok(response.manifest.scheduleIds.includes(1440));
+});
+
 test("public state exposes managed destinations and combined manifest", () => {
   const upsertPayload = parseInWindowUpsert();
   const { state: managedState } = upsertManagedSlot(emptyManagedState(), upsertPayload);

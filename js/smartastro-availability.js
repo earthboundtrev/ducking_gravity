@@ -81,9 +81,20 @@
     return createOpenButton(slot, className);
   }
 
+  function isManualPromoPopupSlot(slotElement) {
+    if (!slotElement || !slotElement.classList || !slotElement.classList.contains("popup-slot")) {
+      return false;
+    }
+    if (typeof slotElement.closest !== "function") return false;
+    return !slotElement.closest("[data-smartastro-popup-destination]");
+  }
+
   function applyPopupSlotState(slotElement, slot) {
     const currentButton = slotElement.querySelector(".popup-slot-button");
     if (!currentButton) return;
+    // Flyer/promo slides are not part of the week destination. A stale
+    // removed tombstone must not replace Sign up! with Class Removed.
+    if (slot && slot.removed && isManualPromoPopupSlot(slotElement)) return;
 
     const nextButton = createSlotButton(slot);
     currentButton.replaceWith(nextButton);
