@@ -251,8 +251,9 @@ async function handleSmartAstroAvailability(event, store) {
 
   const popupState = await readPopupState(store);
   let managedState = await readManagedState(store);
+  const destinationKnownIds = resolveKnownScheduleIds(popupState, managedState);
   const knownScheduleIds = mergeKnownScheduleIdsWithPayload(
-    resolveKnownScheduleIds(popupState, managedState),
+    destinationKnownIds,
     payload,
   );
 
@@ -269,6 +270,7 @@ async function handleSmartAstroAvailability(event, store) {
   };
   const { state: mergedState, summary } = mergeSlotState(existingState, mergePayload, {
     knownScheduleIds,
+    tombstoneKnownScheduleIds: destinationKnownIds,
   });
   const { state, marked: classOverMarked } = markInWeekPopupRemovalsAsClassOver(
     mergedState,

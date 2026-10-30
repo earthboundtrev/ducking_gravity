@@ -121,17 +121,27 @@ function normalizeUpdate(update, calendarBaseUrl, knownScheduleIds = STATIC_KNOW
 function mergeSlotState(existingState, payload, options = {}) {
   const baseCalendarUrl = payload.baseCalendarUrl || DEFAULT_CALENDAR_BASE_URL;
   const knownScheduleIds = options.knownScheduleIds || STATIC_KNOWN_SCHEDULE_IDS;
+  const tombstoneKnownIds = options.tombstoneKnownScheduleIds || knownScheduleIds;
   const slots = { ...(existingState && existingState.slots ? existingState.slots : {}) };
   const summary = {
     updated: 0,
     removed: 0,
     skippedUnknown: [],
     skippedInvalid: 0,
+    skippedUnknownRemoved: 0,
+    prunedUnknownRemoved: 0,
   };
 
   for (const rawId of payload.removedScheduleIds || []) {
     const scheduleId = Number(rawId);
     if (!Number.isInteger(scheduleId) || scheduleId <= 0) continue;
+    // Manual promo IDs (PNO/showcase) are not in popup/managed manifests. SmartAstro
+    // still lists them in removedScheduleIds when they sit outside the Mon–Fri week,
+    // which would flip the flyer Sign up button to Class Removed.
+    if (!tombstoneKnownIds.has(scheduleId)) {
+      summary.skippedUnknownRemoved += 1;
+      continue;
+    }
     slots[String(scheduleId)] = {
       scheduleId,
       removed: true,
@@ -158,6 +168,15 @@ function mergeSlotState(existingState, payload, options = {}) {
 
     slots[String(update.scheduleId)] = update;
     summary.updated += 1;
+  }
+
+  for (const key of Object.keys(slots)) {
+    const slot = slots[key];
+    if (!slot || !slot.removed) continue;
+    const scheduleId = Number(slot.scheduleId || key);
+    if (tombstoneKnownIds.has(scheduleId)) continue;
+    delete slots[key];
+    summary.prunedUnknownRemoved += 1;
   }
 
   return {
@@ -248,10 +267,19 @@ function publicState(state, popupState, managedState) {
   const { publicManagedState } = require("./smartastro-managed-destinations");
   const popups = publicPopupState(popupState);
   const managed = publicManagedState(managedState);
+  const knownScheduleIds = resolveKnownScheduleIds(popupState, managedState);
+  const rawSlots = state && state.slots ? state.slots : {};
+  const slots = {};
+  for (const [key, slot] of Object.entries(rawSlots)) {
+    if (slot && slot.removed && !knownScheduleIds.has(Number(slot.scheduleId || key))) {
+      continue;
+    }
+    slots[key] = slot;
+  }
   const scheduleIds = new Set([
     ...(popups.manifest && popups.manifest.scheduleIds ? popups.manifest.scheduleIds : []),
     ...(managed.manifest && managed.manifest.scheduleIds ? managed.manifest.scheduleIds : []),
-    ...Object.keys(state && state.slots ? state.slots : {})
+    ...Object.keys(slots)
       .map((id) => Number(id))
       .filter((id) => Number.isInteger(id) && id > 0),
   ]);
@@ -260,7 +288,7 @@ function publicState(state, popupState, managedState) {
     source: "smartastro",
     updatedAt: state && state.updatedAt ? state.updatedAt : null,
     generatedAt: state && state.generatedAt ? state.generatedAt : null,
-    slots: state && state.slots ? state.slots : {},
+    slots,
     popups,
     managed,
     manifest: {
