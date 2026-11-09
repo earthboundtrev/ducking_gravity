@@ -19,9 +19,9 @@ Program pages cover silks and open aerials, lyra, junior aerials, summer camps, 
 ## What’s in the repo
 
 - **Static, multi-page HTML** — each major offering has its own page (e.g. `silks.html`, `summercamps.html`, `memberships.html`) plus `index.html` with a homepage popup carousel.
-- **Contact / inquiry forms** via **EmailJS** (no custom backend for forms).
-- **Google reCAPTCHA** on forms that use it.
-- **Netlify** hosting: build runs `node inject-env.js` to inject EmailJS config at deploy time (see `netlify.toml`).
+- **Contact / inquiry forms** via a Netlify Function + **Resend** (API key stays server-side).
+- **Google reCAPTCHA v2** on forms; the token is verified server-side before send.
+- **Netlify** hosting (see `netlify.toml`).
 - **SmartAstro sync receiver** — Netlify Function at `/api/smartastro-availability` accepts authenticated payloads from SmartAstro for:
   - full/open status updates on linked class slots
   - weekly homepage popup `replaceWeek` rollover (all-classes, silks, lyra)
@@ -36,9 +36,8 @@ There is no app database in this project; class sync state lives in **Netlify Bl
 ## Local setup
 
 1. `npm install`
-2. Copy `.env.example` to `.env` and add EmailJS values (`EMAILJS_PUBLIC_KEY`, `EMAILJS_SERVICE_ID`, `EMAILJS_TEMPLATE_ID`).
-3. Run `node inject-env.js` to refresh EmailJS placeholders in `index.html` from your env file.
-4. Run tests: `npm test`
+2. Copy `.env.example` to `.env` and add server-only form values (`RESEND_API_KEY`, `RESEND_FROM`, `RECAPTCHA_SECRET_KEY`). Local `netlify dev` reads these for `/api/contact`.
+3. Run tests: `npm test`
 
 ---
 
@@ -48,13 +47,13 @@ In **Site configuration → Environment variables**, set:
 
 | Variable | Purpose |
 |----------|---------|
-| `EMAILJS_PUBLIC_KEY` | Contact form delivery |
-| `EMAILJS_SERVICE_ID` | Contact form delivery |
-| `EMAILJS_TEMPLATE_ID` | Contact form delivery |
+| `RESEND_API_KEY` | Server-only key for contact/birthday form mail |
+| `RESEND_FROM` | Verified Resend From address (e.g. `Ducking Gravity <forms@your-domain>`) |
+| `CONTACT_INBOX` | Studio inbox (defaults to `duckinggravity@gmail.com` if unset) |
+| `RECAPTCHA_SECRET_KEY` | Server-only reCAPTCHA v2 secret for siteverify |
 | `MARKETING_SYNC_SHARED_SECRET` | Shared secret for SmartAstro → site sync (must match SmartAstro env) |
 
-Build command: `node inject-env.js`  
-Publish directory: repo root (see `netlify.toml`).
+Publish directory: repo root (see `netlify.toml`). After production verify, EmailJS can be cancelled.
 
 Enable **Netlify Blobs** for the SmartAstro sync function. The receiver uses a Functions 2.0 ES module entry at `netlify/functions/smartastro-availability.mjs`, so Netlify injects Blob credentials automatically. It opens the store with strong consistency because managed-slot updates read, merge, and rewrite shared JSON state; do not reintroduce the Functions v1 `connectLambda(event)` path, which cannot supply the uncached Blob endpoint required for strong reads.
 
@@ -82,4 +81,4 @@ Unit tests in `tests/smartastro-availability.test.js` cover timestamp windows an
 
 ## Note on secrets
 
-Do not commit `.env`. Use `.env.example` as the template only. The marketing sync shared secret is server-side only on Netlify and in SmartAstro’s environment — never in client HTML.
+Do not commit `.env`. Use `.env.example` as the template only. `RESEND_API_KEY`, `RECAPTCHA_SECRET_KEY`, and `MARKETING_SYNC_SHARED_SECRET` are server-side only on Netlify — never in client HTML. `RESEND_FROM` must be a sender address verified on the studio Resend account.

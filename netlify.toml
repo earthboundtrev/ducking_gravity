@@ -1,5 +1,5 @@
 [build]
-  command = "node inject-env.js"
+  command = "echo static-publish"
   publish = "."
 
 [functions]
@@ -15,6 +15,11 @@
 [[redirects]]
   from = "/api/smartastro-availability"
   to = "/.netlify/functions/smartastro-availability"
+  status = 200
+
+[[redirects]]
+  from = "/api/contact"
+  to = "/.netlify/functions/contact-form"
   status = 200
 
 # Lyra classes retired (#21) — keep lyra.html in repo; do not serve publicly
@@ -37,8 +42,4 @@
   status = 200
 
 # Prefer Site settings → Environment variables in Netlify UI so values are not committed.
-# These keys match what inject-env.js / dotenv expect during the build.
-[build.environment]
-  EMAILJS_PUBLIC_KEY = ""
-  EMAILJS_SERVICE_ID = ""
-  EMAILJS_TEMPLATE_ID = ""
+# Contact form secrets (RESEND_API_KEY, RECAPTCHA_SECRET_KEY, RESEND_FROM) stay server-only.
