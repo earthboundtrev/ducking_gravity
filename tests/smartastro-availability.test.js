@@ -229,12 +229,13 @@ test("managed homepage popup destinations exist in index.html", () => {
   assert.doesNotMatch(html, /calendar\?class=1908/);
 
   const pnoStart = html.indexOf('data-slide="0"');
-  const weeklyStart = html.indexOf('data-slide="1"');
+  const photoStart = html.indexOf('data-slide="1"');
+  const weeklyStart = html.indexOf('data-slide="2"');
   assert.ok(
-    pnoStart !== -1 && weeklyStart > pnoStart,
-    "expected Parents Night Out as first carousel slide",
+    pnoStart !== -1 && photoStart > pnoStart && weeklyStart > photoStart,
+    "expected Parents Night Out, then Aerial Photography, then weekly classes",
   );
-  const pnoSlide = html.slice(pnoStart, weeklyStart);
+  const pnoSlide = html.slice(pnoStart, photoStart);
   assert.match(pnoSlide, /PNO_nov_14_flyer\.png/);
   assert.match(pnoSlide, /calendar\?class=2008/);
   assert.match(pnoSlide, /Sign up!/);
@@ -249,9 +250,20 @@ test("managed homepage popup destinations exist in index.html", () => {
     "PNO flyer already has the copy; first slide should only add Sign up",
   );
 
+  const photoSlide = html.slice(photoStart, weeklyStart);
+  assert.match(photoSlide, /aerial_photography_2026\.jpg/);
+  for (const classId of [2012, 2013, 2014, 2015, 2017, 2018, 2020]) {
+    assert.match(photoSlide, new RegExp(`calendar\\?class=${classId}`));
+  }
+  assert.doesNotMatch(
+    photoSlide,
+    /data-smartastro-popup-destination=/,
+    "photography promo slide should stay manual",
+  );
+
   assert.match(
     html,
-    /<div class="popup-carousel-slide" data-slide="1" data-smartastro-popup-destination="homepage-all-classes-week">/,
+    /<div class="popup-carousel-slide" data-slide="2" data-smartastro-popup-destination="homepage-all-classes-week">/,
   );
   assert.equal(
     (html.match(/data-smartastro-popup-destination="/g) || []).length,
@@ -270,6 +282,18 @@ test("events page features Parents Night Out on November 14", () => {
   assert.doesNotMatch(html, /id="showcase-autumn-in-the-air"/);
   assert.doesNotMatch(html, /showcase_autmmn_in_the_air\.png/);
   assert.doesNotMatch(html, /calendar\?class=1908/);
+});
+
+test("events page features Aerial Photography under Parents Night Out", () => {
+  const html = fs.readFileSync(path.join(PROJECT_ROOT, "events.html"), "utf8");
+  const pnoAt = html.indexOf('id="parents-night-out"');
+  const photoAt = html.indexOf('id="aerial-photography"');
+  const classesAt = html.indexOf("Classes & Workshops");
+  assert.ok(pnoAt !== -1 && photoAt > pnoAt && classesAt > photoAt);
+  assert.match(html, /aerial_photography_2026\.jpg/);
+  for (const classId of [2012, 2013, 2014, 2015, 2017, 2018, 2020]) {
+    assert.match(html, new RegExp(`calendar\\?class=${classId}`));
+  }
 });
 
 test("homepage popup ACT dropdown uses expanded ACT label (#13, #17)", () => {
