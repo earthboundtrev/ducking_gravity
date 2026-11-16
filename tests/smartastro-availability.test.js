@@ -230,16 +230,16 @@ test("managed homepage popup destinations exist in index.html", () => {
 
   assert.doesNotMatch(html, /PNO_nov_14_flyer\.png/);
   assert.doesNotMatch(html, /calendar\?class=2008/);
-  assert.doesNotMatch(html, /Parents Night Out \(manual promo\)/);
 
   const photoStart = html.indexOf('data-slide="0"');
-  const weeklyStart = html.indexOf('data-slide="1"');
+  const pnoStart = html.indexOf('data-slide="1"');
+  const weeklyStart = html.indexOf('data-slide="2"');
   assert.ok(
-    photoStart !== -1 && weeklyStart > photoStart,
-    "expected Aerial Photography, then weekly classes",
+    photoStart !== -1 && pnoStart > photoStart && weeklyStart > pnoStart,
+    "expected Aerial Photography, then Parents Night Out, then weekly classes",
   );
 
-  const photoSlide = html.slice(photoStart, weeklyStart);
+  const photoSlide = html.slice(photoStart, pnoStart);
   assert.match(photoSlide, /aerial_photography_2026\.jpg/);
   for (const classId of [2012, 2013, 2014, 2015, 2017, 2018]) {
     assert.match(photoSlide, new RegExp(`calendar\\?class=${classId}`));
@@ -251,9 +251,16 @@ test("managed homepage popup destinations exist in index.html", () => {
     "photography promo slide should stay manual",
   );
 
+  const pnoSlide = html.slice(pnoStart, weeklyStart);
+  assert.match(pnoSlide, /PNO_dec_12_flyer\.png/);
+  assert.match(pnoSlide, /calendar\?class=2009/);
+  assert.match(pnoSlide, /Sign up!/);
+  assert.doesNotMatch(pnoSlide, /data-smartastro-popup-destination=/);
+  assert.doesNotMatch(pnoSlide, /popup-text/);
+
   assert.match(
     html,
-    /<div class="popup-carousel-slide" data-slide="1" data-smartastro-popup-destination="homepage-all-classes-week">/,
+    /<div class="popup-carousel-slide" data-slide="2" data-smartastro-popup-destination="homepage-all-classes-week">/,
   );
   assert.equal(
     (html.match(/data-smartastro-popup-destination="/g) || []).length,
@@ -262,23 +269,26 @@ test("managed homepage popup destinations exist in index.html", () => {
   );
 });
 
-test("events page no longer features passed Parents Night Out", () => {
+test("events page features Parents Night Out on December 12", () => {
   const html = fs.readFileSync(path.join(PROJECT_ROOT, "events.html"), "utf8");
-  assert.doesNotMatch(html, /id="parents-night-out"/);
+  assert.match(html, /id="parents-night-out"/);
+  assert.match(html, /PNO_dec_12_flyer\.png/);
+  assert.match(html, /calendar\?class=2009/);
+  assert.match(html, /December 12, 2026/);
   assert.doesNotMatch(html, /PNO_nov_14_flyer\.png/);
   assert.doesNotMatch(html, /calendar\?class=2008/);
-  assert.doesNotMatch(html, /Sign up for Parents Night Out/);
   assert.doesNotMatch(html, /There are no camps or special events scheduled right now/);
   assert.doesNotMatch(html, /id="showcase-autumn-in-the-air"/);
   assert.doesNotMatch(html, /showcase_autmmn_in_the_air\.png/);
   assert.doesNotMatch(html, /calendar\?class=1908/);
 });
 
-test("events page features Aerial Photography as first featured event", () => {
+test("events page features Aerial Photography before Parents Night Out", () => {
   const html = fs.readFileSync(path.join(PROJECT_ROOT, "events.html"), "utf8");
   const photoAt = html.indexOf('id="aerial-photography"');
+  const pnoAt = html.indexOf('id="parents-night-out"');
   const classesAt = html.indexOf("Classes & Workshops");
-  assert.ok(photoAt !== -1 && classesAt > photoAt);
+  assert.ok(photoAt !== -1 && pnoAt > photoAt && classesAt > pnoAt);
   assert.match(html, /aerial_photography_2026\.jpg/);
   for (const classId of [2012, 2013, 2014, 2015, 2017, 2018]) {
     assert.match(html, new RegExp(`calendar\\?class=${classId}`));

@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parent.parent
 index = (ROOT / "index.html").read_text(encoding="utf-8")
 
 pno_slide = re.compile(
-    r"\s*<!-- Slide 1: Parents Night Out \(manual promo\) -->.*?"
+    r"\s*<!-- Slide \d+: Parents Night Out \(manual promo\) -->.*?"
     r"(?=                    <!-- Slide \d+:)",
     re.DOTALL,
 )
@@ -15,16 +15,6 @@ index, n = pno_slide.subn("\n", index, count=1)
 if n != 1:
     raise SystemExit(f"index.html: expected 1 PNO slide removal, got {n}")
 
-index = index.replace(
-    "<!-- Slide 2: Aerial Photography (manual promo) -->",
-    "<!-- Slide 1: Aerial Photography (manual promo) -->",
-    1,
-)
-index = index.replace(
-    '<div class="popup-carousel-slide" data-slide="1">',
-    '<div class="popup-carousel-slide active" data-slide="0">',
-    1,
-)
 index = index.replace(
     "<!-- Slide 3: All classes for the week of 6/29 -->",
     "<!-- Slide 2: All classes for the week of 6/29 -->",
