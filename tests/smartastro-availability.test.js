@@ -241,9 +241,10 @@ test("managed homepage popup destinations exist in index.html", () => {
 
   const photoSlide = html.slice(photoStart, weeklyStart);
   assert.match(photoSlide, /aerial_photography_2026\.jpg/);
-  for (const classId of [2012, 2013, 2014, 2015, 2017, 2018, 2020]) {
+  for (const classId of [2012, 2013, 2014, 2015, 2017, 2018]) {
     assert.match(photoSlide, new RegExp(`calendar\\?class=${classId}`));
   }
+  assert.doesNotMatch(photoSlide, /calendar\?class=2020/);
   assert.doesNotMatch(
     photoSlide,
     /data-smartastro-popup-destination=/,
@@ -279,9 +280,10 @@ test("events page features Aerial Photography as first featured event", () => {
   const classesAt = html.indexOf("Classes & Workshops");
   assert.ok(photoAt !== -1 && classesAt > photoAt);
   assert.match(html, /aerial_photography_2026\.jpg/);
-  for (const classId of [2012, 2013, 2014, 2015, 2017, 2018, 2020]) {
+  for (const classId of [2012, 2013, 2014, 2015, 2017, 2018]) {
     assert.match(html, new RegExp(`calendar\\?class=${classId}`));
   }
+  assert.doesNotMatch(html, /calendar\?class=2020/);
 });
 
 test("homepage popup ACT dropdown uses expanded ACT label (#13, #17)", () => {
