@@ -6,7 +6,6 @@
     <title>Birthday Parties | Ducking Gravity</title>
     <link rel="icon" type="image/png" href="https://pub-e15e2775d3f24830848d85fb53d029c8.r2.dev/ducking-gravity-logo-green.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <!-- Google reCAPTCHA -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -67,7 +66,7 @@ Ready to plan your perfect birthday party? Use the contact form below to reach o
         </div>
         <div class="camp-section">
             <div class="contact-form">
-                <form id="contact-form">
+                <form id="contact-form" data-contact-source="birthday">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="first-name">First Name</label>
@@ -177,159 +176,7 @@ Ready to plan your perfect birthday party? Use the contact form below to reach o
         </div>
     </footer>
 
-    <script>
-        // Set EmailJS keys here, before any logic uses them
-        window.EMAILJS_PUBLIC_KEY = "KaOSEmcu_W96fyEkr";
-        window.EMAILJS_SERVICE_ID = "service_73674e9";
-        window.EMAILJS_TEMPLATE_ID = "template_i7fp09h";
-
-        // EmailJS form handling
-        (function() {
-            // Wait for EmailJS to be loaded
-            if (typeof emailjs === 'undefined') {
-                console.error('EmailJS is not loaded');
-                return;
-            }
-
-            // Initialize EmailJS with your public key
-            emailjs.init(window.EMAILJS_PUBLIC_KEY);
-
-            const form = document.getElementById('contact-form');
-            const formStatus = document.getElementById('form-status');
-
-            // Validation functions
-            function validateEmail(email) {
-                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return re.test(email);
-            }
-
-            function validatePhone(phone) {
-                const re = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-                return re.test(phone);
-            }
-
-            function validateName(name) {
-                return name.trim().length >= 2;
-            }
-
-            function showError(input, message) {
-                const errorElement = input.nextElementSibling;
-                errorElement.textContent = message;
-                errorElement.style.display = 'block';
-                input.style.borderColor = 'red';
-            }
-
-            function clearError(input) {
-                const errorElement = input.nextElementSibling;
-                errorElement.style.display = 'none';
-                input.style.borderColor = '';
-            }
-
-            // Add input event listeners for real-time validation
-            const inputs = form.querySelectorAll('input, textarea');
-            inputs.forEach(input => {
-                input.addEventListener('input', () => {
-                    clearError(input);
-                });
-            });
-
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                let isValid = true;
-                const formData = new FormData(form);
-
-                // Validate first name
-                const firstName = formData.get('first_name');
-                if (!validateName(firstName)) {
-                    showError(document.getElementById('first-name'), 'Please enter a valid first name');
-                    isValid = false;
-                }
-
-                // Validate last name
-                const lastName = formData.get('last_name');
-                if (!validateName(lastName)) {
-                    showError(document.getElementById('last-name'), 'Please enter a valid last name');
-                    isValid = false;
-                }
-
-                // Validate email
-                const email = formData.get('email');
-                if (!validateEmail(email)) {
-                    showError(document.getElementById('email'), 'Please enter a valid email address');
-                    isValid = false;
-                }
-
-                // Validate phone
-                const phone = formData.get('phone');
-                if (!validatePhone(phone)) {
-                    showError(document.getElementById('phone'), 'Please enter a valid phone number');
-                    isValid = false;
-                }
-
-                // Validate message
-                const message = formData.get('message');
-                if (!message.trim()) {
-                    showError(document.getElementById('message'), 'Please enter a message');
-                    isValid = false;
-                }
-
-                // Validate reCAPTCHA
-                const recaptchaResponse = grecaptcha.getResponse();
-                const recaptchaError = document.getElementById('recaptcha-error');
-                if (!recaptchaResponse) {
-                    recaptchaError.style.display = 'block';
-                    isValid = false;
-                } else {
-                    recaptchaError.style.display = 'none';
-                }
-
-                if (!isValid) {
-                    return;
-                }
-
-                // Show loading state
-                const submitButton = form.querySelector('.cta-button');
-                submitButton.disabled = true;
-                submitButton.textContent = 'Sending...';
-
-                try {
-                    const templateParams = {
-                        from_name: `${firstName} ${lastName}`,
-                        reply_to: email,
-                        phone: phone,
-                        subject: formData.get('subject'),
-                        message: message
-                    };
-
-                    await emailjs.send(
-                        window.EMAILJS_SERVICE_ID,
-                        window.EMAILJS_TEMPLATE_ID,
-                        templateParams
-                    );
-
-                    // Show success message
-                    formStatus.style.display = 'block';
-                    formStatus.style.color = 'green';
-                    formStatus.textContent = 'Message sent successfully!';
-                    form.reset();
-                    
-                    // Reset reCAPTCHA
-                    grecaptcha.reset();
-
-                } catch (error) {
-                    // Show detailed error message
-                    formStatus.style.display = 'block';
-                    formStatus.style.color = 'red';
-                    formStatus.textContent = `Failed to send message: ${error.message || 'Unknown error'}`;
-                } finally {
-                    // Reset button state
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'Send Message';
-                }
-            });
-        })();
-    </script>
+    <script src="js/contact-form.js"></script>
     <script src="js/subpage-nav.js"></script>
     <script src="js/compact-header.js"></script>
     <script src="js/anchor-offset.js"></script>
